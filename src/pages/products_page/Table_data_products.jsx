@@ -2,7 +2,7 @@ import { PencilIcon,EyeIcon,TrashIcon } from '@heroicons/react/24/solid';
 import { useUSerContext } from '../../context/context_index';
 import Swal from 'sweetalert2';
 
-const Table_data_products = ({deleteProduct}) => {
+const Table_data_products = ({deleteProduct, openModalEditProduct, setEditDataProduct, load_data_quotation }) => {
 
     const { dataProducts} = useUSerContext();
 
@@ -23,6 +23,11 @@ const Table_data_products = ({deleteProduct}) => {
         })
     };
 
+    const handleEditProduct = (product) => {
+        setEditDataProduct(product);
+        openModalEditProduct(); 
+        load_data_quotation(product);
+    };
  
     return (
         <>
@@ -43,8 +48,8 @@ const Table_data_products = ({deleteProduct}) => {
 
                 <tbody className='bg-white'>
                     {   
-                        dataProducts.length === 0 ? <tr><td>No hay datos</td></tr> : (dataProducts.map)(product => (
-                        <tr key={product.id} className='border-b '>
+                        dataProducts.length === 0 ? <tr className='border-b text-center w-full'><td colSpan="10" className='px-2 py-2 text-center w-full'>No hay datos</td></tr> : (dataProducts.map)(product => (
+                        <tr key={product.id} className='border-b'>
                             <td className='px-2 py-2'>{product.code}</td>
                             <td className='px-2 py-2'>{product.name}</td>
                             <td className='px-2 py-2'>{product.category.name}</td>
@@ -61,7 +66,7 @@ const Table_data_products = ({deleteProduct}) => {
                             <td className='flex py-2 gap-1 justify-center pr-2'>
                                 <button 
                                 className='bg-yellow-500 text-white p-1 rounded-lg'
-                                item={product}
+                                onClick={() => handleEditProduct(product)}
                                 ><PencilIcon className='h4 w-4'/></button>
 
                                 <button 

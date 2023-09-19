@@ -1,36 +1,25 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import Swal from 'sweetalert2';
+import { alertError, alertWarning } from "../utils/alerts";
 
 const UserContext = createContext();
 
 export const UserContextProvider = ({children}) => {
-
+    
+    //--- Data ---//
     const [dataProducts, setDataProducts] = useState([]);
     const [dataModels, setDataModels] = useState([]);
     const [dataCategories, setDataCategories] = useState([]);
+    const [dataProviders, setDataProviders] = useState([]);
+    const [dataMark, setDataMark] = useState([]);
+
+    //--- URLS ---//
 
     const urlProducts = `${import.meta.env.VITE_BACKEND_URL}api/v1/products/`;
     const urlModels = `${import.meta.env.VITE_BACKEND_URL}api/v1/models/`;
     const urlCategories = `${import.meta.env.VITE_BACKEND_URL}api/v1/categories/`;
+    const urlProviders = `${import.meta.env.VITE_BACKEND_URL}api/v1/providers/`;
+    const urlMarks = `${import.meta.env.VITE_BACKEND_URL}api/v1/marks/`;
 
-    //---Alert Not Found Error 404---//
-    const error_not_found = () => (
-        Swal.fire({
-            icon: 'error',
-            title: 'Error 404',
-            text: 'Página no encontrada!',
-        })
-    );
-
-     //---Alert Error Network---//
-    const error_err_network = () => (
-        Swal.fire({
-            icon: 'error',
-            title: 'Oops...',
-            text: 'Algo salió mal, pero no te preocupes, no es tu culpa. Vamos a intentarlo de nuevo.!',
-        })
-    );
-       
     //--- Load Data Products---//
     const load_data_products = () => {
         fetch(urlProducts)
@@ -39,13 +28,13 @@ export const UserContextProvider = ({children}) => {
         .catch((error) => {
             console.log(error);
             if (error.code === 'ERR_BAD_REQUEST'){
-                error_not_found();
+                alertError('Error 404, Página no encontrada!');
             }
             if (error.code === 'ERR_NETWORK'){
-                error_err_network();
-            }           
+                alertWarning('Algo salió mal, pero no te preocupes, no es tu culpa. Vamos a intentarlo de nuevo.!');
+            }             
         })
-    }
+    };
 
      //--- Load Models Products---//
     const load_Models_products = () => {
@@ -55,11 +44,11 @@ export const UserContextProvider = ({children}) => {
         .catch((error) => {
             console.log(error);
             if (error.code === 'ERR_BAD_REQUEST'){
-                error_not_found();
+                alertError('Error 404, Página no encontrada!');
             }
             if (error.code === 'ERR_NETWORK'){
-                error_err_network();
-            }         
+                alertWarning('Algo salió mal, pero no te preocupes, no es tu culpa. Vamos a intentarlo de nuevo.!');
+            }     
         })
     };
 
@@ -71,11 +60,43 @@ export const UserContextProvider = ({children}) => {
         .catch((error) => {
             console.log(error);
             if (error.code === 'ERR_BAD_REQUEST'){
-                error_not_found();
+                alertError('Error 404, Página no encontrada!');
             }
             if (error.code === 'ERR_NETWORK'){
-                error_err_network();
-            }         
+                alertWarning('Algo salió mal, pero no te preocupes, no es tu culpa. Vamos a intentarlo de nuevo.!');
+            }           
+        })
+    };
+
+    //--- Load Data Products---//
+    const load_data_providers = () => {
+        fetch(urlProviders)
+        .then(response => response.json())
+        .then(data => setDataProviders(data))
+        .catch((error) => {
+            console.log(error);
+            if (error.code === 'ERR_BAD_REQUEST'){
+                alertError('Error 404, Página no encontrada!');
+            }
+            if (error.code === 'ERR_NETWORK'){
+                alertWarning('Algo salió mal, pero no te preocupes, no es tu culpa. Vamos a intentarlo de nuevo.!');
+            }             
+        })
+    };
+
+    //--- Load Data Marks---//
+    const load_data_marks = () => {
+        fetch(urlMarks)
+        .then(response => response.json())
+        .then(data => setDataMark(data))
+        .catch((error) => {
+            console.log(error);
+            if (error.code === 'ERR_BAD_REQUEST'){
+                alertError('Error 404, Página no encontrada!');
+            }
+            if (error.code === 'ERR_NETWORK'){
+                alertWarning('Algo salió mal, pero no te preocupes, no es tu culpa. Vamos a intentarlo de nuevo.!');
+            }             
         })
     };
 
@@ -83,10 +104,12 @@ export const UserContextProvider = ({children}) => {
         load_data_products();
         load_Models_products();
         load_Categories_products();
+        load_data_providers();
+        load_data_marks();
     }, []);
 
     return (
-        <UserContext.Provider value={{dataProducts, urlProducts, load_data_products, dataModels, load_Models_products, dataCategories}}>
+        <UserContext.Provider value={{dataProducts, urlProducts, load_data_products, dataModels, load_Models_products, dataCategories, load_data_providers, dataProviders, urlProviders, dataMark, urlCategories, load_Categories_products, urlMarks, load_data_marks, urlModels}}>
             {children}
         </UserContext.Provider>
     );

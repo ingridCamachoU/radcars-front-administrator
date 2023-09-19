@@ -2,12 +2,35 @@ import { useState } from "react";
 
 export const useModal = () => {
 
+  //Modal Product//
   const [isOpenModalAddProduct, setIsOpenModalAddProduct] = useState(false);
+  const [isOpenModalEditProduct, setIsOpenModalEditProduct] = useState(false);
 
-  const openModal = () => setIsOpenModalAddProduct(true);
-  const closeModal = () => setIsOpenModalAddProduct(false);
+  const openModalAddProduct = () => setIsOpenModalAddProduct(true);
+  const closeModalAddProduct = () => setIsOpenModalAddProduct(false);
 
-  return [isOpenModalAddProduct, setIsOpenModalAddProduct, openModal, closeModal];
+  const openModalEditProduct = () => setIsOpenModalEditProduct(true);
+  const closeModalEditProduct = () => setIsOpenModalEditProduct(false);
+
+  //Modal Quotation//
+  const [isOpenModalCreateQuotation, setIsOpenModalCreateQuotation] = useState(false);
+
+  const openModalCreateQuotation = () => setIsOpenModalCreateQuotation(true);
+  const closeModalCreateQuotation = () => setIsOpenModalCreateQuotation(false);
+
+  //Modal Categorie//
+  const [isOpenModalCreateCategorie, setIsOpenModalCreateCategorie] = useState(false);
+
+  const openModalCreateCategorie = () => setIsOpenModalCreateCategorie(true);
+  const closeModalCreateCategorie = () => setIsOpenModalCreateCategorie(false);
+
+  //Modal Mark//
+  const [isOpenModalCreateMark, setIsOpenModalCreateMark] = useState(false);
+
+  const openModalCreateMark = () => setIsOpenModalCreateMark(true);
+  const closeModalCreateMark = () => setIsOpenModalCreateMark(false);
+
+  return [isOpenModalAddProduct, setIsOpenModalAddProduct, openModalAddProduct, closeModalAddProduct, isOpenModalEditProduct, setIsOpenModalEditProduct, openModalEditProduct, closeModalEditProduct, isOpenModalCreateQuotation, openModalCreateQuotation, closeModalCreateQuotation, setIsOpenModalCreateQuotation, isOpenModalCreateCategorie, setIsOpenModalCreateCategorie, openModalCreateCategorie, closeModalCreateCategorie, isOpenModalCreateMark,setIsOpenModalCreateMark, openModalCreateMark, closeModalCreateMark];
   
 };
 

@@ -1,6 +1,5 @@
 import { useState } from "react";
 
-
 export const useForm = (initialForm) => {
   
     const [formData, setFormData] = useState(initialForm);
@@ -13,11 +12,6 @@ export const useForm = (initialForm) => {
         })
     };
 
-    const handleReset =() =>{
-        setFormData(initialForm);
-    };
-
-    return [formData, handleChange, setFormData, handleReset];
+    return [formData, handleChange, setFormData];
 }
-
 
