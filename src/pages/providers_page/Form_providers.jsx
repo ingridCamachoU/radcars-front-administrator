@@ -1,11 +1,12 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useForm } from "../../hooks/useForm";
 import { initialFormProv } from "../../utils/initialialization";
 import { XMarkIcon } from "@heroicons/react/24/solid";
 import { useUSerContext } from "../../context/context_index";
 import { alertError, alertAdd } from '../../utils/alerts';
+import { DarkMode } from "../../context/DarkMode";
 
-const Form_providers = ({setEditDataProv, editDataProv, isOpenModalAddProv, closeModalAddProv, setIsOpenModalAddProv}) => {
+const Form_providers = ({setEditDataProv, editDataProv, isOpenModalAddProv, closeModalAddProv, setIsOpenModalAddProv, title}) => {
 
     const [formData, handleChange, setFormData] = useForm(initialFormProv);
     const {urlProviders, load_data_providers} = useUSerContext();
@@ -137,18 +138,23 @@ const Form_providers = ({setEditDataProv, editDataProv, isOpenModalAddProv, clos
         setFormData(initialFormProv);
     };
 
+    const {darkMode} = useContext(DarkMode);
+
   return (
-        <div className={`${isOpenModalAddProv ? 'bg-white/[90%]  flex flex-col absolute w-full min-h-screen top-0 items-center justify-center flex-wrap z-40' : 'hidden' }`} onClick={closeModalReset}>
+        <div 
+        className={`${isOpenModalAddProv ? 'flex flex-col top-0 items-center justify-center flex-wrap z-40 w-full min-h-screen overflow-auto fixed' : 'hidden'} ${darkMode ? 'bg-[#000000]/[90%]': 'bg-white/[90%]'}`} 
+        onClick={closeModalReset}>
             <form 
-                className={`${isOpenModalAddProv && 'bg-white shadow-xl p-6 rounded-lg flex absolute flex-col w-2/5 flex-wrap'}`} 
+                className={`${isOpenModalAddProv && ' shadow-xl lg:p-4 rounded-lg flex absolute flex-col lg:w-[600px] flex-wrap md:w-4/6 sm:w-4/6 w-10/12 p-4  top-16'} ${darkMode ? 'bg-[#212130]': 'bg-white'}`}
                 onClick={handleModalClick}
                 onSubmit={handleSubmit}>
                 <div className="flex justify-between mb-6 flex-wrap">
-                    <h1 className="text-2xl">Crear Producto</h1>
+                    <h1 
+                    className={`${darkMode ? 'text-white text-2xl ml-2' : 'text-black text-2xl ml-2'}`}>{title}</h1>
                     <span onClick={closeModalReset}><XMarkIcon className="h6 w-6 text-gray-400 cursor-pointer"/></span>
                 </div>
 
-                <div className="text-gray-400 flex mb-4 gap-6 justify-center">
+                <div className="text-gray-400 flex mb-4 gap-6 justify-center lg:flex-row flex-col">
                     <div className="flex-col flex">
                         <label>Nit</label>
                         <input 
@@ -174,7 +180,7 @@ const Form_providers = ({setEditDataProv, editDataProv, isOpenModalAddProv, clos
                     </div>                
                 </div>
 
-                <div className="text-gray-400 flex mb-4 gap-6 justify-center">
+                <div className="text-gray-400 flex mb-4 gap-6 justify-center lg:flex-row flex-col">
                     <div className="flex-col flex">
                         <label>Contacto</label>
                         <input 
@@ -199,7 +205,7 @@ const Form_providers = ({setEditDataProv, editDataProv, isOpenModalAddProv, clos
                         {errors.email && <p className="text-red-500">{errors.email}</p>}
                     </div>                
                 </div>
-                <div className="text-gray-400 flex mb-4 gap-6 justify-end mr-6">
+                <div className="text-gray-400 flex mb-4 gap-6 justify-end lg:mr-20 mr-4">
                     <input 
                     type="reset" 
                     value='Cancelar' 

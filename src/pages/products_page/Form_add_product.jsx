@@ -1,9 +1,10 @@
 import { XMarkIcon } from "@heroicons/react/24/solid";
 import { useForm } from "../../hooks/useForm";
 import { useUSerContext } from "../../context/context_index";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { alertAdd, alertError } from "../../utils/alerts";
 import { initialFormProduct } from "../../utils/initialialization";
+import { DarkMode } from "../../context/DarkMode";
 
 const Form_add_product = ({isOpenModalAddProduct, closeModalAddProduct}) => {
 
@@ -101,18 +102,23 @@ const Form_add_product = ({isOpenModalAddProduct, closeModalAddProduct}) => {
 
     const handleModalClick = e => e.stopPropagation();
 
+    const {darkMode} = useContext(DarkMode);
+
     return (
-        <div className={`${isOpenModalAddProduct ? 'bg-white/[90%]  flex flex-col absolute w-full min-h-screen top-0 items-center justify-center flex-wrap z-40' : 'hidden' }`} onClick={closeModalReset}>
+        <div 
+        className={`${isOpenModalAddProduct ? 'flex flex-col top-0 items-center justify-center flex-wrap z-40 w-full min-h-screen overflow-auto fixed' : 'hidden'} ${darkMode ? 'bg-[#000000]/[90%]': 'bg-white/[90%]'}`}
+        onClick={closeModalReset}>
             <form 
-                className={`${isOpenModalAddProduct && 'bg-white shadow-xl p-6 rounded-lg flex absolute flex-col w-2/5 flex-wrap'}`} 
+                className={`${isOpenModalAddProduct && ' shadow-xl lg:p-4 rounded-lg flex absolute flex-col lg:w-[600px] flex-wrap md:w-4/6 sm:w-4/6 w-10/12 p-4  top-16'} ${darkMode ? 'bg-[#212130]': 'bg-white'}`}
                 onClick={handleModalClick}
                 onSubmit={handleSubmit}>
-                <div className="flex justify-between mb-6 flex-wrap">
-                    <h1 className="text-2xl">Crear Producto</h1>
+                <div className="flex justify-between mb-6 flex-wrap mt-0 sm:mt-4">
+                    <h1 
+                    className={`${darkMode ? 'text-white text-2xl ml-2' : 'text-black text-2xl ml-2'}`}>Crear Producto</h1>
                     <span onClick={closeModalReset}><XMarkIcon className="h6 w-6 text-gray-400 cursor-pointer"/></span>
                 </div>
 
-                <div className="text-gray-400 flex mb-4 gap-6 justify-center">
+                <div className="text-gray-400 flex mb-4 gap-6 justify-center lg:flex-row flex-col">
                     <div className="flex-col flex">
                         <label>Código</label>
                         <input 
@@ -138,7 +144,7 @@ const Form_add_product = ({isOpenModalAddProduct, closeModalAddProduct}) => {
                     </div>                
                 </div>
 
-                <div className="text-gray-400 flex mb-4 gap-6 justify-center">
+                <div className="text-gray-400 flex mb-4 gap-6 justify-center lg:flex-row flex-col">
                     <div className=" flex-col flex">
                         <label>Categoria</label>
                         <select 
@@ -168,7 +174,7 @@ const Form_add_product = ({isOpenModalAddProduct, closeModalAddProduct}) => {
                     </div>
                 </div>
 
-                <div className="text-gray-400 flex mb-4 gap-6  justify-center">
+                <div className="text-gray-400 flex mb-4 gap-6 justify-center lg:flex-row flex-col">
                     
                     <div className="flex-col flex">
                         <label>% Ganancia</label>
@@ -195,7 +201,7 @@ const Form_add_product = ({isOpenModalAddProduct, closeModalAddProduct}) => {
                     </div>
                 </div>
 
-                <div className="text-gray-400 flex mb-4 gap-6  justify-center">
+                <div className="text-gray-400 flex mb-4 gap-6 justify-center lg:flex-row flex-col">
                     <div className="flex flex-col">
                         <label>Modelo</label>
                         <select 
@@ -224,7 +230,7 @@ const Form_add_product = ({isOpenModalAddProduct, closeModalAddProduct}) => {
                     </div>
                 </div>
 
-                <div className="text-gray-400 flex mb-4 gap-6  justify-center">
+                <div className="text-gray-400 flex mb-4 gap-6 justify-center lg:flex-row flex-col">
                     <div className="flex flex-col">
                         <label>Imagenes</label>
                         <input 
@@ -245,7 +251,7 @@ const Form_add_product = ({isOpenModalAddProduct, closeModalAddProduct}) => {
                     </div>             
                 </div>
 
-                <div className="text-gray-400 flex mb-4 gap-6 justify-end mr-6">
+                <div className="text-gray-400 flex mb-4 gap-6 justify-end lg:mr-20 mr-6">
                     <input 
                     type="reset" 
                     value='Cancelar' 

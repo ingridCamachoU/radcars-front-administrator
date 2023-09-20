@@ -132,7 +132,7 @@ const Products_index = () => {
 
             <Form_add_quotation isOpenModalCreateQuotation={isOpenModalCreateQuotation}closeModalCreateQuotation={closeModalCreateQuotation} load_data_quotation={load_data_quotation} editDataProduct={editDataProduct} addQuotation={addQuotation}/>
 
-            <div className='lg:relative overflow-x-auto lg:w-4/5 lg:ml-60 lg:mr-8 w-full ml-8 mr-4 mt-6 rounded-lg'>
+            <div className='lg:relative lg:w-4/5 lg:ml-60 lg:mr-8 w-full ml-8 mr-4 mt-6 rounded-lg justify-center items-center flex pb-4'>
                 <Table_data_products deleteProduct={deleteProduct} openModalEditProduct={openModalEditProduct} setEditDataProduct={setEditDataProduct} editDataProduct={editDataProduct} load_data_quotation={load_data_quotation} addQuotation={addQuotation}/>
             </div>
               

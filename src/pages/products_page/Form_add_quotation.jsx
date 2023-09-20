@@ -1,8 +1,9 @@
+import { DarkMode } from "../../context/DarkMode";
 import { useUSerContext } from "../../context/context_index";
 import { useForm } from "../../hooks/useForm";
 import { initialFormQuotation } from "../../utils/initialialization";
 import { XMarkIcon } from "@heroicons/react/24/solid";
-import { useState } from "react";
+import { useContext, useState } from "react";
 
 const Form_add_quotation = ({isOpenModalCreateQuotation, closeModalCreateQuotation, load_data_quotation, editDataProduct, addQuotation}) => {
 
@@ -53,18 +54,23 @@ const Form_add_quotation = ({isOpenModalCreateQuotation, closeModalCreateQuotati
 
     const handleModalClick= e => e.stopPropagation();
 
+    const {darkMode} = useContext(DarkMode);
+
     return (
-        <div className={`${isOpenModalCreateQuotation ? 'bg-white/[90%]  flex flex-col absolute w-full min-h-screen top-0 items-center justify-center flex-wrap z-40' : 'hidden' }`} onClick={closeModalReset}>
+        <div 
+        className={`${isOpenModalCreateQuotation ? 'flex flex-col top-0 items-center justify-center flex-wrap z-40 w-full min-h-screen overflow-auto fixed' : 'hidden'} ${darkMode ? 'bg-[#000000]/[90%]': 'bg-white/[90%]'}`}
+        onClick={closeModalReset}>
                 <form 
-                    className={`${isOpenModalCreateQuotation && 'bg-white shadow-xl p-6 rounded-lg flex absolute flex-col w-2/5 flex-wrap'}`} 
+                    className={`${isOpenModalCreateQuotation && ' shadow-xl lg:p-4 rounded-lg flex absolute flex-col lg:w-[600px] flex-wrap md:w-4/6 sm:w-4/6 w-10/12 p-4  top-16'} ${darkMode ? 'bg-[#212130]': 'bg-white'}`}
                     onClick={handleModalClick}
                     onSubmit={handleSubmit}>
                     <div className="flex justify-between mb-6 flex-wrap">
-                        <h1 className="text-2xl">Crear Cotización</h1>
+                        <h1 
+                        className={`${darkMode ? 'text-white text-2xl ml-2' : 'text-black text-2xl ml-2'}`}>Crear Cotización</h1>
                         <span onClick={closeModalReset}><XMarkIcon className="h6 w-6 text-gray-400 cursor-pointer"/></span>
                     </div>
 
-                    <div className="text-gray-400 flex mb-4 gap-6 justify-center">
+                    <div className="text-gray-400 flex mb-4 gap-6 justify-center lg:flex-row flex-col">
                         <div className="flex-col flex">
                             <label>Proveedor</label>
                             <select 
@@ -95,7 +101,7 @@ const Form_add_quotation = ({isOpenModalCreateQuotation, closeModalCreateQuotati
                         </div>                
                     </div>
 
-                    <div className="text-gray-400 flex mb-4 gap-6 justify-center">
+                    <div className="text-gray-400 flex mb-4 gap-6 justify-center lg:flex-row flex-col">
                         <div className="flex-col flex">
                             <label>Descripción</label>
                             <textarea 

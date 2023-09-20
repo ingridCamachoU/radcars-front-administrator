@@ -10,7 +10,7 @@ import { Form_Model } from "./form_others_model";
 
 const Others_index = () => {
 
-    const [isOpenModalCreateCategorie, openModalCreateCategorie, closeModalCreateCategorie, setIsOpenModalCreateCategorie, isOpenModalCreateMark, setIsOpenModalCreateMark, openModalCreateMark  ] = useModal();
+    const [isOpenModalCreateMark, setIsOpenModalCreateMark, openModalCreateMark ] = useModal();
 
     const {urlCategories, load_Categories_products, urlMarks, load_data_marks, urlModels, load_Models_products} = useUSerContext();
 
@@ -19,6 +19,12 @@ const Others_index = () => {
 
     const openModalCreateModel = () => setIsOpenModalCreateModel(true);
     const closeModalCreateModel = () => setIsOpenModalCreateModel(false);
+
+    //Modal Categorie//
+    const [isOpenModalCreateCategorie, setIsOpenModalCreateCategorie] = useState(false);
+
+    const openModalCreateCategorie = () => setIsOpenModalCreateCategorie(true);
+    const closeModalCreateCategorie = () => setIsOpenModalCreateCategorie(false);
 
     //Edit Data//
     const [editDataCategorie, setEditDataCategorie] = useState(null);
@@ -119,8 +125,19 @@ const Others_index = () => {
 
             <Form_Model isOpenModalCreateModel={isOpenModalCreateModel} closeModalCreateModel={closeModalCreateModel} editDataModel={editDataModel} setEditDataModel={setEditDataModel} setIsOpenModalCreateModel={setIsOpenModalCreateModel}/>
     
-            <div className='lg:relative overflow-x-auto lg:w-4/5 lg:ml-60 lg:mr-8 w-full ml-8 mr-4 mt-6'>
-                <Table_others setEditDataCategorie={setEditDataCategorie} deleteCategorie={deleteCategorie} openModalCreateCategorie={openModalCreateCategorie} openModalCreateMark={openModalCreateMark} deleteMark={deleteMark} setEditDataMark={setEditDataMark} openModalCreateModel={openModalCreateModel} setEditDataModel={setEditDataModel} deleteModel={deleteModel}/>  
+            <div className='lg:relative overflow-x-auto lg:w-4/5 lg:ml-60 lg:mr-8 w-full ml-8 mr-4 mt-6 justify-center items-center flex pb-4'>
+                <Table_others 
+                setEditDataCategorie={setEditDataCategorie} 
+                setIsOpenModalCreateCategorie={setIsOpenModalCreateCategorie}
+                deleteCategorie={deleteCategorie} 
+                openModalCreateCategorie={openModalCreateCategorie} 
+                openModalCreateMark={openModalCreateMark} 
+                deleteMark={deleteMark} 
+                setEditDataMark={setEditDataMark} 
+                openModalCreateModel={openModalCreateModel} 
+                setEditDataModel={setEditDataModel} 
+                deleteModel={deleteModel} 
+                />  
             </div>      
         </Layout_base>   
     );

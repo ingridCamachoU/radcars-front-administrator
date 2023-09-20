@@ -1,16 +1,18 @@
+import { useContext } from "react";
 import Header_pages from "../../components/header_pages/Header_pages";
 import { useUSerContext } from "../../context/context_index";
 import { PencilIcon,TrashIcon } from '@heroicons/react/24/solid';
 import Swal from 'sweetalert2';
+import { DarkMode } from "../../context/DarkMode";
 
-const Table_others = ({openModalCreateCategorie, setEditDataCategorie, deleteCategorie, openModalCreateMark, deleteMark, setEditDataMark, openModalCreateModel, setEditDataModel, deleteModel}) => {
+const Table_others = ({openModalCreateCategorie, setEditDataCategorie, deleteCategorie, openModalCreateMark, deleteMark, setEditDataMark, openModalCreateModel, setEditDataModel, deleteModel, setIsOpenModalCreateCategorie}) => {
 
     const {dataCategories, dataModels, dataMark} = useUSerContext();
 
     //--Categorie--//
     const handleEditCategorie = (categorie) => {
         setEditDataCategorie(categorie);
-        openModalCreateCategorie();
+        setIsOpenModalCreateCategorie(true)
     };
 
     const handleDeleteCategorie = (id) => {
@@ -73,11 +75,14 @@ const Table_others = ({openModalCreateCategorie, setEditDataCategorie, deleteCat
         })
     };
 
+
+    const {darkMode} = useContext(DarkMode);
+
     return (
-        <div className="w-full text-center text-s font-light z-0 flex justify-between col-span-3 gap-6">
+        <div className="w-full text-center text-s font-light z-0 flex justify-between col-span-3 gap-6 lg:w-[1500px] pb-4 mb-4">
             
             {/* table Category */}
-            <div className="w-full">
+            <div className="w-full pl-4">
                 <div className="p-2">
                     <Header_pages title={'Categoria'} onClick={openModalCreateCategorie}/>
                 </div>
@@ -89,7 +94,7 @@ const Table_others = ({openModalCreateCategorie, setEditDataCategorie, deleteCat
                         </tr>
                     </thead>
 
-                    <tbody className='bg-white'>
+                    <tbody className={`${darkMode ? 'bg-[#212130] text-white' : 'bg-white text-black'}`}>
                         {   
                             dataCategories.length === 0 ? <tr><td colSpan="6" className="text-center">No hay datos</td></tr>
                             :(dataCategories.map)( categorie=> (
@@ -127,7 +132,7 @@ const Table_others = ({openModalCreateCategorie, setEditDataCategorie, deleteCat
                         </tr>
                     </thead>
 
-                    <tbody className='bg-white'>
+                    <tbody className={`${darkMode ? 'bg-[#212130] text-white' : 'bg-white text-black'}`}>
                         {   
                             dataMark.length === 0 ? <tr><td colSpan="6" className="text-center">No hay datos</td></tr>
                             :(dataMark.map)( mark=> (
@@ -153,7 +158,7 @@ const Table_others = ({openModalCreateCategorie, setEditDataCategorie, deleteCat
             </div>
 
             {/* table Modelo */}
-            <div className="w-full">
+            <div className="w-full pr-4">
                 <div className="p-2">
                     <Header_pages title={'Modelo'} onClick={openModalCreateModel}/>
                 </div>
@@ -166,7 +171,7 @@ const Table_others = ({openModalCreateCategorie, setEditDataCategorie, deleteCat
                         </tr>
                     </thead>
 
-                    <tbody className='bg-white'>
+                    <tbody className={`${darkMode ? 'bg-[#212130] text-white' : 'bg-white text-black'}`}>
                         {   
                             dataModels.length === 0 ? <tr><td colSpan="6" className="text-center">No hay datos</td></tr>
                             :(dataModels.map)( model=> (
@@ -190,11 +195,7 @@ const Table_others = ({openModalCreateCategorie, setEditDataCategorie, deleteCat
                         }
                     </tbody>    
                 </table>
-            </div>
-
-
-            
-        
+            </div>        
         </div>
     );
 }

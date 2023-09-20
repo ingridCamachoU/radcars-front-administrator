@@ -1,24 +1,32 @@
 import { Outlet } from "react-router-dom";
 import Nabvar from "../components/navbar/Nabvar";
-import { UserCircleIcon, ChevronDownIcon } from '@heroicons/react/24/solid';
 import { UserContextProvider } from "../context/context_index";
+import { useContext, useState } from "react";
+import Header_page from "../components/header/Header_page";
+import { DarkMode } from "../context/DarkMode";
 
 const Private_layout = () => {
+
+    const [isOpenMenu, setIsOpenMenu] = useState(false);
+
+    const {darkMode} = useContext(DarkMode); 
+
     return (
         <UserContextProvider>
-            <header>
-                <div className="tex-black flex top-0 right-0 w-full  justify-end p-4 gap-8">
-                    <input type="search" placeholder="Search" className="w-1/4 rounded-lg p-1 pl-4 focus:outline-none" />
-                    <p className="flex gap-2 text-indigo-500">
-                        <span><UserCircleIcon className='h-6 w-6'/></span>
-                        <span>William Carvajal</span>
-                        <span><ChevronDownIcon className='h-6 w-6'/></span>
-                    </p>
-                </div>
-                <Nabvar />
-            </header>
-   
-            <Outlet />
+            <div className={darkMode ? `body dark` : `body light`}>
+                <header> 
+                    <Header_page setIsOpenMenu={setIsOpenMenu}/>
+                    <span 
+                    className={`${isOpenMenu ? 'flex flex-col top-0 items-center justify-center z-40 w-full min-h-screen overflow-auto fixed lg:hidden': 'hidden'} ${darkMode ? 'bg-[#212130]': 'bg-white'}`}>
+                
+                        <Nabvar isOpenMenu={isOpenMenu} setIsOpenMenu={setIsOpenMenu}/>
+                    </span> 
+                    <Nabvar />
+                </header>
+    
+                <Outlet />
+            </div>
+            
         </UserContextProvider>
 
        

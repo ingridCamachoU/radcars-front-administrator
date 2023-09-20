@@ -18,19 +18,13 @@ export const useModal = () => {
   const openModalCreateQuotation = () => setIsOpenModalCreateQuotation(true);
   const closeModalCreateQuotation = () => setIsOpenModalCreateQuotation(false);
 
-  //Modal Categorie//
-  const [isOpenModalCreateCategorie, setIsOpenModalCreateCategorie] = useState(false);
-
-  const openModalCreateCategorie = () => setIsOpenModalCreateCategorie(true);
-  const closeModalCreateCategorie = () => setIsOpenModalCreateCategorie(false);
-
   //Modal Mark//
   const [isOpenModalCreateMark, setIsOpenModalCreateMark] = useState(false);
 
   const openModalCreateMark = () => setIsOpenModalCreateMark(true);
   const closeModalCreateMark = () => setIsOpenModalCreateMark(false);
 
-  return [isOpenModalAddProduct, setIsOpenModalAddProduct, openModalAddProduct, closeModalAddProduct, isOpenModalEditProduct, setIsOpenModalEditProduct, openModalEditProduct, closeModalEditProduct, isOpenModalCreateQuotation, openModalCreateQuotation, closeModalCreateQuotation, setIsOpenModalCreateQuotation, isOpenModalCreateCategorie, setIsOpenModalCreateCategorie, openModalCreateCategorie, closeModalCreateCategorie, isOpenModalCreateMark,setIsOpenModalCreateMark, openModalCreateMark, closeModalCreateMark];
+  return [isOpenModalAddProduct, setIsOpenModalAddProduct, openModalAddProduct, closeModalAddProduct, isOpenModalEditProduct, setIsOpenModalEditProduct, openModalEditProduct, closeModalEditProduct, isOpenModalCreateQuotation, openModalCreateQuotation, closeModalCreateQuotation, setIsOpenModalCreateQuotation,  isOpenModalCreateMark,setIsOpenModalCreateMark, openModalCreateMark, closeModalCreateMark];
   
 };
 

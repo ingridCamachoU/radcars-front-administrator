@@ -12,9 +12,16 @@ export const UserContextProvider = ({children}) => {
     const [dataProviders, setDataProviders] = useState([]);
     const [dataMark, setDataMark] = useState([]);
 
+    // Get products by title //
+    const [searchByTitle, setSearchByTitle ] = useState('');
+
+    // Dark Mode or light Mode //
+    const [DarkMode, setDarkMode ] = useState(false);
+
     //--- URLS ---//
 
     const urlProducts = `${import.meta.env.VITE_BACKEND_URL}api/v1/products/`;
+    const urlProductsSearch = `${import.meta.env.VITE_BACKEND_URL}api/v1/products/?search=${searchByTitle}`;
     const urlModels = `${import.meta.env.VITE_BACKEND_URL}api/v1/models/`;
     const urlCategories = `${import.meta.env.VITE_BACKEND_URL}api/v1/categories/`;
     const urlProviders = `${import.meta.env.VITE_BACKEND_URL}api/v1/providers/`;
@@ -22,7 +29,7 @@ export const UserContextProvider = ({children}) => {
 
     //--- Load Data Products---//
     const load_data_products = () => {
-        fetch(urlProducts)
+        fetch(urlProductsSearch)
         .then(response => response.json())
         .then(data => setDataProducts(data))
         .catch((error) => {
@@ -106,10 +113,10 @@ export const UserContextProvider = ({children}) => {
         load_Categories_products();
         load_data_providers();
         load_data_marks();
-    }, []);
+    }, [urlProductsSearch]);
 
     return (
-        <UserContext.Provider value={{dataProducts, urlProducts, load_data_products, dataModels, load_Models_products, dataCategories, load_data_providers, dataProviders, urlProviders, dataMark, urlCategories, load_Categories_products, urlMarks, load_data_marks, urlModels}}>
+        <UserContext.Provider value={{dataProducts, urlProducts, load_data_products, dataModels, load_Models_products, dataCategories, load_data_providers, dataProviders, urlProviders, dataMark, urlCategories, load_Categories_products, urlMarks, load_data_marks, urlModels, setSearchByTitle, searchByTitle}}>
             {children}
         </UserContext.Provider>
     );

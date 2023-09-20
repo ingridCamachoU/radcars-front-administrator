@@ -3,6 +3,17 @@
 @tailwind utilities;
 
 
-body{
+.body{
     background: #F4F5F9;
+    min-width: 100%;
+    min-height: 100vh;
+    overflow: auto;
+}
+
+.body.light{
+    background: #F4F5F9;
+   
+}
+.body.dark{
+    background: #171622;
 }

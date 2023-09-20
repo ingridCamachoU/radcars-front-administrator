@@ -17,6 +17,7 @@ const Providers_index = () => {
 
     const openModalAddProv = () => setIsOpenModalAddProv(true);
     const closeModalAddProv = () => setIsOpenModalAddProv(false);
+    const [title, setTitle]= useState('');
 
     //---Delete Provider---//
     const deleteProvider = (id) => {
@@ -42,16 +43,21 @@ const Providers_index = () => {
         })     
     };
 
+    const open=()=>{
+        openModalAddProv();
+        setTitle('Registrar Proveedor');
+    };
+
     return (
         <Layout_base>
-            <div className='lg:w-4/5 w-full lg:ml-60 max-w-screen-xl flex justify-center h-full pr-4 mt-6 ml-10'>
-                <Header_pages title={'Proveedores'} onClick={openModalAddProv}/>
+            <div className='lg:w-4/5  lg:ml-60 max-w-screen-xl flex justify-center h-full pr-4 mt-6 ml-10 w-full'>
+                <Header_pages title={'Proveedores'} onClick={open}/>
             </div>
 
-            <Form_providers isOpenModalAddProv={isOpenModalAddProv} closeModalAddProv={closeModalAddProv} editDataProv={editDataProv} setEditDataProv={setEditDataProv} setIsOpenModalAddProv={setIsOpenModalAddProv}/>
+            <Form_providers isOpenModalAddProv={isOpenModalAddProv} closeModalAddProv={closeModalAddProv} editDataProv={editDataProv} setEditDataProv={setEditDataProv} setIsOpenModalAddProv={setIsOpenModalAddProv} title={title}/>
 
-            <div className='lg:relative overflow-x-auto lg:w-4/5 lg:ml-60 lg:mr-8 w-full ml-8 mr-4 mt-6 rounded-lg'>
-                <Table_data_providers openModalAddProv={openModalAddProv} setEditDataProv={setEditDataProv} deleteProvider={deleteProvider} setIsOpenModalAddProv={setIsOpenModalAddProv} isOpenModalAddProv={isOpenModalAddProv}/>
+            <div className='lg:relative overflow-x-auto lg:w-4/5 lg:ml-60 lg:mr-8 w-full ml-8 mr-4 mt-6 rounded-lg justify-center items-center flex pb-4'>
+                <Table_data_providers openModalAddProv={openModalAddProv} setEditDataProv={setEditDataProv} deleteProvider={deleteProvider} setIsOpenModalAddProv={setIsOpenModalAddProv} isOpenModalAddProv={isOpenModalAddProv} setTitle={setTitle}/>
             </div>
               
         </Layout_base>
