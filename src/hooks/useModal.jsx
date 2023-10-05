@@ -2,30 +2,47 @@ import { useState } from "react";
 
 export const useModal = () => {
 
-  //Modal Product//
-  const [isOpenModalAddProduct, setIsOpenModalAddProduct] = useState(false);
-  const [isOpenModalEditProduct, setIsOpenModalEditProduct] = useState(false);
+    //Modal Product//
+    const [isOpenModalAddProduct, setIsOpenModalAddProduct] = useState(false);
+    const [isOpenModalEditProduct, setIsOpenModalEditProduct] = useState(false);
 
-  const openModalAddProduct = () => setIsOpenModalAddProduct(true);
-  const closeModalAddProduct = () => setIsOpenModalAddProduct(false);
+    //Modal Quotation//
+    const [isOpenModalCreateQuotation, setIsOpenModalCreateQuotation] = useState(false);
 
-  const openModalEditProduct = () => setIsOpenModalEditProduct(true);
-  const closeModalEditProduct = () => setIsOpenModalEditProduct(false);
+    //Modal Details Product//
+    const [isOpenModalDetailProduct, setIsOpenModalDetailProduct] = useState(false);
 
-  //Modal Quotation//
-  const [isOpenModalCreateQuotation, setIsOpenModalCreateQuotation] = useState(false);
+    //Modal Mark//
+    const [isOpenModalCreateMark, setIsOpenModalCreateMark] = useState(false);
 
-  const openModalCreateQuotation = () => setIsOpenModalCreateQuotation(true);
-  const closeModalCreateQuotation = () => setIsOpenModalCreateQuotation(false);
+    //Modal Model//
+    const [isOpenModalCreateModel, setIsOpenModalCreateModel] = useState(false);
 
-  //Modal Mark//
-  const [isOpenModalCreateMark, setIsOpenModalCreateMark] = useState(false);
+    //Modal Categorie//
+    const [isOpenModalCreateCategorie, setIsOpenModalCreateCategorie] = useState(false);
 
-  const openModalCreateMark = () => setIsOpenModalCreateMark(true);
-  const closeModalCreateMark = () => setIsOpenModalCreateMark(false);
+    //Modal Provider//
+    const [ isOpenModalAddProv, setIsOpenModalAddProv ] = useState(false);
 
-  return [isOpenModalAddProduct, setIsOpenModalAddProduct, openModalAddProduct, closeModalAddProduct, isOpenModalEditProduct, setIsOpenModalEditProduct, openModalEditProduct, closeModalEditProduct, isOpenModalCreateQuotation, openModalCreateQuotation, closeModalCreateQuotation, setIsOpenModalCreateQuotation,  isOpenModalCreateMark,setIsOpenModalCreateMark, openModalCreateMark, closeModalCreateMark];
-  
+    return [
+        isOpenModalAddProduct, 
+        setIsOpenModalAddProduct, 
+        isOpenModalEditProduct, 
+        setIsOpenModalEditProduct, 
+        isOpenModalCreateQuotation,  
+        setIsOpenModalCreateQuotation,  
+        isOpenModalCreateMark,
+        setIsOpenModalCreateMark, 
+        isOpenModalDetailProduct, 
+        setIsOpenModalDetailProduct,
+        isOpenModalCreateModel,
+        setIsOpenModalCreateModel,
+        isOpenModalCreateCategorie,
+        setIsOpenModalCreateCategorie,
+        isOpenModalAddProv,
+        setIsOpenModalAddProv
+    ];
+    
 };
 
 

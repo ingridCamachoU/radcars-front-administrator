@@ -1,5 +1,4 @@
 
-import React from 'react';
 
 const Not_found_index = () => {
     return (

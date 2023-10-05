@@ -1,8 +1,10 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { alertError, alertWarning } from "../utils/alerts";
+import { endPoints } from "../services/endPoints/endPoints";
+import Error from "../utils/error";
 
 const UserContext = createContext();
 
+// eslint-disable-next-line react/prop-types
 export const UserContextProvider = ({children}) => {
     
     //--- Data ---//
@@ -15,97 +17,62 @@ export const UserContextProvider = ({children}) => {
     // Get products by title //
     const [searchByTitle, setSearchByTitle ] = useState('');
 
-    // Dark Mode or light Mode //
-    const [DarkMode, setDarkMode ] = useState(false);
-
-    //--- URLS ---//
-
-    const urlProducts = `${import.meta.env.VITE_BACKEND_URL}api/v1/products/`;
-    const urlProductsSearch = `${import.meta.env.VITE_BACKEND_URL}api/v1/products/?search=${searchByTitle}`;
-    const urlModels = `${import.meta.env.VITE_BACKEND_URL}api/v1/models/`;
-    const urlCategories = `${import.meta.env.VITE_BACKEND_URL}api/v1/categories/`;
-    const urlProviders = `${import.meta.env.VITE_BACKEND_URL}api/v1/providers/`;
-    const urlMarks = `${import.meta.env.VITE_BACKEND_URL}api/v1/marks/`;
-
     //--- Load Data Products---//
     const load_data_products = () => {
-        fetch(urlProductsSearch)
-        .then(response => response.json())
-        .then(data => setDataProducts(data))
-        .catch((error) => {
-            console.log(error);
-            if (error.code === 'ERR_BAD_REQUEST'){
-                alertError('Error 404, Página no encontrada!');
-            }
-            if (error.code === 'ERR_NETWORK'){
-                alertWarning('Algo salió mal, pero no te preocupes, no es tu culpa. Vamos a intentarlo de nuevo.!');
-            }             
-        })
+        fetch(endPoints.products.getSearchProducts(searchByTitle))
+            .then(response => response.json())
+            .then(data => setDataProducts(data))
+            .catch((error) => {
+                console.log(error);
+                Error(error);       
+            })
     };
 
-     //--- Load Models Products---//
+    //--- Load Models Products---//
     const load_Models_products = () => {
-        fetch(urlModels)
-        .then(response => response.json())
-        .then(data => setDataModels(data))
-        .catch((error) => {
-            console.log(error);
-            if (error.code === 'ERR_BAD_REQUEST'){
-                alertError('Error 404, Página no encontrada!');
-            }
-            if (error.code === 'ERR_NETWORK'){
-                alertWarning('Algo salió mal, pero no te preocupes, no es tu culpa. Vamos a intentarlo de nuevo.!');
-            }     
-        })
+        fetch(endPoints.models.getModels)
+            .then(response => response.json())
+            .then(data => setDataModels(data))
+            .catch((error) => {
+                console.log(error);
+                Error(error);    
+            })
     };
 
     //--- Load Categories Products---//
     const load_Categories_products = () => {
-        fetch(urlCategories)
-        .then(response => response.json())
-        .then(data => setDataCategories(data))
-        .catch((error) => {
-            console.log(error);
-            if (error.code === 'ERR_BAD_REQUEST'){
-                alertError('Error 404, Página no encontrada!');
-            }
-            if (error.code === 'ERR_NETWORK'){
-                alertWarning('Algo salió mal, pero no te preocupes, no es tu culpa. Vamos a intentarlo de nuevo.!');
-            }           
-        })
+        fetch(endPoints.categories.getCategories)
+            .then(response => response.json())
+            .then(data => setDataCategories(data))
+            .catch((error) => {
+                console.log(error);
+                Error(error);          
+            })
     };
 
     //--- Load Data Products---//
     const load_data_providers = () => {
-        fetch(urlProviders)
-        .then(response => response.json())
-        .then(data => setDataProviders(data))
-        .catch((error) => {
-            console.log(error);
-            if (error.code === 'ERR_BAD_REQUEST'){
-                alertError('Error 404, Página no encontrada!');
-            }
-            if (error.code === 'ERR_NETWORK'){
-                alertWarning('Algo salió mal, pero no te preocupes, no es tu culpa. Vamos a intentarlo de nuevo.!');
-            }             
-        })
+        fetch(endPoints.providers.getProviders)
+            .then(response => response.json())
+            .then(data => setDataProviders(data))
+            .catch((error) => {
+                console.log(error);
+                Error(error);          
+            })
     };
 
     //--- Load Data Marks---//
     const load_data_marks = () => {
-        fetch(urlMarks)
-        .then(response => response.json())
-        .then(data => setDataMark(data))
-        .catch((error) => {
-            console.log(error);
-            if (error.code === 'ERR_BAD_REQUEST'){
-                alertError('Error 404, Página no encontrada!');
-            }
-            if (error.code === 'ERR_NETWORK'){
-                alertWarning('Algo salió mal, pero no te preocupes, no es tu culpa. Vamos a intentarlo de nuevo.!');
-            }             
-        })
+        fetch(endPoints.marks.getMarks)
+            .then(response => response.json())
+            .then(data => setDataMark(data))
+            .catch((error) => {
+                console.log(error);
+                Error(error);           
+            })
     };
+
+    const urlSearch= endPoints.products.getSearchProducts(searchByTitle);
 
     useEffect(() => {
         load_data_products();
@@ -113,10 +80,24 @@ export const UserContextProvider = ({children}) => {
         load_Categories_products();
         load_data_providers();
         load_data_marks();
-    }, [urlProductsSearch]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [urlSearch]);
 
     return (
-        <UserContext.Provider value={{dataProducts, urlProducts, load_data_products, dataModels, load_Models_products, dataCategories, load_data_providers, dataProviders, urlProviders, dataMark, urlCategories, load_Categories_products, urlMarks, load_data_marks, urlModels, setSearchByTitle, searchByTitle}}>
+        <UserContext.Provider value={{
+            dataProducts, 
+            load_data_products, 
+            dataModels, 
+            load_Models_products, 
+            dataCategories, 
+            load_data_providers, 
+            dataProviders, 
+            dataMark, 
+            load_Categories_products, 
+            load_data_marks, 
+            setSearchByTitle, 
+            searchByTitle
+        }}>
             {children}
         </UserContext.Provider>
     );

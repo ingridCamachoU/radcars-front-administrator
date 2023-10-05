@@ -3,13 +3,14 @@ import { useForm } from "../../hooks/useForm";
 import { initialFormProv } from "../../utils/initialialization";
 import { XMarkIcon } from "@heroicons/react/24/solid";
 import { useUSerContext } from "../../context/context_index";
-import { alertError, alertAdd } from '../../utils/alerts';
 import { DarkMode } from "../../context/DarkMode";
+import { addProvider, updateProvider } from "../../services/providers";
 
-const Form_providers = ({setEditDataProv, editDataProv, isOpenModalAddProv, closeModalAddProv, setIsOpenModalAddProv, title}) => {
+// eslint-disable-next-line react/prop-types
+const Form_providers = ({ setEditDataProv, editDataProv, isOpenModalAddProv,  setIsOpenModalAddProv, title }) => {
 
-    const [formData, handleChange, setFormData] = useForm(initialFormProv);
-    const {urlProviders, load_data_providers} = useUSerContext();
+    const [ formData, handleChange, setFormData ] = useForm(initialFormProv);
+    const { load_data_providers } = useUSerContext();
 
     const [errors, setErrors] = useState({});
 
@@ -47,57 +48,6 @@ const Form_providers = ({setEditDataProv, editDataProv, isOpenModalAddProv, clos
         return errors;
     }
 
-      //---Create New Provider---//
-    const addProvider = (formData) => {
-        let data = JSON.stringify(formData);
-        fetch(urlProviders, {
-            method: "post",
-            maxBodyLength: Infinity,
-            body: data,
-            headers: {
-                "Content-Type": "application/json",
-            }
-        })
-        .then(response => response.json())
-        .then(response => {  
-            alertAdd('Proveedor Agregado');
-            setIsOpenModalAddProv(false)
-            load_data_providers();  
-        })
-        .catch((error) => {
-            console.log(error);
-            let erorCodigo= (error.response.data.code);
-            alertError(erorCodigo)
-            load_data_providers(); 
-        })
-       
-    };
-
-    //---Edit Provider---//
-    const editProvider = (formData) => {
-        let data = JSON.stringify(formData);
-        fetch(`${urlProviders}${editDataProv.id}/`, {
-            method: "put",
-            maxBodyLength: Infinity,
-            body: data,
-            headers: {
-                "Content-Type": "application/json",
-            }
-        })
-        .then(response => response.json())
-        .then(response => {
-            alertAdd('Proveedor Editado con Éxito');
-            load_data_providers();  
-            setEditDataProv(null); 
-        })
-        .catch((error) => {
-            console.log(error);
-            let erorCodigo= (error.response.data.code);
-            alertError(erorCodigo);
-            load_data_providers(); 
-        })
-    };
-
     useEffect(() => {
         if( editDataProv !== null){
             setFormData(editDataProv);
@@ -115,15 +65,15 @@ const Form_providers = ({setEditDataProv, editDataProv, isOpenModalAddProv, clos
         if (Object.keys(err).length === 0){
             if (formData.nit !== '' && formData.name !== ''  && formData.contact !== '' && formData.email !== ''){
                 if (editDataProv !== null){
-                    editProvider(formData);
+                    updateProvider(editDataProv?.id, formData, setEditDataProv, load_data_providers);
                     setFormData(initialFormProv);
-                    closeModalAddProv();
+                    setIsOpenModalAddProv(false);
                     setErrors('');
                     
                 } else {
-                    addProvider(formData);
+                    addProvider(formData, load_data_providers);
                     setFormData(initialFormProv);
-                    closeModalAddProv();
+                    setIsOpenModalAddProv(false);
                 }
             } 
         }else{
@@ -134,87 +84,111 @@ const Form_providers = ({setEditDataProv, editDataProv, isOpenModalAddProv, clos
     const handleModalClick = e => e.stopPropagation();
 
     const closeModalReset = () => {
-        setIsOpenModalAddProv(false)
+        setEditDataProv(null);
+        setIsOpenModalAddProv(false);
         setFormData(initialFormProv);
     };
 
     const {darkMode} = useContext(DarkMode);
 
-  return (
+    return (
         <div 
-        className={`${isOpenModalAddProv ? 'flex flex-col top-0 items-center justify-center flex-wrap z-40 w-full min-h-screen overflow-auto fixed' : 'hidden'} ${darkMode ? 'bg-[#000000]/[90%]': 'bg-white/[90%]'}`} 
-        onClick={closeModalReset}>
+            className={
+                `${isOpenModalAddProv 
+                    ? 'flex flex-col top-0 items-center justify-center flex-wrap z-40 w-full min-h-screen overflow-auto fixed' 
+                    : 'hidden'
+                } ${darkMode 
+                    ? 'bg-modal-dark'
+                    : 'bg-modal-ligth'
+                }`
+            } 
+            onClick={closeModalReset}>
             <form 
-                className={`${isOpenModalAddProv && ' shadow-xl lg:p-4 rounded-lg flex absolute flex-col lg:w-[600px] flex-wrap md:w-4/6 sm:w-4/6 w-10/12 p-4  top-16'} ${darkMode ? 'bg-[#212130]': 'bg-white'}`}
+                className={
+                    `${isOpenModalAddProv && 'shadow-xl lg:p-4 rounded-lg flex absolute flex-col lg:w-[600px] flex-wrap md:w-4/6 sm:w-4/6 w-10/12 p-4 top-16'} ${darkMode 
+                        ? 'bg-background-dark_medium'
+                        : 'bg-background-ligth'
+                    }`
+                }
                 onClick={handleModalClick}
                 onSubmit={handleSubmit}>
                 <div className="flex justify-between mb-6 flex-wrap">
                     <h1 
-                    className={`${darkMode ? 'text-white text-2xl ml-2' : 'text-black text-2xl ml-2'}`}>{title}</h1>
-                    <span onClick={closeModalReset}><XMarkIcon className="h6 w-6 text-gray-400 cursor-pointer"/></span>
+                        className={
+                            `${darkMode 
+                                ? 'text-text-ligth text-2xl ml-2' 
+                                : 'text-text-black text-2xl ml-2'
+                            }`
+                        }>
+                        {title}
+                    </h1>
+                    <span 
+                        onClick={closeModalReset}>
+                        <XMarkIcon className="h6 w-6 text-text-gray cursor-pointer"/>
+                    </span>
                 </div>
 
-                <div className="text-gray-400 flex mb-4 gap-6 justify-center lg:flex-row flex-col">
+                <div className="text-text-gray flex mb-4 gap-6 justify-center lg:flex-row flex-col">
                     <div className="flex-col flex">
                         <label>Nit</label>
                         <input 
-                        type="text" required
-                        className="border border-gray-300 rounded-lg p-1 focus:outline-none"
-                        name="nit"
-                        value={formData.nit}
-                        onChange={handleChange}
+                            type="text" required
+                            className="border border-border-gray rounded-lg p-1"
+                            name="nit"
+                            value={formData.nit}
+                            onChange={handleChange}
                         />
-                        {errors.nit && <p className="text-red-500">{errors.nit}</p>}
+                        {errors.nit && <p className="text-text-red">{errors.nit}</p>}
                     </div>
                     
                     <div className="flex-col flex">
                         <label>Nombre</label>
                         <input 
-                        type="text" required
-                        className="border border-gray-300 rounded-lg p-1 focus:outline-none"
-                        name="name"
-                        value={formData.name}
-                        onChange={handleChange}
+                            type="text" required
+                            className="border border-border-gray rounded-lg p-1"
+                            name="name"
+                            value={formData.name}
+                            onChange={handleChange}
                         />
-                        {errors.name && <p className="text-red-500">{errors.name}</p>}
+                        {errors.name && <p className="text-text-red">{errors.name}</p>}
                     </div>                
                 </div>
 
-                <div className="text-gray-400 flex mb-4 gap-6 justify-center lg:flex-row flex-col">
+                <div className="text-text-gray flex mb-4 gap-6 justify-center lg:flex-row flex-col">
                     <div className="flex-col flex">
                         <label>Contacto</label>
                         <input 
-                        type="text" required
-                        className="border border-gray-300 rounded-lg p-1 focus:outline-none"
-                        name="contact"
-                        value={formData.contact}
-                        onChange={handleChange}
+                            type="text" required
+                            className="border border-border-gray rounded-lg p-1"
+                            name="contact"
+                            value={formData.contact}
+                            onChange={handleChange}
                         />
-                        {errors.contact && <p className="text-red-500">{errors.contact}</p>}
+                        {errors.contact && <p className="text-text-red">{errors.contact}</p>}
                     </div>
                     
                     <div className="flex-col flex">
                         <label>Email</label>
                         <input 
-                        type="text" required
-                        className="border border-gray-300 rounded-lg p-1 focus:outline-none"
-                        name="email"
-                        value={formData.email}
-                        onChange={handleChange}
+                            type="text" required
+                            className="border border-border-gray rounded-lg p-1"
+                            name="email"
+                            value={formData.email}
+                            onChange={handleChange}
                         />
-                        {errors.email && <p className="text-red-500">{errors.email}</p>}
+                        {errors.email && <p className="text-text-red">{errors.email}</p>}
                     </div>                
                 </div>
-                <div className="text-gray-400 flex mb-4 gap-6 justify-end lg:mr-20 mr-4">
+                <div className="text-text-gray flex mb-4 gap-6 justify-end lg:mr-20 mr-4">
                     <input 
-                    type="reset" 
-                    value='Cancelar' 
-                    onClick={closeModalReset}
-                    className="rounded-lg bg-red-500 p-2 text-white cursor-pointer"/>
+                        type="reset" 
+                        value='Cancelar' 
+                        onClick={closeModalReset}
+                        className="rounded-lg bg-btn-red p-2 text-text-ligth cursor-pointer"/>
                     <input 
-                    type="submit" 
-                    value='Guardar'
-                    className="rounded-lg bg-indigo-500 p-2 text-white cursor-pointer"/>
+                        type="submit" 
+                        value='Guardar'
+                        className="rounded-lg bg-btn-style p-2 text-text-ligth cursor-pointer"/>
                 </div>
             </form>
         </div>

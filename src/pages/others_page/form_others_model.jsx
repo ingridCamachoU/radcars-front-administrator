@@ -2,9 +2,10 @@ import { XMarkIcon } from "@heroicons/react/24/solid";
 import { useForm } from "../../hooks/useForm";
 import { useContext, useEffect, useState } from "react";
 import { useUSerContext } from "../../context/context_index";
-import { alertError, alertAdd } from '../../utils/alerts';
 import { DarkMode } from "../../context/DarkMode";
+import { addModel, updateModel } from "../../services/models";
 
+// eslint-disable-next-line react/prop-types
 export const Form_Model = ({ editDataModel, setEditDataModel, isOpenModalCreateModel, setIsOpenModalCreateModel}) => {
 
     const initialFormModel ={
@@ -12,7 +13,7 @@ export const Form_Model = ({ editDataModel, setEditDataModel, isOpenModalCreateM
         "name": "",
     };
 
-    const {urlModels, load_Models_products, dataMark} = useUSerContext();
+    const { load_Models_products, dataMark} = useUSerContext();
 
     const [formData, handleChange, setFormData] = useForm(initialFormModel);
 
@@ -42,56 +43,6 @@ export const Form_Model = ({ editDataModel, setEditDataModel, isOpenModalCreateM
         }
     },[editDataModel]);
 
-    //---Create New Model---//
-    const addModel = (formData) => {
-        let data = JSON.stringify(formData);
-        fetch(urlModels, {
-            method: "post",
-            maxBodyLength: Infinity,
-            body: data,
-            headers: {
-                "Content-Type": "application/json",
-            }
-        })
-        .then(response => response.json())
-        .then(response => {  
-            alertAdd('Modelo agregada');
-            setIsOpenModalCreateModel(false);
-            load_Models_products();  
-        })
-        .catch((error) => {
-            console.log(error);
-            let erorCodigo= (error.response.data.code);
-            alertError(erorCodigo);
-            load_Models_products(); 
-        })
-    };
-
-    //---Edit Model---//
-    const editModel = (formData) => {
-        let data = JSON.stringify(formData);
-        fetch(`${urlModels}${editDataModel.id}/`, {
-            method: "put",
-            maxBodyLength: Infinity,
-            body: data,
-            headers: {
-                "Content-Type": "application/json",
-            }
-        })
-        .then(response => response.json())
-        .then(response => {
-            alertAdd('Modelo editado con éxito');
-            load_Models_products();  
-            setEditDataModel(null); 
-        })
-        .catch((error) => {
-            console.log(error);
-            let erorCodigo= (error.response.data.code);
-            alertError(erorCodigo);
-            load_Models_products(); 
-        })
-    };
-    
     const handleSubmit = (e)=>{
         e.preventDefault();
         const err = onValidate(formData);
@@ -100,14 +51,13 @@ export const Form_Model = ({ editDataModel, setEditDataModel, isOpenModalCreateM
         if (Object.keys(err).length === 0){
             
             if (editDataModel !== null){
-
-                editModel(formData);
+                updateModel(editDataModel?.id, formData, load_Models_products, setEditDataModel);
                 setFormData(initialFormModel);
                 setIsOpenModalCreateModel(false);
                 setErrors('');
                 
             } else {
-                addModel(formData);
+                addModel(formData, load_Models_products);
                 setFormData(initialFormModel);
                 setIsOpenModalCreateModel(false);
             }       
@@ -119,6 +69,7 @@ export const Form_Model = ({ editDataModel, setEditDataModel, isOpenModalCreateM
     const handleModalClick = e => e.stopPropagation();
 
     const closeModalReset = () => {
+        setEditDataModel(null);
         setIsOpenModalCreateModel(false);
         setFormData(initialFormModel);
     };
@@ -128,55 +79,80 @@ export const Form_Model = ({ editDataModel, setEditDataModel, isOpenModalCreateM
     return(
 
         <div 
-        className={`${isOpenModalCreateModel ? 'flex flex-col top-0 items-center justify-center flex-wrap z-40 w-full min-h-screen overflow-auto fixed' : 'hidden'} ${darkMode ? 'bg-[#000000]/[90%]': 'bg-white/[90%]'}`} 
-        onClick={closeModalReset}>
+            className={
+                `${isOpenModalCreateModel 
+                    ? 'flex flex-col top-0 items-center justify-center flex-wrap z-40 w-full min-h-screen overflow-auto fixed' 
+                    : 'hidden'
+                } ${darkMode 
+                    ? 'bg-modal-dark'
+                    : 'bg-modal-ligth'
+                }`
+            } 
+            onClick={closeModalReset}>
             <form 
-                className={`${isOpenModalCreateModel && ' shadow-xl lg:p-4 rounded-lg flex absolute flex-col lg:w-[450px] flex-wrap md:w-4/6 sm:w-4/6 w-10/12 p-4  top-16'} ${darkMode ? 'bg-[#212130]': 'bg-white'}`}
+                className={
+                    `${isOpenModalCreateModel && ' shadow-xl lg:p-4 rounded-lg flex absolute flex-col lg:w-[450px] flex-wrap md:w-4/6 sm:w-4/6 w-10/12 p-4  top-16'
+                    } ${darkMode 
+                        ? 'bg-background-dark_medium'
+                        : 'bg-background-ligth'
+                    }`
+                }
                 onClick={handleModalClick}
                 onSubmit={handleSubmit}>
                 <div className="flex justify-between mb-6 flex-wrap">
                     <h1 
-                    className={`${darkMode ? 'text-white text-2xl ml-2' : 'text-black text-2xl ml-2'}`}>Crear Modelo</h1>
-                    <span onClick={closeModalReset}><XMarkIcon className="h6 w-6 text-gray-400 cursor-pointer"/></span>
+                        className={
+                            `${darkMode 
+                                ? 'text-text-ligth text-2xl ml-2' 
+                                : 'text-text-black text-2xl ml-2'
+                            }`
+                        }>
+                        Crear Modelo
+                    </h1>
+                    <span onClick={closeModalReset}>
+                        <XMarkIcon className="h6 w-6 text-text-gray cursor-pointer"/>
+                    </span>
                 </div>
 
-                <div className="text-gray-400 flex mb-4 gap-6 justify-center lg:flex-row flex-col">
+                <div className="text-text-gray flex mb-4 gap-6 justify-center lg:flex-row flex-col">
                     
                     <div className="flex-col flex">
                         <label>Nombre</label>
                         <input 
-                        type="text" required
-                        className="border border-gray-300 rounded-lg mr-6 p-1 focus:outline-none"
-                        name="name"
-                        value={formData.name}
-                        onChange={handleChange}
+                            type="text" required
+                            className="border border-border-gray rounded-lg mr-6 p-1 "
+                            name="name"
+                            value={formData.name}
+                            onChange={handleChange}
                         />
-                        {errors.name && <p className="text-red-500">{errors.name}</p>}
+                        {errors.name && <p className="text-text-red">{errors.name}</p>}
                     </div>          
 
                     <div className="flex-col flex">
                         <label>Marca</label>
-                        <select className="border border-gray-300 rounded-lg mr-6 p-1 focus:outline-none"  name="mark" required
-                        onChange={handleChange} 
-                        value={formData.mark} >
+                        <select 
+                            className="border border-border-gray rounded-lg p-1 w-40 mr-6"  
+                            name="mark" required
+                            onChange={handleChange} 
+                            value={formData.mark} >
                             <option ></option>
                             {dataMark.map(mark => (
                                 <option key={mark.id} value={mark.id}>{mark.name}</option>
-                                ))}
+                            ))}
                         </select>
                     </div>            
                 </div>
 
-                <div className="text-gray-400 flex mb-4 gap-6 justify-end mr-6 lg:mr-20">
+                <div className="text-text-gray flex mb-4 gap-6 justify-end mr-6 lg:mr-20">
                     <input 
-                    type="reset" 
-                    value='Cancelar' 
-                    onClick={closeModalReset}
-                    className="rounded-lg bg-red-500 p-2 text-white cursor-pointer"/>
+                        type="reset" 
+                        value='Cancelar' 
+                        onClick={closeModalReset}
+                        className="rounded-lg bg-btn-red p-2 text-text-ligth cursor-pointer"/>
                     <input 
-                    type="submit" 
-                    value='Guardar'
-                    className="rounded-lg bg-indigo-500 p-2 text-white cursor-pointer"/>
+                        type="submit" 
+                        value='Guardar'
+                        className="rounded-lg bg-btn-style p-2 text-text-ligth cursor-pointer"/>
                 </div>
                 
             </form>

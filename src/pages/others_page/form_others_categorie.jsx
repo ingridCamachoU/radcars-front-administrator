@@ -2,15 +2,16 @@ import { XMarkIcon } from "@heroicons/react/24/solid";
 import { useForm } from "../../hooks/useForm";
 import { useContext, useEffect, useState } from "react";
 import { useUSerContext } from "../../context/context_index";
-import { alertError, alertAdd } from '../../utils/alerts';
 import { DarkMode } from "../../context/DarkMode";
+import { addCategorie, updateCategorie } from "../../services/categories";
 
+// eslint-disable-next-line react/prop-types
 export const Form_Categorie = ({ editDataCategorie, setEditDataCategorie, isOpenModalCreateCategorie, setIsOpenModalCreateCategorie}) => {
     const initialFormCategorie = {
         "name": "",
     };
 
-    const {urlCategories, load_Categories_products} = useUSerContext();
+    const { load_Categories_products} = useUSerContext();
 
     const [formData, handleChange, setFormData] = useForm(initialFormCategorie);
 
@@ -36,57 +37,6 @@ export const Form_Categorie = ({ editDataCategorie, setEditDataCategorie, isOpen
         }
     },[editDataCategorie]);
 
-    //---Create New Categorie---//
-    const addCategorie = (formData) => {
-        let data = JSON.stringify(formData);
-        fetch(urlCategories, {
-            method: "post",
-            maxBodyLength: Infinity,
-            body: data,
-            headers: {
-                "Content-Type": "application/json",
-            }
-        })
-        .then(response => response.json())
-        .then(response => {  
-            alertAdd('Categoria agregada');
-            setIsOpenModalCreateCategorie(false);
-            load_Categories_products();  
-            
-        })
-        .catch((error) => {
-            console.log(error);
-            let erorCodigo= (error.response.data.code);
-            alertError(erorCodigo)
-            load_Categories_products(); 
-        })
-    };
-
-    //---Edit Categorie---//
-    const editCategorie = (formData) => {
-        let data = JSON.stringify(formData);
-        fetch(`${urlCategories}${editDataCategorie.id}/`, {
-            method: "put",
-            maxBodyLength: Infinity,
-            body: data,
-            headers: {
-                "Content-Type": "application/json",
-            }
-        })
-        .then(response => response.json())
-        .then(response => {
-            alertAdd('Categoria editada con éxito');
-            load_Categories_products();  
-            setEditDataCategorie(null); 
-        })
-        .catch((error) => {
-            console.log(error);
-            let erorCodigo= (error.response.data.code);
-            alertError(erorCodigo);
-            load_Categories_products(); 
-        })
-    };
-    
     const handleSubmit = (e)=>{
         e.preventDefault();
         const err = onValidate(formData);
@@ -95,13 +45,13 @@ export const Form_Categorie = ({ editDataCategorie, setEditDataCategorie, isOpen
         if (Object.keys(err).length === 0){
             
             if (editDataCategorie !== null){
-                editCategorie(formData);
+                updateCategorie(editDataCategorie?.id, formData, load_Categories_products, setEditDataCategorie);
                 setFormData(initialFormCategorie);
                 setIsOpenModalCreateCategorie(false);
                 setErrors('');
                 
             } else {
-                addCategorie(formData);
+                addCategorie(formData, load_Categories_products);
                 setFormData(initialFormCategorie);
                 setIsOpenModalCreateCategorie(false);
             }       
@@ -113,6 +63,7 @@ export const Form_Categorie = ({ editDataCategorie, setEditDataCategorie, isOpen
     const handleModalClick = e => e.stopPropagation();
 
     const closeModalReset = () => {
+        setEditDataCategorie(null);
         setIsOpenModalCreateCategorie(false);
         setFormData(initialFormCategorie);
     };
@@ -122,45 +73,64 @@ export const Form_Categorie = ({ editDataCategorie, setEditDataCategorie, isOpen
     return(
 
         <div 
-        className={`${isOpenModalCreateCategorie ? 'flex flex-col top-0 items-center justify-center flex-wrap z-40 w-full min-h-screen overflow-auto fixed' : 'hidden'} ${darkMode ? 'bg-[#000000]/[90%]': 'bg-white/[90%]'}`} 
-        onClick={closeModalReset}>
+            className={ 
+                `${isOpenModalCreateCategorie 
+                    ? 'flex flex-col top-0 items-center justify-center flex-wrap z-40 w-full min-h-screen overflow-auto fixed' 
+                    : 'hidden'
+                } ${darkMode 
+                    ? 'bg-modal-dark'
+                    : 'bg-modal-ligth'
+                }`
+            } 
+            onClick={closeModalReset}>
             <form 
-                className={`${isOpenModalCreateCategorie && ' shadow-xl lg:p-4 rounded-lg flex absolute flex-col lg:w-[450px] flex-wrap md:w-4/6 sm:w-4/6 w-10/12 p-4  top-16'} ${darkMode ? 'bg-[#212130]': 'bg-white'}`}
+                className={
+                    `${isOpenModalCreateCategorie && ' shadow-xl lg:p-4 rounded-lg flex absolute flex-col lg:w-[450px] flex-wrap md:w-4/6 sm:w-4/6 w-10/12 p-4  top-16'} ${darkMode 
+                        ? 'bg-background-dark_medium'
+                        : 'bg-background-ligth'
+                    }`
+                }
                 onClick={handleModalClick}
                 onSubmit={handleSubmit}>
                 <div className="flex justify-between mb-6 flex-wrap">
                     <h1 
-                    className={`${darkMode ? 'text-white text-2xl ml-2' : 'text-black text-2xl ml-2'}`}>Crear Categoria</h1>
-                    <span onClick={closeModalReset}><XMarkIcon className="h6 w-6 text-gray-400 cursor-pointer"/></span>
+                        className={
+                            `${darkMode 
+                                ? 'text-text-ligth text-2xl ml-2' 
+                                : 'text-text-black text-2xl ml-2'
+                            }`
+                        }>Crear Categoria</h1>
+                    <span onClick={closeModalReset}>
+                        <XMarkIcon className="h6 w-6 text-text-gray cursor-pointer"/>
+                    </span>
                 </div>
 
-                <div className="text-gray-400 flex mb-4 gap-6 justify-center lg:flex-row flex-col">
+                <div className="text-text-gray flex mb-4 gap-6 justify-center lg:flex-row flex-col">
                     
                     <div className="flex-col flex">
                         <label>Nombre</label>
                         <input 
-                        type="text" required
-                        className="border border-gray-300 rounded-lg p-1 focus:outline-none"
-                        name="name"
-                        value={formData.name}
-                        onChange={handleChange}
+                            type="text" required
+                            className="border border-border-gray rounded-lg p-1"
+                            name="name"
+                            value={formData.name}
+                            onChange={handleChange}
                         />
-                        {errors.name && <p className="text-red-500">{errors.name}</p>}
+                        {errors.name && <p className="text-text-red">{errors.name}</p>}
                     </div>                
                 </div>
 
-                <div className="text-gray-400 flex mb-4 gap-6 justify-end mr-6 lg:mr-20">
+                <div className="text-text-gray flex mb-4 gap-6 justify-end mr-6 lg:mr-20">
                     <input 
-                    type="reset" 
-                    value='Cancelar' 
-                    onClick={closeModalReset}
-                    className="rounded-lg bg-red-500 p-2 text-white cursor-pointer"/>
+                        type="reset" 
+                        value='Cancelar' 
+                        onClick={closeModalReset}
+                        className="rounded-lg bg-btn-red p-2 text-text-ligth cursor-pointer"/>
                     <input 
-                    type="submit" 
-                    value='Guardar'
-                    className="rounded-lg bg-indigo-500 p-2 text-white cursor-pointer"/>
-                </div>
-                
+                        type="submit" 
+                        value='Guardar'
+                        className="rounded-lg bg-btn-style p-2 text-text-ligth cursor-pointer"/>
+                </div>           
             </form>
         </div>
     )

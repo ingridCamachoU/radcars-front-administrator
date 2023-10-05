@@ -2,6 +2,29 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+    :root {
+        --background-ligth: rgb(255 255 255);
+        --background-dark:rgb(23, 22, 34) ;
+        --background-dark_medium: rgb(33,33,48);
+
+        --modal-ligth: rgba(255, 255, 255, 0.92);
+        --modal-dark: rgba(0, 0, 0, 0.88);
+
+        --color-btn-red: rgb(239 68 68);
+        --color-btn-style: rgb(99 102 241);
+        --color-btn-blue: rgb(96 165 250);
+        --color-btn-gray: rgb(156 163 175) ;
+        --color-btn-yellow: rgb(234 179 8);
+        --color-btn-gray: rgb(156 163 175);
+                    
+        --color-border-gray: rgb(209 213 219) ;
+        --text-ligth: rgb(255 255 255);
+        --text-dark: rgb(0 0 0);
+        --text-gray: rgb(156 163 175);
+        --text-red: rgb(239 68 68);
+    }
+}
 
 .body{
     background: #F4F5F9;
