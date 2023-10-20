@@ -12,7 +12,7 @@ export const endPoints = {
     providers: {
         getProviders: `${URL}${VERSION}/providers/`,
         updateProviders: (id) =>`${URL}${VERSION}/providers/${id}/`,
-        deleteProviders:(id) => `${URL}${VERSION}/products/${id}/`
+        deleteProviders:(id) => `${URL}${VERSION}/providers/${id}/`
     },
     quotations: {
         getQuotations:  (idProduct) => `${URL}${VERSION}/products/${idProduct}/quotations/`,

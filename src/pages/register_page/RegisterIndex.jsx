@@ -1,5 +1,5 @@
 
-const Register_index = () => {
+const RegisterIndex = () => {
     return (
         <div>
             <h1>Registrar</h1>
@@ -7,4 +7,4 @@ const Register_index = () => {
     );
 };
 
-export default Register_index;
+export default RegisterIndex;

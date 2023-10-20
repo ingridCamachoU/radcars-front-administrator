@@ -1,5 +1,5 @@
 
-const Layout_base = ({children}) => {
+const LayoutBase = ({children}) => {
     return (
         <div className="flex flex-col items-center justify-center">
             {children}  
@@ -7,4 +7,4 @@ const Layout_base = ({children}) => {
     );
 };
 
-export default Layout_base;
+export default LayoutBase;

@@ -1,17 +1,15 @@
 import { XMarkIcon } from "@heroicons/react/24/solid";
 import { useForm } from "../../hooks/useForm";
 import { useContext, useEffect, useState } from "react";
-import { useUSerContext } from "../../context/context_index";
 import { DarkMode } from "../../context/DarkMode";
-import { addCategorie, updateCategorie } from "../../services/categories";
+import { endPoints } from "../../services/endPoints/endPoints";
+import { helpAxios } from "../../services/helpAxios";
 
 // eslint-disable-next-line react/prop-types
-export const Form_Categorie = ({ editDataCategorie, setEditDataCategorie, isOpenModalCreateCategorie, setIsOpenModalCreateCategorie}) => {
+export const FormCategorie = ({ editDataCategorie, setEditDataCategorie, isOpenModalCreateCategorie, setIsOpenModalCreateCategorie, loadCategoriesProducts}) => {
     const initialFormCategorie = {
         "name": "",
     };
-
-    const { load_Categories_products} = useUSerContext();
 
     const [formData, handleChange, setFormData] = useForm(initialFormCategorie);
 
@@ -45,13 +43,31 @@ export const Form_Categorie = ({ editDataCategorie, setEditDataCategorie, isOpen
         if (Object.keys(err).length === 0){
             
             if (editDataCategorie !== null){
-                updateCategorie(editDataCategorie?.id, formData, load_Categories_products, setEditDataCategorie);
+
+                const config = {
+                    url: endPoints.categories.updateCategories(editDataCategorie?.id),
+                    method: 'PUT',
+                    body: formData,
+                    title: 'Categoría editada con éxito', 
+                    icon: 'success',
+                    loadData: loadCategoriesProducts
+                }
+                helpAxios(config);
+                setEditDataCategorie(null);
                 setFormData(initialFormCategorie);
                 setIsOpenModalCreateCategorie(false);
                 setErrors('');
                 
             } else {
-                addCategorie(formData, load_Categories_products);
+                const config = {
+                    url: endPoints.categories.getCategories,
+                    method: 'POST',
+                    body: formData,
+                    title: 'Categoría agregada con éxito', 
+                    icon: 'success',
+                    loadData: loadCategoriesProducts
+                }
+                helpAxios(config);
                 setFormData(initialFormCategorie);
                 setIsOpenModalCreateCategorie(false);
             }       
@@ -85,7 +101,7 @@ export const Form_Categorie = ({ editDataCategorie, setEditDataCategorie, isOpen
             onClick={closeModalReset}>
             <form 
                 className={
-                    `${isOpenModalCreateCategorie && ' shadow-xl lg:p-4 rounded-lg flex absolute flex-col lg:w-[450px] flex-wrap md:w-4/6 sm:w-4/6 w-10/12 p-4  top-16'} ${darkMode 
+                    `${isOpenModalCreateCategorie && ' shadow-xl lg:p-4 rounded-lg flex absolute flex-col lg:w-[400px] flex-wrap md:w-4/6 sm:w-4/6 w-10/12 p-4  top-16'} ${darkMode 
                         ? 'bg-background-dark_medium'
                         : 'bg-background-ligth'
                     }`
@@ -105,9 +121,9 @@ export const Form_Categorie = ({ editDataCategorie, setEditDataCategorie, isOpen
                     </span>
                 </div>
 
-                <div className="text-text-gray flex mb-4 gap-6 justify-center lg:flex-row flex-col">
+                <div className="text-text-gray flex mb-4 gap-6 justify-center lg:flex-row flex-col w-full">
                     
-                    <div className="flex-col flex">
+                    <div className="flex-col flex w-full">
                         <label>Nombre</label>
                         <input 
                             type="text" required
@@ -120,7 +136,7 @@ export const Form_Categorie = ({ editDataCategorie, setEditDataCategorie, isOpen
                     </div>                
                 </div>
 
-                <div className="text-text-gray flex mb-4 gap-6 justify-end mr-6 lg:mr-20">
+                <div className="text-text-gray flex mb-4 gap-6 justify-end w-full">
                     <input 
                         type="reset" 
                         value='Cancelar' 

@@ -1,6 +1,6 @@
 
 
-const Tasks_index = () => {
+const TasksIndex = () => {
     return (
         <div>
             <h1>Tareas</h1>
@@ -8,4 +8,4 @@ const Tasks_index = () => {
     );
 };
 
-export default Tasks_index;
+export default TasksIndex;

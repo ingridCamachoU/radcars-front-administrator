@@ -1,14 +1,13 @@
 import { useNavigate } from 'react-router-dom';
 import { useContext, useState } from 'react';
 import { UserCircleIcon, ChevronDownIcon, Bars3Icon, MoonIcon, ArrowRightOnRectangleIcon, SunIcon } from '@heroicons/react/24/solid';
-import { useUSerContext } from '../../context/context_index';
 import { DarkMode } from '../../context/DarkMode';
 import logo from '../../assets/logo.png'
 
 // eslint-disable-next-line react/prop-types
-const Header_page = ({setIsOpenMenu}) => {
+const Header = ({setIsOpenMenu}) => {
 
-    const {darkMode, toggleDarkMode} = useContext(DarkMode);
+    const {darkMode, toggleDarkMode, setSearchByTitle} = useContext(DarkMode);
     const [openToogle, setOpenToogle] = useState(false);
     
     const handleClick = () => {
@@ -28,7 +27,6 @@ const Header_page = ({setIsOpenMenu}) => {
     const menuOpenToogle = () => {
         openToogle ? setOpenToogle(false) : setOpenToogle(true);
     };
-    const {setSearchByTitle} = useUSerContext();
 
     return (
         <>
@@ -80,4 +78,4 @@ const Header_page = ({setIsOpenMenu}) => {
     );
 }
 
-export default Header_page;
+export default Header;

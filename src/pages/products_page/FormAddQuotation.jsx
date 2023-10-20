@@ -1,16 +1,15 @@
 import { DarkMode } from "../../context/DarkMode";
-import { useUSerContext } from "../../context/context_index";
 import { useForm } from "../../hooks/useForm";
 import { initialFormQuotation } from "../../utils/initialialization";
 import { XMarkIcon } from "@heroicons/react/24/solid";
 import { useContext, useState } from "react";
-import { addQuotation } from "../../services/quotation";
+import { endPoints } from "../../services/endPoints/endPoints";
+import { helpAxios } from "../../services/helpAxios";
 
 // eslint-disable-next-line react/prop-types
-const Form_add_quotation = ({isOpenModalCreateQuotation, setIsOpenModalCreateQuotation, load_data_quotation, editDataProduct}) => {
+const FormAddQuotation = ({isOpenModalCreateQuotation, setIsOpenModalCreateQuotation, editDataProduct, dataProvider}) => {
 
     const [formData, handleChange, setFormData] = useForm(initialFormQuotation);
-    const {dataProviders} = useUSerContext()
 
     const [errors, setErrors] = useState({});
 
@@ -38,7 +37,14 @@ const Form_add_quotation = ({isOpenModalCreateQuotation, setIsOpenModalCreateQuo
 
         if (Object.keys(err).length === 0){
             if (formData.product !== '' && formData.provider !== ''  && formData.price !== '' ){
-                addQuotation(formData, editDataProduct.id, setIsOpenModalCreateQuotation)
+                const config = {
+                    url: endPoints.quotations.getQuotations(editDataProduct?.id),
+                    method: 'POST',
+                    body: formData,
+                    title: 'Cotización Agregada', 
+                    icon: 'success',
+                };
+                helpAxios(config);
                 setFormData(initialFormQuotation);
                 setIsOpenModalCreateQuotation(false);
             }
@@ -46,7 +52,6 @@ const Form_add_quotation = ({isOpenModalCreateQuotation, setIsOpenModalCreateQuo
             setErrors(err);
         }
         setFormData(initialFormQuotation);
-        load_data_quotation(editDataProduct);
     };
 
     const closeModalReset = () => {
@@ -71,7 +76,7 @@ const Form_add_quotation = ({isOpenModalCreateQuotation, setIsOpenModalCreateQuo
             onClick={closeModalReset}>
             <form 
                 className={
-                    `${isOpenModalCreateQuotation && ' shadow-xl lg:p-4 rounded-lg flex absolute flex-col lg:w-[600px] flex-wrap md:w-4/6 sm:w-4/6 w-10/12 p-4  top-16'} ${darkMode 
+                    `${isOpenModalCreateQuotation && ' shadow-xl lg:p-8 rounded-lg flex absolute flex-col lg:w-[600px] flex-wrap md:w-4/6 sm:w-4/6 w-10/12 p-4  top-16'} ${darkMode 
                         ? 'bg-background-dark_medium'
                         : 'bg-background-ligth'
                     }`
@@ -94,16 +99,16 @@ const Form_add_quotation = ({isOpenModalCreateQuotation, setIsOpenModalCreateQuo
                     </span>
                 </div>
 
-                <div className="text-text-gray flex mb-4 gap-6 justify-center lg:flex-row flex-col">
-                    <div className="flex-col flex">
+                <div className="text-text-gray flex mb-4 gap-6 justify-center lg:flex-row flex-col w-full">
+                    <div className="flex-col flex w-1/2">
                         <label>Proveedor</label>
                         <select 
-                            className="border border-border-gray rounded-lg p-1 w-40 mr-6" 
+                            className="border border-border-gray rounded-lg p-1 w-full mr-6 " 
                             name="provider" required
                             onChange={handleChange} 
                             value={formData.provider} >
                             <option ></option>
-                            {dataProviders.map(provider => (
+                            {dataProvider.map(provider => (
                                 <option 
                                     key={provider.id} 
                                     value={provider.id}>{provider.name}</option>
@@ -112,11 +117,11 @@ const Form_add_quotation = ({isOpenModalCreateQuotation, setIsOpenModalCreateQuo
                         {errors.provider && <p className="text-text-red">{errors.provider}</p>}
                     </div>
                     
-                    <div className="flex-col flex">
+                    <div className="flex-col flex w-1/2">
                         <label>Precio</label>
                         <input 
                             type="text" required
-                            className="border border-border-gray rounded-lg p-1 "
+                            className="border border-border-gray rounded-lg p-1 w-full"
                             name="price"
                             value={formData.price}
                             onChange={handleChange}
@@ -125,8 +130,8 @@ const Form_add_quotation = ({isOpenModalCreateQuotation, setIsOpenModalCreateQuo
                     </div>                
                 </div>
 
-                <div className="text-text-gray flex mb-4 gap-6 justify-center lg:flex-row flex-col">
-                    <div className="flex-col flex">
+                <div className="text-text-gray flex mb-4 gap-6 justify-center lg:flex-row flex-col w-full">
+                    <div className="flex-col flex w-1/2">
                         <label>Descripción</label>
                         <textarea 
                             className="border border-border-gray rounded-lg p-1"
@@ -134,7 +139,7 @@ const Form_add_quotation = ({isOpenModalCreateQuotation, setIsOpenModalCreateQuo
                         />
                     </div>
 
-                    <div className="text-text-gray flex mb-4 gap-4 justify-end items-end flex-wrap">
+                    <div className="text-text-gray flex mb-4 gap-4 justify-end items-end flex-wrap w-1/2">
                         <input 
                             type="reset" 
                             value='Cancelar' 
@@ -153,4 +158,4 @@ const Form_add_quotation = ({isOpenModalCreateQuotation, setIsOpenModalCreateQuo
     );
 }
 
-export default Form_add_quotation;
+export default FormAddQuotation;

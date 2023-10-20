@@ -1,25 +1,24 @@
 import { XMarkIcon } from "@heroicons/react/24/solid";
 import { useForm } from "../../hooks/useForm";
 import { useContext, useEffect, useState } from "react";
-import { useUSerContext } from "../../context/context_index";
 import { DarkMode } from "../../context/DarkMode";
-import { addMark, updateMark } from "../../services/marks";
+import { endPoints } from "../../services/endPoints/endPoints";
+import { helpAxios } from "../../services/helpAxios";
 
 // eslint-disable-next-line react/prop-types
-export const Form_Mark = ({ editDataMark, setEditDataMark, isOpenModalCreateMark, setIsOpenModalCreateMark}) => {
+export const FormModel = ({ editDataModel, setEditDataModel, isOpenModalCreateModel, setIsOpenModalCreateModel, loadModelProducts, dataMark}) => {
 
-    const initialFormMark = {
+    const initialFormModel ={
+        "mark": "",
         "name": "",
     };
 
-    const {load_data_marks} = useUSerContext();
-
-    const [formData, handleChange, setFormData] = useForm(initialFormMark);
+    const [formData, handleChange, setFormData] = useForm(initialFormModel);
 
     const [errors, setErrors] = useState({});
 
     const onValidate = (formData)=>{
-        let regexName = /^([0-9-A-Za-zÑñÁáÉéÍíÓóÚúÜü\s]){2,20}$/;
+        let regexName = /^([0-9-A-Za-zÑñÁáÉéÍíÓóÚúÜü\s]){5,20}$/;
 
         if (!formData.name.trim()){
             errors.name= 'El campo "Nombre" no debe ser vacio.';
@@ -30,13 +29,17 @@ export const Form_Mark = ({ editDataMark, setEditDataMark, isOpenModalCreateMark
         return errors;
     };
 
-    useEffect(() => {
-        if( editDataMark !== null){
-            setFormData(editDataMark);
+    useEffect(()=>{
+        if( editDataModel !== null){
+            const copyData = {
+                "mark": editDataModel?.mark?.id,
+                "name": editDataModel?.name,
+            }
+            setFormData(copyData);
         } else{
-            setFormData(initialFormMark);
+            setFormData(initialFormModel);
         }
-    },[editDataMark]);
+    },[editDataModel]);
 
     const handleSubmit = (e)=>{
         e.preventDefault();
@@ -45,16 +48,33 @@ export const Form_Mark = ({ editDataMark, setEditDataMark, isOpenModalCreateMark
 
         if (Object.keys(err).length === 0){
             
-            if (editDataMark !== null){
-                updateMark(editDataMark?.id, formData, load_data_marks, setEditDataMark);
-                setFormData(initialFormMark);
-                setIsOpenModalCreateMark(false);
+            if (editDataModel !== null){
+
+                const config = {
+                    url: endPoints.models.updateModels(editDataModel?.id),
+                    method: 'PUT',
+                    body: formData,
+                    title: 'Modelo editado con éxito', 
+                    icon: 'success',
+                    loadData: loadModelProducts
+                }
+                helpAxios(config);
+                setFormData(initialFormModel);
+                setIsOpenModalCreateModel(false);
                 setErrors('');
                 
             } else {
-                addMark(formData, load_data_marks)
-                setFormData(initialFormMark);
-                setIsOpenModalCreateMark(false);
+                const config = {
+                    url: endPoints.models.getModels,
+                    method: 'POST',
+                    body: formData,
+                    title: 'Modelo agregado con éxito', 
+                    icon: 'success',
+                    loadData: loadModelProducts
+                }
+                helpAxios(config);
+                setFormData(initialFormModel);
+                setIsOpenModalCreateModel(false);
             }       
         }else{
             setErrors(err);
@@ -64,9 +84,9 @@ export const Form_Mark = ({ editDataMark, setEditDataMark, isOpenModalCreateMark
     const handleModalClick = e => e.stopPropagation();
 
     const closeModalReset = () => {
-        setEditDataMark(null);
-        setIsOpenModalCreateMark(false);
-        setFormData(initialFormMark);
+        setEditDataModel(null);
+        setIsOpenModalCreateModel(false);
+        setFormData(initialFormModel);
     };
 
     const {darkMode} = useContext(DarkMode);
@@ -75,7 +95,7 @@ export const Form_Mark = ({ editDataMark, setEditDataMark, isOpenModalCreateMark
 
         <div 
             className={
-                `${isOpenModalCreateMark 
+                `${isOpenModalCreateModel 
                     ? 'flex flex-col top-0 items-center justify-center flex-wrap z-40 w-full min-h-screen overflow-auto fixed' 
                     : 'hidden'
                 } ${darkMode 
@@ -86,7 +106,8 @@ export const Form_Mark = ({ editDataMark, setEditDataMark, isOpenModalCreateMark
             onClick={closeModalReset}>
             <form 
                 className={
-                    `${isOpenModalCreateMark && ' shadow-xl lg:p-4 rounded-lg flex absolute flex-col lg:w-[450px] flex-wrap md:w-4/6 sm:w-4/6 w-10/12 p-4  top-16'} ${darkMode 
+                    `${isOpenModalCreateModel && ' shadow-xl lg:p-4 rounded-lg flex absolute flex-col lg:w-[450px] flex-wrap md:w-4/6 sm:w-4/6 w-10/12 p-4  top-16'
+                    } ${darkMode 
                         ? 'bg-background-dark_medium'
                         : 'bg-background-ligth'
                     }`
@@ -100,28 +121,44 @@ export const Form_Mark = ({ editDataMark, setEditDataMark, isOpenModalCreateMark
                                 ? 'text-text-ligth text-2xl ml-2' 
                                 : 'text-text-black text-2xl ml-2'
                             }`
-                        }>Crear Marca</h1>
+                        }>
+                        Crear Modelo
+                    </h1>
                     <span onClick={closeModalReset}>
                         <XMarkIcon className="h6 w-6 text-text-gray cursor-pointer"/>
                     </span>
                 </div>
 
-                <div className="text-text-gray flex mb-4 gap-6 justify-center lg:flex-row flex-col">
+                <div className="text-text-gray flex mb-4 gap-6 justify-center lg:flex-row flex-col w-full">
                     
-                    <div className="flex-col flex">
+                    <div className="flex-col flex w-1/2">
                         <label>Nombre</label>
                         <input 
                             type="text" required
-                            className="border border-border-gray rounded-lg p-1"
+                            className="border border-border-gray rounded-lg p-1 w-full"
                             name="name"
                             value={formData.name}
                             onChange={handleChange}
                         />
                         {errors.name && <p className="text-text-red">{errors.name}</p>}
-                    </div>                
+                    </div>          
+
+                    <div className="flex-col flex w-1/2">
+                        <label>Marca</label>
+                        <select 
+                            className="border border-border-gray rounded-lg p-1 w-full"  
+                            name="mark" required
+                            onChange={handleChange} 
+                            value={formData.mark} >
+                            <option ></option>
+                            {dataMark.map(mark => (
+                                <option key={mark.id} value={mark.id}>{mark.name}</option>
+                            ))}
+                        </select>
+                    </div>            
                 </div>
 
-                <div className="text-text-gray flex mb-4 gap-6 justify-end mr-6 lg:mr-20">
+                <div className="text-text-gray flex mb-4 gap-6 justify-end w-full">
                     <input 
                         type="reset" 
                         value='Cancelar' 
@@ -135,5 +172,5 @@ export const Form_Mark = ({ editDataMark, setEditDataMark, isOpenModalCreateMark
                 
             </form>
         </div>
-    )
-}
+    );
+};

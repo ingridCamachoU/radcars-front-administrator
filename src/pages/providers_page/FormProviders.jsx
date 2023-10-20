@@ -2,15 +2,14 @@ import { useContext, useEffect, useState } from "react";
 import { useForm } from "../../hooks/useForm";
 import { initialFormProv } from "../../utils/initialialization";
 import { XMarkIcon } from "@heroicons/react/24/solid";
-import { useUSerContext } from "../../context/context_index";
 import { DarkMode } from "../../context/DarkMode";
-import { addProvider, updateProvider } from "../../services/providers";
+import { endPoints } from "../../services/endPoints/endPoints";
+import { helpAxios } from "../../services/helpAxios";
 
 // eslint-disable-next-line react/prop-types
-const Form_providers = ({ setEditDataProv, editDataProv, isOpenModalAddProv,  setIsOpenModalAddProv, title }) => {
+const FormProviders = ({ setEditDataProv, editDataProv, isOpenModalAddProv,  setIsOpenModalAddProv, title, loadDataProvider }) => {
 
     const [ formData, handleChange, setFormData ] = useForm(initialFormProv);
-    const { load_data_providers } = useUSerContext();
 
     const [errors, setErrors] = useState({});
 
@@ -65,13 +64,30 @@ const Form_providers = ({ setEditDataProv, editDataProv, isOpenModalAddProv,  se
         if (Object.keys(err).length === 0){
             if (formData.nit !== '' && formData.name !== ''  && formData.contact !== '' && formData.email !== ''){
                 if (editDataProv !== null){
-                    updateProvider(editDataProv?.id, formData, setEditDataProv, load_data_providers);
+                    const config = {
+                        url: endPoints.providers.updateProviders(editDataProv?.id),
+                        method: 'PUT',
+                        body: formData,
+                        title: 'Proveedor editado con éxito', 
+                        icon: 'success',
+                        loadData: loadDataProvider
+                    };
+                    helpAxios(config);
                     setFormData(initialFormProv);
+                    setEditDataProv(null)
                     setIsOpenModalAddProv(false);
                     setErrors('');
                     
                 } else {
-                    addProvider(formData, load_data_providers);
+                    const config = {
+                        url: endPoints.providers.getProviders,
+                        method: 'POST',
+                        body: formData,
+                        title: 'Proveedor agregado', 
+                        icon: 'success',
+                        loadData: loadDataProvider
+                    }
+                    helpAxios(config);
                     setFormData(initialFormProv);
                     setIsOpenModalAddProv(false);
                 }
@@ -195,4 +211,4 @@ const Form_providers = ({ setEditDataProv, editDataProv, isOpenModalAddProv,  se
     )
 }
 
-export default Form_providers;
+export default FormProviders;

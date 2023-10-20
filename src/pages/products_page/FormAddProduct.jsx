@@ -1,17 +1,14 @@
 import { useContext, useEffect, useState } from "react";
 import { XMarkIcon, TrashIcon } from "@heroicons/react/24/solid";
 import { useForm } from "../../hooks/useForm";
-import { useUSerContext } from "../../context/context_index";
 import { initialFormProduct } from "../../utils/initialialization";
 import { DarkMode } from "../../context/DarkMode";
-import { addProduct, updateProduct } from "../../services/products";
-import Swal from 'sweetalert2';
-import { deleteQuotation } from "../../services/quotation";
+import {helpAxios} from '../../services/helpAxios';
+import { endPoints } from "../../services/endPoints/endPoints";
+import { confirAlert } from "../../utils/alerts";
 
 // eslint-disable-next-line react/prop-types
-const Form_add_product = ({isOpenModalAddProduct, setIsOpenModalAddProduct, editDataProduct,setEditDataProduct, title, datasQuotation, setIsOpenModalCreateQuotation}) => {
-
-    const { load_data_products, dataModels, dataCategories} = useUSerContext();
+const FormAddProduct = ({isOpenModalAddProduct, setIsOpenModalAddProduct, editDataProduct,setEditDataProduct, title, datasQuotation, setIsOpenModalCreateQuotation,loadDataProducts, dataModel, dataCategorie}) => {
 
     const [formData, handleChange, setFormData] = useForm(initialFormProduct);
    
@@ -87,12 +84,28 @@ const Form_add_product = ({isOpenModalAddProduct, setIsOpenModalAddProduct, edit
         if (Object.keys(err).length === 0){
             if (formData.nit !== '' && formData.name !== ''  && formData.contact !== '' && formData.email !== ''){
                 if (editDataProduct !== null){
-                    updateProduct(editDataProduct?.id, formData, load_data_products);
+                    const config = {
+                        url: endPoints.products.updateProduct(editDataProduct?.id),
+                        method: 'PUT',
+                        body: formData,
+                        title: 'Producto editado con éxito', 
+                        icon: 'success',
+                        loadData: loadDataProducts
+                    }
+                    helpAxios(config)
                     setFormData(initialFormProduct);
                     setIsOpenModalAddProduct(false);
                     setErrors('');                  
                 } else {
-                    addProduct(formData, load_data_products);
+                    const config = {
+                        url: endPoints.products.getProducts,
+                        method: 'POST',
+                        body: formData,
+                        title: 'Producto agregado', 
+                        icon: 'success',
+                        loadData: loadDataProducts
+                    }
+                    helpAxios(config);
                     setFormData(initialFormProduct);
                     setIsOpenModalAddProduct(false);
                 }
@@ -121,23 +134,16 @@ const Form_add_product = ({isOpenModalAddProduct, setIsOpenModalAddProduct, edit
     };
 
     //Delete Quotation//
-    const handleClickDeleteQuotation =(quotation, editDataProduct)=>
-    {
-        Swal.fire({
-            title: 'Eliminar Cotización',
-            text: "Está seguro de eliminar la Cotización?",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Eliminar'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                console.log(editDataProduct)
-                deleteQuotation(quotation?.id, editDataProduct?.id);
-                setIsOpenModalAddProduct(false);
-            }
-        })
+    const handleClickDeleteQuotation = (quotation, editDataProduct) => {
+
+        const config = {
+            url: endPoints.quotations.deleteQuotations(quotation?.id, editDataProduct?.id),
+            method: 'DELETE',
+            title: 'La cotización ha sido eliminada', 
+            icon: 'success'
+        }
+        confirAlert('Eliminar Cotización','Está seguro de eliminar la cotización?', 'warning', 'Eliminar', helpAxios, config);
+        setIsOpenModalAddProduct(false);
     };
 
     return (
@@ -154,7 +160,7 @@ const Form_add_product = ({isOpenModalAddProduct, setIsOpenModalAddProduct, edit
             onClick={closeModalReset}>
             <form 
                 className={
-                    `${isOpenModalAddProduct && 'shadow-xl lg:p-4 rounded-lg flex absolute flex-col lg:w-[600px] flex-wrap md:w-4/6 sm:w-4/6 w-10/12 p-4 top-16'} ${darkMode 
+                    `${isOpenModalAddProduct && 'shadow-xl lg:p-8 rounded-lg flex absolute flex-col lg:w-[600px] flex-wrap md:w-4/6 sm:w-4/6 w-10/12 p-4 top-16'} ${darkMode 
                         ? 'bg-background-dark_medium'
                         : 'bg-background-ligth'
                     }`
@@ -177,12 +183,12 @@ const Form_add_product = ({isOpenModalAddProduct, setIsOpenModalAddProduct, edit
                     </span>
                 </div>
 
-                <div className="text-text-gray flex mb-4 gap-6 justify-center lg:flex-row flex-col">
-                    <div className="flex-col flex">
+                <div className="text-text-gray flex mb-4 gap-6 justify-center lg:flex-row flex-col w-full">
+                    <div className="flex-col flex w-1/2">
                         <label>Código</label>
                         <input 
                             type="text" required
-                            className="border border-border-gray rounded-lg p-1"
+                            className="border border-border-gray rounded-lg p-1 w-full"
                             name="code"
                             value={formData.code}
                             onChange={handleChange}
@@ -190,11 +196,11 @@ const Form_add_product = ({isOpenModalAddProduct, setIsOpenModalAddProduct, edit
                         {errors.code && <p className="text-text-red">{errors.code}</p>}
                     </div>
                     
-                    <div className="flex-col flex">
+                    <div className="flex-col flex w-1/2">
                         <label>Nombre</label>
                         <input 
                             type="text" required
-                            className="border border-border-gray rounded-lg p-1"
+                            className="border border-border-gray rounded-lg p-1 w-full"
                             name="name"
                             value={formData.name}
                             onChange={handleChange}
@@ -203,16 +209,16 @@ const Form_add_product = ({isOpenModalAddProduct, setIsOpenModalAddProduct, edit
                     </div>                
                 </div>
 
-                <div className="text-text-gray flex mb-4 gap-6 justify-center lg:flex-row flex-col">
-                    <div className=" flex-col flex">
+                <div className="text-text-gray flex mb-4 gap-6 justify-center lg:flex-row flex-col w-full">
+                    <div className=" flex-col flex w-1/2">
                         <label>Categoria</label>
                         <select 
-                            className="border border-border-gray rounded-lg p-1 w-40 mr-6" 
+                            className="border border-border-gray rounded-lg p-1 w-full mr-6" 
                             name="category" required
                             onChange={handleChange} 
                             value={formData.category} >
                             <option ></option>
-                            {dataCategories.map(category => (
+                            {dataCategorie?.map(category => (
                                 <option 
                                     key={category.id} 
                                     value={category.id}>{category.name}</option>
@@ -220,11 +226,11 @@ const Form_add_product = ({isOpenModalAddProduct, setIsOpenModalAddProduct, edit
                         </select>
                     </div>
 
-                    <div className="flex-col flex">
+                    <div className="flex-col flex w-1/2">
                         <label>Precio</label>
                         <input 
                             type="number" required
-                            className="border border-border-gray rounded-lg p-1"
+                            className="border border-border-gray rounded-lg p-1 w-full"
                             name="price"
                             value={formData.price}
                             onChange={handleChange}
@@ -233,12 +239,12 @@ const Form_add_product = ({isOpenModalAddProduct, setIsOpenModalAddProduct, edit
                     </div>
                 </div>
 
-                <div className="text-text-gray flex mb-4 gap-6 justify-center lg:flex-row flex-col">                  
-                    <div className="flex-col flex">
+                <div className="text-text-gray flex mb-4 gap-6 justify-center lg:flex-row flex-col w-full">                  
+                    <div className="flex-col flex w-1/2">
                         <label>% Ganancia</label>
                         <input 
                             type="number" required
-                            className="border border-border-gray rounded-lg ml-2 p-1"
+                            className="border border-border-gray rounded-lg p-1 w-full"
                             name="profit"
                             value={formData.profit}
                             onChange={handleChange}
@@ -246,11 +252,11 @@ const Form_add_product = ({isOpenModalAddProduct, setIsOpenModalAddProduct, edit
                         {errors.profit && <p className="text-text-red">{errors.profit}</p>}
                     </div>
 
-                    <div className="flex-col flex">
+                    <div className="flex-col flex w-1/2">
                         <label>Stock</label>
                         <input 
                             type="number" required
-                            className="border border-border-gray rounded-lg mr-4 p-1"
+                            className="border border-border-gray rounded-lg mr-4 p-1 w-full"
                             name="stock"
                             value={formData.stock}
                             onChange={handleChange}
@@ -259,26 +265,27 @@ const Form_add_product = ({isOpenModalAddProduct, setIsOpenModalAddProduct, edit
                     </div>
                 </div>
 
-                <div className="text-text-gray flex mb-4 gap-6 justify-center lg:flex-row flex-col">
-                    <div className="flex flex-col">
+                <div className="text-text-gray flex mb-4 justify-center lg:flex-row flex-col w-full gap-6">
+                    <div className="flex flex-col w-1/2">
                         <label>Modelo</label>
                         <select 
-                            className="border border-border-gray rounded-lg mr-6 p-1" 
+                            className="border border-border-gray rounded-lg mr-6 p-1 w-full" 
                             name="mark_model" 
                             onChange={handleChange} 
                             value={formData.mark_model}>
                             <option ></option>
                             {
-                                dataModels.map(mark_model => (
+                                dataModel?.map(mark_model => (
                                     <option 
                                         key={mark_model.id} 
                                         value={mark_model.id} >{mark_model.name} ({mark_model.mark.name})</option>
                                 ))}  
                         </select>
                     </div>
-                    <div className="flex flex-col">
+                    <div className="flex flex-col w-1/2">
                         <label>Transmisión</label>
-                        <select className="border border-border-gray rounded-lg mr-4 p-1" name="transmission" 
+                        <select className="border border-border-gray rounded-lg mr-4 p-1 w-full" 
+                            name="transmission" 
                             onChange={handleChange} 
                             value={formData.transmission}>
                             <option value=""></option>
@@ -288,20 +295,20 @@ const Form_add_product = ({isOpenModalAddProduct, setIsOpenModalAddProduct, edit
                     </div>
                 </div>
 
-                <div className="text-text-gray flex mb-4 gap-6 justify-center lg:flex-row flex-col">
-                    <div className="flex flex-col">
+                <div className="text-text-gray flex mb-4 gap-6 justify-center lg:flex-row flex-col w-full">
+                    <div className="flex flex-col w-1/2">
                         <label>Imagenes</label>
                         <input 
                             type="text"
-                            className="border border-border-gray rounded-lg p-1"
+                            className="border border-border-gray rounded-lg p-1 w-full"
                             name="images"
                             value={formData.images} 
                             onChange={addImage}/>
                     </div>
-                    <div className="flex-col flex">
+                    <div className="flex-col flex w-1/2">
                         <label>Descripción</label>
                         <textarea 
-                            className="border border-border-gray rounded-lg p-1"
+                            className="border border-border-gray rounded-lg p-1 w-full"
                             name="description" required
                             value={formData.description}
                             onChange={handleChange}/>
@@ -349,6 +356,7 @@ const Form_add_product = ({isOpenModalAddProduct, setIsOpenModalAddProduct, edit
                                 }>Cotizaciones
                                 </h3>
 
+                               
                                 <table className='bg-background-ligth w-full'>
                                     <thead>
                                         <tr className='bg-btn-style text-text-ligth px-2 py-2'>
@@ -400,9 +408,10 @@ const Form_add_product = ({isOpenModalAddProduct, setIsOpenModalAddProduct, edit
 
                         : null
                 }
+
             </form>   
         </div>
     );
 };
 
-export default Form_add_product;
+export default FormAddProduct;

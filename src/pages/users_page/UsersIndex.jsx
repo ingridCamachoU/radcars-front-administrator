@@ -1,5 +1,5 @@
 
-const Users_index = () => {
+const UsersIndex = () => {
     return (
         <div className="flex flex-col overflow-x-auto">
             <div className="sm:-mx-6 lg:-mx-8">
@@ -62,4 +62,4 @@ const Users_index = () => {
     );
 };
 
-export default Users_index;
+export default UsersIndex;

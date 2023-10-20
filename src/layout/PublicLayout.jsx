@@ -1,5 +1,5 @@
 
-const Public_layout = () => {
+const PublicLayout = () => {
     return (
         <div className="text-black">   
             <h1>Publicos</h1>       
@@ -7,4 +7,4 @@ const Public_layout = () => {
     );
 }
 
-export default Public_layout;
+export default PublicLayout;

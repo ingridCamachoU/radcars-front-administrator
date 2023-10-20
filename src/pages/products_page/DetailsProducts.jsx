@@ -4,7 +4,7 @@ import { XMarkIcon } from "@heroicons/react/24/solid";
 import sinImagen from '../../assets/sin-imagen.png'
 
 // eslint-disable-next-line react/prop-types
-const Details_products = ({ isOpenModalDetailProduct, editDataProduct, datasQuotation, setIsOpenModalDetailProduct }) => {
+const DetailsProducts = ({ isOpenModalDetailProduct, editDataProduct, datasQuotation, setIsOpenModalDetailProduct }) => {
 
     const closeModalReset = () => {
         setIsOpenModalDetailProduct(false);
@@ -158,4 +158,4 @@ const Details_products = ({ isOpenModalDetailProduct, editDataProduct, datasQuot
     );
 }
 
-export default Details_products;
+export default DetailsProducts;

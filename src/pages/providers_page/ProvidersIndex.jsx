@@ -1,11 +1,13 @@
-import { useState } from "react";
-import Header_pages from "../../components/header_pages/Header_pages";
-import Layout_base from "../../layout/Layout_base";
-import Table_data_providers from "./Table_data_providers";
-import Form_providers from "./Form_providers";
+import { useEffect, useState } from "react";
+import LayoutBase from "../../layout/LayoutBase";
+import TableDataProviders from "./TableDataProviders";
+import FormProviders from "./FormProviders";
 import { useModal } from "../../hooks/useModal";
+import HeaderPages from "../../components/headerPages/HeaderPages";
+import { useFetch } from "../../hooks/useFetch";
+import { endPoints } from "../../services/endPoints/endPoints";
 
-const Providers_index = () => {
+const ProvidersIndex = () => {
 
     const [ editDataProv, setEditDataProv ] = useState(null);
 
@@ -18,30 +20,43 @@ const Providers_index = () => {
         setTitle('Registrar Proveedor');
     };
 
+    //--- Load Data Provider---//
+    const urlProvider = endPoints.providers.getProviders;
+    const {data:dataProvider, loadingData: loadDataProvider, loading, error} = useFetch(urlProvider);
+
+    useEffect(() => {
+        loadDataProvider();
+    },[urlProvider]);
+
     return (
-        <Layout_base>
+        <LayoutBase>
             <div className='lg:w-4/5  lg:ml-60 max-w-screen-xl flex justify-center h-full pr-4 mt-6 ml-10 w-full'>
-                <Header_pages 
+                <HeaderPages 
                     title={'Proveedores'} 
                     onClick={open}/>
             </div>
 
-            <Form_providers 
+            <FormProviders 
                 isOpenModalAddProv={isOpenModalAddProv} 
                 editDataProv={editDataProv} 
                 setEditDataProv={setEditDataProv} 
+                loadDataProvider={loadDataProvider}
                 setIsOpenModalAddProv={setIsOpenModalAddProv} 
                 title={title}/>
 
             <div className='lg:relative overflow-x-auto lg:w-4/5 lg:ml-60 lg:mr-8 w-full ml-8 mr-4 mt-6 rounded-lg justify-center items-center flex pb-4'>
-                <Table_data_providers 
+                <TableDataProviders 
+                    dataProvider={dataProvider}
+                    loadDataProvider={loadDataProvider}
                     setIsOpenModalAddProv={setIsOpenModalAddProv} 
                     setEditDataProv={setEditDataProv} 
                     isOpenModalAddProv={isOpenModalAddProv} 
-                    setTitle={setTitle}/>
+                    setTitle={setTitle}
+                    loading={loading}
+                    error={error}/>
             </div>            
-        </Layout_base>
+        </LayoutBase>
     );
 };
 
-export default Providers_index;
+export default ProvidersIndex;

@@ -1,5 +1,5 @@
 
-const Login_index = () => {
+const LoginIndex = () => {
     return (
         <div>
             <h1>Login</h1>
@@ -8,4 +8,4 @@ const Login_index = () => {
     );
 };
 
-export default Login_index;
+export default LoginIndex;

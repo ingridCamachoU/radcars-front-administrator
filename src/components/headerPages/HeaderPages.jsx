@@ -3,7 +3,7 @@ import { DarkMode } from '../../context/DarkMode';
 import { useContext } from 'react';
 
 // eslint-disable-next-line react/prop-types
-const Header_pages = ({title, onClick}) => {
+const HeaderPages = ({title, onClick}) => {
 
     const {darkMode} = useContext(DarkMode);
     
@@ -26,4 +26,4 @@ const Header_pages = ({title, onClick}) => {
     );
 }
 
-export default Header_pages;
+export default HeaderPages;

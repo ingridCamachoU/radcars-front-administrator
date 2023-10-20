@@ -1,6 +1,6 @@
 
 
-const Not_found_index = () => {
+const NotFoundIndex = () => {
     return (
         <div>
             <h1>error 404</h1>
@@ -8,4 +8,4 @@ const Not_found_index = () => {
     );
 }
 
-export default Not_found_index;
+export default NotFoundIndex;

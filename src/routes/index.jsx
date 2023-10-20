@@ -1,37 +1,36 @@
 import { createBrowserRouter } from 'react-router-dom';
-
-import Private_layout from '../layout/Private_layout'
-import Products_index from '../pages/products_page/Products_index';
-import Others_index from '../pages/others_page/Others_index';
-import Providers_index from '../pages/providers_page/Providers_index';
-import Tasks_index from '../pages/tasks_page/Tasks_index';
-import Users_index from '../pages/users_page/Users_index';
+import PrivateLayout from '../layout/PrivateLayout'
+import ProductsIndex from '../pages/products_page/ProductsIndex';
+import OthersIndex from '../pages/others_page/OthersIndex';
+import ProvidersIndex from '../pages/providers_page/ProvidersIndex';
+import TasksIndex from '../pages/tasks_page/TasksIndex';
+import UsersIndex from '../pages/users_page/UsersIndex';
 
 export const router = createBrowserRouter ([
     {
         path: "/",
-        element: <Private_layout/>,
+        element: <PrivateLayout/>,
         children: [
 
             {
                 index: true,
-                element: <Products_index />
+                element: <ProductsIndex />
             },
             {
                 path: 'others',
-                element: <Others_index />
+                element: <OthersIndex />
             },
             {
                 path: 'providers',
-                element: <Providers_index />
+                element: <ProvidersIndex />
             },
             {
                 path: 'tasks',
-                element: <Tasks_index />
+                element: <TasksIndex />
             },
             {
                 path: 'users',
-                element: <Users_index />
+                element: <UsersIndex />
             },
         ]
 
