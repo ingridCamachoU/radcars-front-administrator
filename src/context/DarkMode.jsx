@@ -1,5 +1,4 @@
 import { createContext, useState } from "react";
-import { endPoints } from "../services/endPoints/endPoints";
 
 const DarkMode= createContext();
 

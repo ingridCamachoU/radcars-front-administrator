@@ -18,7 +18,7 @@ export const FormModel = ({ editDataModel, setEditDataModel, isOpenModalCreateMo
     const [errors, setErrors] = useState({});
 
     const onValidate = (formData)=>{
-        let regexName = /^([0-9-A-Za-zÑñÁáÉéÍíÓóÚúÜü\s]){5,20}$/;
+        let regexName = /^([0-9-A-Za-zÑñÁáÉéÍíÓóÚúÜü\s]){2,20}$/;
 
         if (!formData.name.trim()){
             errors.name= 'El campo "Nombre" no debe ser vacio.';
@@ -132,18 +132,6 @@ export const FormModel = ({ editDataModel, setEditDataModel, isOpenModalCreateMo
                 <div className="text-text-gray flex mb-4 gap-6 justify-center lg:flex-row flex-col w-full">
                     
                     <div className="flex-col flex w-1/2">
-                        <label>Nombre</label>
-                        <input 
-                            type="text" required
-                            className="border border-border-gray rounded-lg p-1 w-full"
-                            name="name"
-                            value={formData.name}
-                            onChange={handleChange}
-                        />
-                        {errors.name && <p className="text-text-red">{errors.name}</p>}
-                    </div>          
-
-                    <div className="flex-col flex w-1/2">
                         <label>Marca</label>
                         <select 
                             className="border border-border-gray rounded-lg p-1 w-full"  
@@ -155,7 +143,19 @@ export const FormModel = ({ editDataModel, setEditDataModel, isOpenModalCreateMo
                                 <option key={mark.id} value={mark.id}>{mark.name}</option>
                             ))}
                         </select>
-                    </div>            
+                    </div> 
+
+                    <div className="flex-col flex w-1/2">
+                        <label>Nombre</label>
+                        <input 
+                            type="text" required
+                            className="border border-border-gray rounded-lg p-1 w-full"
+                            name="name"
+                            value={formData.name}
+                            onChange={handleChange}
+                        />
+                        {errors.name && <p className="text-text-red">{errors.name}</p>}
+                    </div>              
                 </div>
 
                 <div className="text-text-gray flex mb-4 gap-6 justify-end w-full">
@@ -163,11 +163,11 @@ export const FormModel = ({ editDataModel, setEditDataModel, isOpenModalCreateMo
                         type="reset" 
                         value='Cancelar' 
                         onClick={closeModalReset}
-                        className="rounded-lg bg-btn-red p-2 text-text-ligth cursor-pointer"/>
+                        className="rounded-lg bg-btn-red p-2 text-text-ligth cursor-pointer hover:bg-btn-redHover"/>
                     <input 
                         type="submit" 
                         value='Guardar'
-                        className="rounded-lg bg-btn-style p-2 text-text-ligth cursor-pointer"/>
+                        className="rounded-lg bg-btn-style p-2 text-text-ligth cursor-pointer hover:bg-btn-styleHover"/>
                 </div>
                 
             </form>

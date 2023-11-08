@@ -82,7 +82,7 @@ const TableOthers = ({ setEditDataCategorie, setIsOpenModalCreateMark, setEditDa
                         : 
                         <table className="text-center text-s font-light w-full">
                             <thead>
-                                <tr className='bg-btn-style text-text-ligth '>
+                                <tr className='bg-btn-style text-text-ligth'>
                                     <th className='px-2 py-2 font-medium'>Nombre</th>
                                     <th className='px-2 py-2 font-medium'>Acciones</th>
                                 </tr>
@@ -106,16 +106,16 @@ const TableOthers = ({ setEditDataCategorie, setIsOpenModalCreateMark, setEditDa
                                             <tr  
                                                 key={categorie.id} 
                                                 className='border-b p-4'>
-                                                <td className='px-4 py-4'>{categorie.name}</td>
-                                                <td className='flex py-4 gap-1 justify-end pr-4'>
+                                                <td className='px-4 py-2'>{categorie.name}</td>
+                                                <td className='flex py-2 gap-1 justify-end pr-4'>
                                                     <button 
-                                                        className='bg-btn-yellow text-text-ligth p-1 rounded-lg'
+                                                        className='bg-btn-yellow text-text-ligth p-1 rounded-lg hover:bg-btn-yellowHover'
                                                         onClick={() => handleEditCategorie(categorie)}>
                                                         <PencilIcon className='h4 w-4'/>
                                                     </button>
         
                                                     <button 
-                                                        className='bg-btn-red text-text-ligth p-1 rounded-lg'
+                                                        className='bg-btn-red text-text-ligth p-1 rounded-lg hover:bg-btn-redHover'
                                                         onClick={ () => handleDeleteCategorie(categorie.id)}>
                                                         <TrashIcon className='h4 w-4'/>
                                                     </button>
@@ -173,16 +173,16 @@ const TableOthers = ({ setEditDataCategorie, setIsOpenModalCreateMark, setEditDa
                                             <tr  
                                                 key={mark.id} 
                                                 className='border-b p-4'>
-                                                <td className='px-4 py-4'>{mark.name}</td>
-                                                <td className='flex py-4 gap-1 justify-end pr-4'>
+                                                <td className='px-4 py-2'>{mark.name}</td>
+                                                <td className='flex py-2 gap-1 justify-end pr-4'>
                                                     <button 
-                                                        className='bg-btn-yellow text-text-ligth p-1 rounded-lg'
+                                                        className='bg-btn-yellow text-text-ligth p-1 rounded-lg hover:bg-btn-yellowHover'
                                                         onClick={() => handleEditMark(mark)}>
                                                         <PencilIcon className='h4 w-4'/>
                                                     </button>
 
                                                     <button 
-                                                        className='bg-btn-red text-text-ligth p-1 rounded-lg'
+                                                        className='bg-btn-red text-text-ligth p-1 rounded-lg hover:bg-btn-redHover'
                                                         onClick={ () => handleDeleteMark(mark.id)}>
                                                         <TrashIcon className='h4 w-4'/>
                                                     </button>
@@ -239,17 +239,17 @@ const TableOthers = ({ setEditDataCategorie, setIsOpenModalCreateMark, setEditDa
                                             <tr  
                                                 key={model.id} 
                                                 className='border-b p-4'>
-                                                <td className='px-4 py-4'>{model.name}</td>
-                                                <td className='px-4 py-4'>{model.mark.name}</td>
-                                                <td className='flex py-4 gap-1 justify-end pr-4'>
+                                                <td className='px-4 py-2'>{model.name}</td>
+                                                <td className='px-4 py-2'>{model.mark.name}</td>
+                                                <td className='flex py-2 gap-1 justify-end pr-4'>
                                                     <button 
-                                                        className='bg-btn-yellow text-text-ligth p-1 rounded-lg'
+                                                        className='bg-btn-yellow text-text-ligth p-1 rounded-lg hover:bg-btn-yellowHover'
                                                         onClick={() => handleEditModel(model)}>
                                                         <PencilIcon className='h4 w-4'/>
                                                     </button>
         
                                                     <button 
-                                                        className='bg-btn-red text-text-ligth p-1 rounded-lg'
+                                                        className='bg-btn-red text-text-ligth p-1 rounded-lg hover:bg-btn-redHover'
                                                         onClick={ () => handleDeleteModel(model.id)}>
                                                         <TrashIcon className='h4 w-4'/>
                                                     </button>

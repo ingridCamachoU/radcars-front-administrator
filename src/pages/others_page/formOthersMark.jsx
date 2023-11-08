@@ -65,7 +65,7 @@ export const FormMark = ({ editDataMark, setEditDataMark, isOpenModalCreateMark,
                     body: formData,
                     title: 'Categoría agregada con éxito', 
                     icon: 'success',
-                    loadData: load_data_marks
+                    loadData: loadMarkProducts
                 }
                 helpAxios(config);
                 setFormData(initialFormMark);
@@ -141,11 +141,11 @@ export const FormMark = ({ editDataMark, setEditDataMark, isOpenModalCreateMark,
                         type="reset" 
                         value='Cancelar' 
                         onClick={closeModalReset}
-                        className="rounded-lg bg-btn-red p-2 text-text-ligth cursor-pointer"/>
+                        className="rounded-lg bg-btn-red p-2 text-text-ligth cursor-pointer hover:bg-btn-redHover"/>
                     <input 
                         type="submit" 
                         value='Guardar'
-                        className="rounded-lg bg-btn-style p-2 text-text-ligth cursor-pointer"/>
+                        className="rounded-lg bg-btn-style p-2 text-text-ligth cursor-pointer hover:bg-btn-styleHover"/>
                 </div>
                 
             </form>

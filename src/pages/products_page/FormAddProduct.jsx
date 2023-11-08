@@ -18,7 +18,7 @@ const FormAddProduct = ({isOpenModalAddProduct, setIsOpenModalAddProduct, editDa
         let errors = {};
         let regexCode = /^([0-9-A-Za-zÑñÁáÉéÍíÓóÚúÜüs]){5,20}$/;
         let regexName = /^([0-9-A-Za-zÑñÁáÉéÍíÓóÚúÜü\s]){5,20}$/;
-        let regexDescription = /^.{1,50}$/;
+        let regexDescription = /^.{1,60}$/;
         let regexPrice = /^[0-9]+$/;
         let regexStock = /^[0-9]+$/;
 
@@ -53,6 +53,7 @@ const FormAddProduct = ({isOpenModalAddProduct, setIsOpenModalAddProduct, editDa
     const err= onValidate(formData);
 
     const closeModalReset = () => {
+        setErrors({});
         setEditDataProduct(null);
         setIsOpenModalAddProduct(false);
         setFormData(initialFormProduct);
@@ -324,14 +325,14 @@ const FormAddProduct = ({isOpenModalAddProduct, setIsOpenModalAddProduct, editDa
                                 type="reset" 
                                 value='Cancelar' 
                                 onClick={closeModalReset}
-                                className="rounded-lg bg-btn-red p-2 text-text-ligth cursor-pointer"/>
+                                className="rounded-lg bg-btn-red p-2 text-text-ligth cursor-pointer hover:bg-btn-redHover"/>
                             : null
                     }
 
                     <input 
                         type="submit" 
                         value='Guardar'
-                        className="rounded-lg bg-btn-style p-2 text-text-ligth cursor-pointer"/>
+                        className="rounded-lg bg-btn-style p-2 text-text-ligth cursor-pointer hover:bg-btn-styleHover"/>
 
                     {
                         editDataProduct ? 
@@ -339,7 +340,7 @@ const FormAddProduct = ({isOpenModalAddProduct, setIsOpenModalAddProduct, editDa
                                 type="button" 
                                 value='Cotizar'
                                 onClick={()=> {handleClickCotizar(formData.id)}}
-                                className="rounded-lg bg-btn-gray p-2 text-text-ligth cursor-pointer"/>
+                                className="rounded-lg bg-btn-gray hover:bg-btn-grayHover p-2 text-text-ligth cursor-pointer"/>
                             : null
                     }
                 </div>
@@ -392,7 +393,7 @@ const FormAddProduct = ({isOpenModalAddProduct, setIsOpenModalAddProduct, editDa
                                                         <td className="text-center">
                                                             <button 
                                                                 type="reset"
-                                                                className='bg-btn-red text-text-ligth p-1 rounded-lg'
+                                                                className='bg-btn-red text-text-ligth p-1 rounded-lg hover:bg-btn-redHover'
                                                                 onClick={() => handleClickDeleteQuotation(quotation, editDataProduct)}>
                                                                 <TrashIcon className='h4 w-4'/>
                                                             </button>          

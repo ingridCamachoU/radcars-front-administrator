@@ -5,6 +5,7 @@ import { alert, confirAlert } from '../../utils/alerts';
 import { helpAxios } from '../../services/helpAxios';
 import { endPoints } from '../../services/endPoints/endPoints';
 import Loading from '../../components/Loading';
+import { converterPrice } from '../../utils/ converter';
 
 // eslint-disable-next-line react/prop-types
 const TableDataProducts = ({ setIsOpenModalDetailProduct, setEditDataProduct, loadDataQuotation, setIsOpenModalAddProduct, setTitle, dataProducts, loadDataProducts, loading, error}) => {
@@ -99,24 +100,24 @@ const TableDataProducts = ({ setIsOpenModalDetailProduct, setEditDataProduct, lo
                                                                     {product.transmission}
                                                                 </td>
                                                         }
-                                                        <td className='py-2'>{product.price}</td>
+                                                        <td className='py-2'>$ {converterPrice(product.price)}</td>
                                                         <td className=' py-2'>{product.profit}</td>
                                                         <td className=' py-2'>{product.stock}</td>
-                                                        <td className='flex py-2 gap-1 justify-center items-center pr-2 pt-6'>
+                                                        <td className='flex py-2 gap-1 justify-center items-center pr-2 pt-4'>
                                                             <button 
-                                                                className='bg-btn-yellow text-text-ligth p-1 rounded-lg'
+                                                                className='bg-btn-yellow text-text-ligth p-1 rounded-lg hover:bg-btn-yellowHover'
                                                                 onClick={() => handleEditProduct(product)}>
                                                                 <PencilIcon className='h4 w-4'/>
                                                             </button>
 
                                                             <button 
-                                                                className='bg-btn-red text-text-ligth p-1 rounded-lg'
+                                                                className='bg-btn-red text-text-ligth p-1 rounded-lg hover:bg-btn-redHover'
                                                                 onClick={ () => handleDeleteProduct (product.id)}>
                                                                 <TrashIcon className='h4 w-4'/>
                                                             </button>
 
                                                             <button 
-                                                                className='bg-btn-blue text-text-ligth p-1 rounded-lg'
+                                                                className='bg-btn-blue text-text-ligth p-1 rounded-lg hover:bg-btn-blueHover'
                                                                 onClick={ () => handleDetailsProduct (product)}>
                                                                 <EyeIcon className='h4 w-4'/>
                                                             </button>

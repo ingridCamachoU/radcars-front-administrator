@@ -144,11 +144,11 @@ const FormAddQuotation = ({isOpenModalCreateQuotation, setIsOpenModalCreateQuota
                             type="reset" 
                             value='Cancelar' 
                             onClick={closeModalReset}
-                            className="rounded-lg bg-btn-red p-2 text-text-ligth cursor-pointer h-10"/>
+                            className="rounded-lg bg-btn-red p-2 text-text-ligth cursor-pointer hover:bg-btn-redHover h-10"/>
                         <input 
                             type="submit" 
                             value='Guardar'
-                            className="rounded-lg bg-btn-style p-2 text-text-ligth cursor-pointer h-10"/>
+                            className="rounded-lg bg-btn-style hover:bg-btn-styleHover p-2 text-text-ligth cursor-pointer h-10"/>
                     </div>
                                 
                 </div>

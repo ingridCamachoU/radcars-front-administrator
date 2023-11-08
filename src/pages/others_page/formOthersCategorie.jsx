@@ -141,11 +141,11 @@ export const FormCategorie = ({ editDataCategorie, setEditDataCategorie, isOpenM
                         type="reset" 
                         value='Cancelar' 
                         onClick={closeModalReset}
-                        className="rounded-lg bg-btn-red p-2 text-text-ligth cursor-pointer"/>
+                        className="rounded-lg bg-btn-red p-2 text-text-ligth cursor-pointer hover:bg-btn-redHover"/>
                     <input 
                         type="submit" 
                         value='Guardar'
-                        className="rounded-lg bg-btn-style p-2 text-text-ligth cursor-pointer"/>
+                        className="rounded-lg bg-btn-style p-2 text-text-ligth cursor-pointer hover:bg-btn-styleHover"/>
                 </div>           
             </form>
         </div>

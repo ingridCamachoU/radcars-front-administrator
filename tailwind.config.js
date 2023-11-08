@@ -18,10 +18,15 @@ export default {
                 }, 
                 btn: {
                     red: 'var(--color-btn-red)',
+                    redHover: 'var(--color-btn-red-hover)',
                     style: 'var(--color-btn-style)',
+                    styleHover: 'var(--color-btn-style-hover)',
                     blue: 'var(--color-btn-blue)',
+                    blueHover: 'var(--color-btn-blue-hover)',
                     yellow: 'var(--color-btn-yellow)',
+                    yellowHover: 'var(--color-btn-yellow-hover)',
                     gray: 'var(--color-btn-gray)',
+                    grayHover: 'var(--color-btn-gray-hover)',
                 },
                 
             },

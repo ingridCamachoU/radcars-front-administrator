@@ -69,12 +69,12 @@ const TableDataProviders = ({ setEditDataProv, setIsOpenModalAddProv, setTitle, 
                                                         <td className=' py-2'>{provider.email}</td>
                                                         <td className='flex py-2 gap-1 justify-center pr-2'>
                                                             <button 
-                                                                className='bg-btn-yellow text-text-ligth p-1 rounded-lg'
+                                                                className='bg-btn-yellow text-text-ligth p-1 rounded-lg hover:bg-btn-yellowHover'
                                                                 onClick={() => handleEditProduct(provider)}>
                                                                 <PencilIcon className='h4 w-4'/>
                                                             </button>
                                                             <button 
-                                                                className='bg-btn-red text-text-ligth p-1 rounded-lg'
+                                                                className='bg-btn-red text-text-ligth p-1 rounded-lg hover:bg-btn-redHover'
                                                                 onClick={ () => handleDeleteProvider (provider.id)}>
                                                                 <TrashIcon className='h4 w-4'/>
                                                             </button>

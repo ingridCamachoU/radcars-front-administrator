@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { UserCircleIcon, ChevronDownIcon, Bars3Icon, MoonIcon, ArrowRightOnRectangleIcon, SunIcon } from '@heroicons/react/24/solid';
 import { DarkMode } from '../../context/DarkMode';
 import logo from '../../assets/logo.png'
@@ -7,7 +7,7 @@ import logo from '../../assets/logo.png'
 // eslint-disable-next-line react/prop-types
 const Header = ({setIsOpenMenu}) => {
 
-    const {darkMode, toggleDarkMode, setSearchByTitle} = useContext(DarkMode);
+    const {darkMode, toggleDarkMode, setSearchByTitle, searchByTitle} = useContext(DarkMode);
     const [openToogle, setOpenToogle] = useState(false);
     
     const handleClick = () => {
@@ -19,14 +19,20 @@ const Header = ({setIsOpenMenu}) => {
         setIsOpenMenu(true);
     };
 
-    const navigate = useNavigate();
-    const searchProduct = () => {
-        navigate('');
-    };
-
+    
     const menuOpenToogle = () => {
         openToogle ? setOpenToogle(false) : setOpenToogle(true);
     };
+    
+    const navigate = useNavigate();
+    
+    useEffect(() => {
+        if(searchByTitle === ''){
+            setSearchByTitle('');
+        }else{
+            navigate('');
+        }
+    }, [searchByTitle]);
 
     return (
         <>
@@ -42,8 +48,7 @@ const Header = ({setIsOpenMenu}) => {
                         type="search" 
                         placeholder="Search" 
                         onChange={(e) => setSearchByTitle(e.target.value)}
-                        onClick={searchProduct}
-                        className="rounded-lg p-1 pl-4 focus:outline-none sm:w-6/12 w-full" />
+                        className="rounded-lg p-1 pl-4 sm:w-6/12 w-full" />
                     <p className="flex justify-end items-center">
                         <span>
                             <UserCircleIcon className='h-6 w-6'/>

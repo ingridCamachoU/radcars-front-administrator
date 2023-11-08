@@ -50,13 +50,15 @@ const ProductsIndex = () => {
 
     //--- Load Data Categorie---//
     const urlCategorie = endPoints.categories.getCategories;
-    const {data:dataCategories} = useFetch(urlCategorie);
+    const {data:dataCategories, loadingData: loadDataCategorie} = useFetch(urlCategorie);
 
     //--- Load Data Model---//
     const urlModel = endPoints.models.getModels;
-    const {data:dataModel} = useFetch(urlModel);
+    const {data:dataModel, loadingData: loadDataModel} = useFetch(urlModel);
 
     useEffect(() => {
+        loadDataCategorie();
+        loadDataModel();
         loadDataProducts();
         loadDataProvider();
     },[urlProduct,urlProvider, urlCategorie, urlModel]);
@@ -65,7 +67,7 @@ const ProductsIndex = () => {
         setTitle('Crear Producto');
         setIsOpenModalAddProduct(true);
     }
-  
+
     return (
         <LayoutBase>
             <div 

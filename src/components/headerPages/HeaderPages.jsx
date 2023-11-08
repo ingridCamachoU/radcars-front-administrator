@@ -18,8 +18,8 @@ const HeaderPages = ({title, onClick}) => {
                 </h1>
                 <button
                     onClick={onClick}
-                    className='bg-indigo-500 w-10 h-6 justify-center flex items-center rounded-xl'>
-                    <PlusIcon className='w-5 h-4 text-indigo-500 rounded-full bg-slate-50'/>
+                    className='bg-btn-style w-10 h-6 justify-center flex items-center rounded-xl hover:bg-btn-styleHover'>
+                    <PlusIcon className='w-5 h-4 text-text-gray rounded-full bg-slate-50'/>
                 </button>
             </div>        
         </>
