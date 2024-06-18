@@ -2,12 +2,13 @@ import { useNavigate } from 'react-router-dom';
 import { useContext, useEffect, useState } from 'react';
 import { UserCircleIcon, ChevronDownIcon, Bars3Icon, MoonIcon, ArrowRightOnRectangleIcon, SunIcon } from '@heroicons/react/24/solid';
 import { DarkMode } from '../../context/DarkMode';
-import logo from '../../assets/logo.png'
+import logoWhite from '../../assets/logo.svg'
+import logoBlack from '../../assets/logoBlack.svg'
 
 // eslint-disable-next-line react/prop-types
 const Header = ({setIsOpenMenu}) => {
 
-    const {darkMode, toggleDarkMode, setSearchByTitle, searchByTitle} = useContext(DarkMode);
+    const {darkMode, toggleDarkMode, setSearchByTitle, searchByTitle, setUser, setToken} = useContext(DarkMode);
     const [openToogle, setOpenToogle] = useState(false);
     
     const handleClick = () => {
@@ -24,6 +25,18 @@ const Header = ({setIsOpenMenu}) => {
         openToogle ? setOpenToogle(false) : setOpenToogle(true);
     };
     
+    const handleLogout = async () => {
+        try {
+            setUser(false);
+            setToken(false);
+            localStorage.removeItem('tokenRadAdmin');
+            localStorage.removeItem('userRadAdmin');
+            navigate('/');
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
     const navigate = useNavigate();
     
     useEffect(() => {
@@ -39,16 +52,21 @@ const Header = ({setIsOpenMenu}) => {
             <div 
                 className="tex-black flex top-0 right-0 w-full lg:justify-end p-4 gap-8 justify-between">
                 <p className="flex lg:hidden w-[100px] h-[40px]">        
-                    <img src={logo} alt="logo" />       
+                    {
+                        darkMode ? 
+                            <img src={logoWhite} alt="logo" />  
+                            :
+                            <img src={logoBlack} alt="logo" />  
+                    }     
                 </p>
                     
                 <div 
-                    className="flex gap-2 sm:gap-6 text-indigo-500 sm:flex-row flex-col w-9/12  justify-end">
+                    className={`${darkMode ? 'flex gap-2 sm:gap-6 text-text-ligth sm:flex-row flex-col w-9/12  justify-end': 'flex gap-2 sm:gap-6 text-text-blue sm:flex-row flex-col w-9/12 justify-end'}`}>
                     <input 
                         type="search" 
                         placeholder="Search" 
                         onChange={(e) => setSearchByTitle(e.target.value)}
-                        className="rounded-lg p-1 pl-4 sm:w-6/12 w-full" />
+                        className="rounded-lg p-1 pl-4 sm:w-6/12 w-full border text-black" />
                     <p className="flex justify-end items-center">
                         <span>
                             <UserCircleIcon className='h-6 w-6'/>
@@ -64,12 +82,12 @@ const Header = ({setIsOpenMenu}) => {
                         >   
                             <span onClick={handleClick}>
                                 {darkMode 
-                                    ? <SunIcon  className='h-6 w-6 white text-indigo-500 cursor-pointer'/> 
-                                    : <MoonIcon  className='h-6 w-6 white text-indigo-500 cursor-pointer'/> 
+                                    ? <SunIcon  className='h-6 w-6 white text-text-blue cursor-pointer'/> 
+                                    : <MoonIcon  className='h-6 w-6 white text-text-blue cursor-pointer'/> 
                                 } 
                             </span>
                             
-                            <ArrowRightOnRectangleIcon  className='h-6 w-6 text-indigo-500'/>
+                            <ArrowRightOnRectangleIcon  className='h-6 w-6 text-text-blue cursor-pointer'onClick={handleLogout} />
                         </span>  
                         <span 
                             onClick={openMenu}

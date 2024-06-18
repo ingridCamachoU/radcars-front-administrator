@@ -5,33 +5,33 @@
 @layer base {
     :root {
         --background-ligth: rgb(255 255 255);
-        --background-dark:rgb(23, 22, 34) ;
-        --background-dark_medium: rgb(33,33,48);
+        --background-dark:#171717 ;
+        --background-dark_medium: rgb(47, 48, 66);
 
         --modal-ligth: rgba(255, 255, 255, 0.92);
         --modal-dark: rgba(0, 0, 0, 0.88);
 
 
-        --color-btn-red: rgb(239 68 68);
+        --color-btn-red: rgb(208, 48, 48);
         --color-btn-red-hover: rgb(189 68 68);
 
-        --color-btn-style: rgb(99 102 241);
-        --color-btn-style-hover: rgb(70, 72, 220);
+        --color-btn-style: rgb(92, 71, 167);
+        --color-btn-style-hover: rgb(64, 48, 119);
 
-        --color-btn-blue: rgb(96 165 250);
-        --color-btn-blue-hover: rgb(30, 126, 195);
+        --color-btn-blue: rgb(106, 156, 173);
+        --color-btn-blue-hover: rgb(29, 110, 168);
 
         --color-btn-gray: rgb(156 163 175) ;
         --color-btn-gray-hover: rgb(131, 136, 144) ;
         
-        --color-btn-yellow: rgb(234 179 8);
+        --color-btn-yellow: rgb(239, 183, 13);
         --color-btn-yellow-hover: rgb(197, 150, 8);
    
                     
         --color-border-gray: rgb(209 213 219) ;
-        --text-ligth: rgb(255 255 255);
+        --text-ligth: rgb(255, 255, 255);
         --text-dark: rgb(0 0 0);
-        --text-gray: rgb(104, 109, 116);
+        --text-gray: rgb(252, 252, 252);
         --text-red: rgb(239 68 68);
     }
 }
@@ -41,12 +41,28 @@
     min-width: 100%;
     min-height: 100vh;
     overflow: auto;
+    display: flex;
+    flex-direction: column;
 }
 
 .body.light{
     background: #F4F5F9;
    
 }
+
+
 .body.dark{
-    background: #171622;
+    background: rgb(30, 30, 40);
+}
+
+html,
+body,
+#root {
+    height: 100%;
+}
+
+.bg-fondo {
+    background-image: url('./assets/fondo.svg');
+    background-size: cover;
+    background-position: center;
 }

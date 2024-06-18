@@ -1,17 +1,17 @@
-import { Outlet } from "react-router-dom";
+import { Navigate, Outlet } from "react-router-dom";
 import { useContext, useState } from "react";
 import Nabvar from "../components/navbar/Nabvar";
 import { DarkMode } from "../context/DarkMode";
 import Header from "../components/header/Header";
+import Footer from "../components/footer/Footer";
 
 const PrivateLayout = () => {
 
     const [isOpenMenu, setIsOpenMenu] = useState(false);
 
-    const {darkMode} = useContext(DarkMode); 
+    const {darkMode, user} = useContext(DarkMode); 
 
-    return (
-
+    return user ? (
         <div className={darkMode ? `body dark` : `body light`}>
             <header> 
                 <Header setIsOpenMenu={setIsOpenMenu}/>
@@ -31,8 +31,11 @@ const PrivateLayout = () => {
                 <Nabvar />
             </header>
 
-            <Outlet />
+            <Outlet/>
+            <Footer />
         </div>
+    ): (
+        <Navigate to="/" />
     );
 };
 

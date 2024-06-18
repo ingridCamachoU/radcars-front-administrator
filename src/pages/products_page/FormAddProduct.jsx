@@ -180,16 +180,24 @@ const FormAddProduct = ({isOpenModalAddProduct, setIsOpenModalAddProduct, editDa
                     </h1>
                     <span 
                         onClick={closeModalReset}>
-                        <XMarkIcon className="h6 w-6 text-text-gray cursor-pointer"/>
+                        <XMarkIcon className={ `${darkMode 
+                            ? 'h6 w-6 cursor-pointer text-text-ligth' 
+                            : 'h6 w-6 cursor-pointer text-text-black'
+                        }`} />
                     </span>
                 </div>
 
-                <div className="text-text-gray flex mb-4 gap-6 justify-center lg:flex-row flex-col w-full">
+                <div className={
+                    `${darkMode 
+                        ? 'flex mb-4 gap-6 justify-center lg:flex-row flex-col w-full text-text-ligth' 
+                        : 'flex mb-4 gap-6 justify-center lg:flex-row flex-col w-full'
+                    }`
+                }>
                     <div className="flex-col flex w-1/2">
                         <label>Código</label>
                         <input 
                             type="text" required
-                            className="border border-border-gray rounded-lg p-1 w-full"
+                            className="border border-border-gray rounded-lg p-1 w-full text-text-dark"
                             name="code"
                             value={formData.code}
                             onChange={handleChange}
@@ -201,7 +209,7 @@ const FormAddProduct = ({isOpenModalAddProduct, setIsOpenModalAddProduct, editDa
                         <label>Nombre</label>
                         <input 
                             type="text" required
-                            className="border border-border-gray rounded-lg p-1 w-full"
+                            className="border border-border-gray rounded-lg p-1 w-full text-text-dark"
                             name="name"
                             value={formData.name}
                             onChange={handleChange}
@@ -210,19 +218,24 @@ const FormAddProduct = ({isOpenModalAddProduct, setIsOpenModalAddProduct, editDa
                     </div>                
                 </div>
 
-                <div className="text-text-gray flex mb-4 gap-6 justify-center lg:flex-row flex-col w-full">
+                <div className={
+                    `${darkMode 
+                        ? 'flex mb-4 gap-6 justify-center lg:flex-row flex-col w-full text-text-ligth' 
+                        : 'flex mb-4 gap-6 justify-center lg:flex-row flex-col w-full'
+                    }`
+                }>
                     <div className=" flex-col flex w-1/2">
                         <label>Categoria</label>
                         <select 
-                            className="border border-border-gray rounded-lg p-1 w-full mr-6" 
+                            className="border border-border-gray rounded-lg p-1 w-full mr-6 text-text-dark" 
                             name="category" required
                             onChange={handleChange} 
                             value={formData.category} >
-                            <option ></option>
-                            {dataCategorie?.map(category => (
+                            <option className="text-text-dark"></option>
+                            {dataCategorie?.data?.map(category => (
                                 <option 
                                     key={category.id} 
-                                    value={category.id}>{category.name}</option>
+                                    value={category.id} className="text-text-dark">{category.name}</option>
                             ))}
                         </select>
                     </div>
@@ -231,7 +244,7 @@ const FormAddProduct = ({isOpenModalAddProduct, setIsOpenModalAddProduct, editDa
                         <label>Precio</label>
                         <input 
                             type="number" required
-                            className="border border-border-gray rounded-lg p-1 w-full"
+                            className="border border-border-gray rounded-lg p-1 w-full text-text-dark"
                             name="price"
                             value={formData.price}
                             onChange={handleChange}
@@ -240,12 +253,17 @@ const FormAddProduct = ({isOpenModalAddProduct, setIsOpenModalAddProduct, editDa
                     </div>
                 </div>
 
-                <div className="text-text-gray flex mb-4 gap-6 justify-center lg:flex-row flex-col w-full">                  
+                <div className={
+                    `${darkMode 
+                        ? 'flex mb-4 gap-6 justify-center lg:flex-row flex-col w-full text-text-ligth' 
+                        : 'flex mb-4 gap-6 justify-center lg:flex-row flex-col w-full'
+                    }`
+                }>                
                     <div className="flex-col flex w-1/2">
                         <label>% Ganancia</label>
                         <input 
                             type="number" required
-                            className="border border-border-gray rounded-lg p-1 w-full"
+                            className="border border-border-gray rounded-lg p-1 w-full text-text-dark"
                             name="profit"
                             value={formData.profit}
                             onChange={handleChange}
@@ -257,7 +275,7 @@ const FormAddProduct = ({isOpenModalAddProduct, setIsOpenModalAddProduct, editDa
                         <label>Stock</label>
                         <input 
                             type="number" required
-                            className="border border-border-gray rounded-lg mr-4 p-1 w-full"
+                            className="border border-border-gray rounded-lg mr-4 p-1 w-full text-text-dark"
                             name="stock"
                             value={formData.stock}
                             onChange={handleChange}
@@ -266,26 +284,32 @@ const FormAddProduct = ({isOpenModalAddProduct, setIsOpenModalAddProduct, editDa
                     </div>
                 </div>
 
-                <div className="text-text-gray flex mb-4 justify-center lg:flex-row flex-col w-full gap-6">
+                <div className={
+                    `${darkMode 
+                        ? 'flex mb-4 gap-6 justify-center lg:flex-row flex-col w-full text-text-ligth' 
+                        : 'flex mb-4 gap-6 justify-center lg:flex-row flex-col w-full'
+                    }`
+                }>
                     <div className="flex flex-col w-1/2">
                         <label>Modelo</label>
                         <select 
-                            className="border border-border-gray rounded-lg mr-6 p-1 w-full" 
+                            className="border border-border-gray rounded-lg mr-6 p-1 w-full text-text-dark" 
                             name="mark_model" 
                             onChange={handleChange} 
                             value={formData.mark_model}>
                             <option ></option>
                             {
-                                dataModel?.map(mark_model => (
+                                dataModel?.data?.map(mark_model => (
                                     <option 
                                         key={mark_model.id} 
+                                        className="text-text-dark"
                                         value={mark_model.id} >{mark_model.name} ({mark_model.mark.name})</option>
                                 ))}  
                         </select>
                     </div>
                     <div className="flex flex-col w-1/2">
                         <label>Transmisión</label>
-                        <select className="border border-border-gray rounded-lg mr-4 p-1 w-full" 
+                        <select className="border border-border-gray rounded-lg mr-4 p-1 w-full text-text-dark" 
                             name="transmission" 
                             onChange={handleChange} 
                             value={formData.transmission}>
@@ -296,12 +320,17 @@ const FormAddProduct = ({isOpenModalAddProduct, setIsOpenModalAddProduct, editDa
                     </div>
                 </div>
 
-                <div className="text-text-gray flex mb-4 gap-6 justify-center lg:flex-row flex-col w-full">
+                <div className={
+                    `${darkMode 
+                        ? 'flex mb-4 gap-6 justify-center lg:flex-row flex-col w-full text-text-ligth' 
+                        : 'flex mb-4 gap-6 justify-center lg:flex-row flex-col w-full'
+                    }`
+                }>
                     <div className="flex flex-col w-1/2">
                         <label>Imagenes</label>
                         <input 
                             type="text"
-                            className="border border-border-gray rounded-lg p-1 w-full"
+                            className="border border-border-gray rounded-lg p-1 w-full text-text-dark"
                             name="images"
                             value={formData.images} 
                             onChange={addImage}/>
@@ -309,7 +338,7 @@ const FormAddProduct = ({isOpenModalAddProduct, setIsOpenModalAddProduct, editDa
                     <div className="flex-col flex w-1/2">
                         <label>Descripción</label>
                         <textarea 
-                            className="border border-border-gray rounded-lg p-1 w-full"
+                            className="border border-border-gray rounded-lg p-1 w-full text-text-dark"
                             name="description" required
                             value={formData.description}
                             onChange={handleChange}/>
@@ -317,7 +346,7 @@ const FormAddProduct = ({isOpenModalAddProduct, setIsOpenModalAddProduct, editDa
                     </div>             
                 </div>
 
-                <div className="text-text-gray flex mb-4 gap-6 justify-end lg:mr-20 mr-6">
+                <div className=" flex mb-4 gap-6 justify-end lg:mr-20 mr-6">
 
                     {
                         !editDataProduct ? 
@@ -347,7 +376,7 @@ const FormAddProduct = ({isOpenModalAddProduct, setIsOpenModalAddProduct, editDa
 
                 {
                     editDataProduct 
-                        ? <div className="text-text-gray flex mb-4 gap-6 justify-center lg:flex-row flex-col">
+                        ? <div className=" flex mb-4 gap-6 justify-center lg:flex-row flex-col">
                             <div className="w-full">
                                 <h3 className={
                                     `${darkMode 
@@ -376,7 +405,7 @@ const FormAddProduct = ({isOpenModalAddProduct, setIsOpenModalAddProduct, editDa
                                     }>
 
                                         {   
-                                            datasQuotation.length === 0 
+                                            datasQuotation?.data?.length === 0 
                                                 ? <tr>
                                                     <td 
                                                         colSpan="6" 
@@ -384,7 +413,7 @@ const FormAddProduct = ({isOpenModalAddProduct, setIsOpenModalAddProduct, editDa
                                                         No hay cotizaciones
                                                     </td>
                                                 </tr>
-                                                : datasQuotation?.map( quotation => (
+                                                : datasQuotation?.data?.map( quotation => (
                                                     <tr 
                                                         key={quotation.id} className='border-b'>
                                                         <td className='px-2 py-2'>{quotation.provider.name}</td>

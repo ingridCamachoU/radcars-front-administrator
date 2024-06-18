@@ -1,8 +1,8 @@
 
 const Footer = () => {
     return (
-        <footer className="flex bottom-0 w-full bg-gray-200 justify-center items-center">
-            <h1>Footer</h1>
+        <footer className="flex justify-center items-center my-4 text-gray-400 mt-auto w-full ">
+            <p className="mt-4">Copyright © 2023. All Rights Reserved. Developed by Ingrid Camacho</p>  
         </footer>
     )
 }

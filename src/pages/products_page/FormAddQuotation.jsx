@@ -108,7 +108,7 @@ const FormAddQuotation = ({isOpenModalCreateQuotation, setIsOpenModalCreateQuota
                             onChange={handleChange} 
                             value={formData.provider} >
                             <option ></option>
-                            {dataProvider.map(provider => (
+                            {dataProvider?.data?.map(provider => (
                                 <option 
                                     key={provider.id} 
                                     value={provider.id}>{provider.name}</option>

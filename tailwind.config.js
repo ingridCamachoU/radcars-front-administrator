@@ -41,7 +41,8 @@ export default {
                     ligth: 'var(--text-ligth)',
                     dark: 'var(--text-dark)',
                     gray: 'var(--text-gray)',
-                    red: 'var(--text-red)'
+                    red: 'var(--text-red)',
+                    blue: 'var(--color-btn-style)'
                 },
             },
         },
