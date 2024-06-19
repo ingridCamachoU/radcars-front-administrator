@@ -12,9 +12,10 @@ export const FormMark = ({ editDataMark, setEditDataMark, isOpenModalCreateMark,
         "name": "",
     };
 
-    const [formData, handleChange, setFormData] = useForm(initialFormMark);
+    const { darkMode, token } = useContext(DarkMode);
+    const [ formData, handleChange, setFormData ] = useForm(initialFormMark);
 
-    const [errors, setErrors] = useState({});
+    const [ errors, setErrors ] = useState({});
 
     const onValidate = (formData)=>{
         let regexName = /^([0-9-A-Za-zÑñÁáÉéÍíÓóÚúÜü\s]){2,20}$/;
@@ -43,34 +44,31 @@ export const FormMark = ({ editDataMark, setEditDataMark, isOpenModalCreateMark,
 
         if (Object.keys(err).length === 0){
             
-            if (editDataMark !== null){
-
+            if (Object.keys(err).length === 0) {
+                const isEdit = editDataMark !== null;
                 const config = {
-                    url: endPoints.marks.updateMarks(editDataMark?.id),
-                    method: 'PUT',
+                    url: isEdit ? endPoints.marks.updateMarks(editDataMark?.id) : endPoints.marks.getMarks,
+                    method: isEdit ? 'PUT' : 'POST',
                     body: formData,
-                    title: 'Marca editada con éxito', 
+                    title: isEdit ? 'Marca editada con éxito' : 'Marca agregada con éxito',
                     icon: 'success',
-                    loadData: loadMarkProducts
-                }
+                    loadData: loadMarkProducts,
+                    token: token
+                };
+            
                 helpAxios(config);
+            
+                if (isEdit) {
+                    setEditDataMark(null);
+                }
+                
                 setFormData(initialFormMark);
                 setIsOpenModalCreateMark(false);
                 setErrors('');
-                
             } else {
-                const config = {
-                    url: endPoints.marks.getMarks,
-                    method: 'POST',
-                    body: formData,
-                    title: 'Categoría agregada con éxito', 
-                    icon: 'success',
-                    loadData: loadMarkProducts
-                }
-                helpAxios(config);
-                setFormData(initialFormMark);
-                setIsOpenModalCreateMark(false);
-            }       
+                setErrors(err);
+            }
+            
         }else{
             setErrors(err);
         }
@@ -83,8 +81,6 @@ export const FormMark = ({ editDataMark, setEditDataMark, isOpenModalCreateMark,
         setIsOpenModalCreateMark(false);
         setFormData(initialFormMark);
     };
-
-    const {darkMode} = useContext(DarkMode);
 
     return(
 
@@ -116,18 +112,30 @@ export const FormMark = ({ editDataMark, setEditDataMark, isOpenModalCreateMark,
                                 : 'text-text-black text-2xl ml-2'
                             }`
                         }>Crear Marca</h1>
-                    <span onClick={closeModalReset}>
-                        <XMarkIcon className="h6 w-6 text-text-gray cursor-pointer"/>
+                    <span   
+                        className={
+                            `${darkMode 
+                                ? 'text-text-ligth' 
+                                : 'text-text-black'
+                            }`
+                        }
+                        onClick={closeModalReset}>
+                        <XMarkIcon className="h6 w-6  cursor-pointer"/>
                     </span>
                 </div>
 
-                <div className="text-text-gray flex mb-4 gap-6 justify-center lg:flex-row flex-col w-full">
+                <div className=" flex mb-4 gap-6 justify-center lg:flex-row flex-col w-full">
                     
                     <div className="flex-col flex w-full">
-                        <label>Nombre</label>
+                        <label className={
+                            `${darkMode 
+                                ? 'text-text-ligth mb-4' 
+                                : 'text-text-black mb-4'
+                            }`
+                        }>Nombre</label>
                         <input 
                             type="text" required
-                            className="border border-border-gray rounded-lg p-1"
+                            className="border border-border-gray rounded-lg p-1 mb-4 pl-2"
                             name="name"
                             value={formData.name}
                             onChange={handleChange}
@@ -136,7 +144,7 @@ export const FormMark = ({ editDataMark, setEditDataMark, isOpenModalCreateMark,
                     </div>                
                 </div>
 
-                <div className="text-text-gray flex mb-4 gap-6 justify-end w-full">
+                <div className=" flex mb-4 gap-6 justify-end w-full">
                     <input 
                         type="reset" 
                         value='Cancelar' 

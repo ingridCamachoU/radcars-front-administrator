@@ -9,6 +9,7 @@ import Loading from '../../components/Loading';
 // eslint-disable-next-line react/prop-types
 const TableDataProviders = ({ setEditDataProv, setIsOpenModalAddProv, setTitle, dataProvider, loadDataProvider, loading, error}) => {
 
+    const { darkMode, token } = useContext(DarkMode);
     const handleDeleteProvider = (id) => {
 
         const config = {
@@ -16,7 +17,8 @@ const TableDataProviders = ({ setEditDataProv, setIsOpenModalAddProv, setTitle, 
             method: 'DELETE',
             title: 'El proveedor ha sido eliminado', 
             icon: 'success',
-            loadData: loadDataProvider
+            loadData: loadDataProvider,
+            token: token
         }
         confirAlert('Eliminar proveedor','Está seguro de eliminar el proveedor?', 'warning', 'Eliminar', helpAxios, config);
     };
@@ -26,8 +28,6 @@ const TableDataProviders = ({ setEditDataProv, setIsOpenModalAddProv, setTitle, 
         setIsOpenModalAddProv(true)
         setTitle('Editar Proveedor');
     };
-
-    const {darkMode} = useContext(DarkMode);
 
     return (
         <div className="flex flex-col overflow-x-auto w-full">
@@ -57,11 +57,11 @@ const TableDataProviders = ({ setEditDataProv, setIsOpenModalAddProv, setTitle, 
                                         }`
                                     }>
                                         {   
-                                            dataProvider?.length === 0 
+                                            dataProvider.data.length === 0 
                                                 ? <tr className='border-b text-center w-full'>
                                                     <td colSpan="10" className='px-2 py-2 text-center w-full'>No hay datos</td>
                                                 </tr> 
-                                                : (dataProvider.map)(provider => (
+                                                : (dataProvider.data.map)(provider => (
                                                     <tr key={provider.id} className='border-b '>
                                                         <td className=' py-2'>{provider.nit}</td>
                                                         <td className=' py-2'>{provider.name}</td>

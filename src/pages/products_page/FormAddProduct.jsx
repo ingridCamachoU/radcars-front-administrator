@@ -8,12 +8,13 @@ import { endPoints } from "../../services/endPoints/endPoints";
 import { confirAlert } from "../../utils/alerts";
 
 // eslint-disable-next-line react/prop-types
-const FormAddProduct = ({isOpenModalAddProduct, setIsOpenModalAddProduct, editDataProduct,setEditDataProduct, title, datasQuotation, setIsOpenModalCreateQuotation,loadDataProducts, dataModel, dataCategorie}) => {
+const FormAddProduct = ({ isOpenModalAddProduct, setIsOpenModalAddProduct, editDataProduct,setEditDataProduct, title, datasQuotation, setIsOpenModalCreateQuotation,loadDataProducts, dataModel, dataCategorie }) => {
 
-    const [formData, handleChange, setFormData] = useForm(initialFormProduct);
+    const [ formData, handleChange, setFormData ] = useForm(initialFormProduct);
+    const { darkMode, token } = useContext(DarkMode);
    
     //---Form Validation---//
-    const [errors, setErrors] = useState({});
+    const [ errors, setErrors ] = useState({});
     const onValidate = (formData)=>{
         let errors = {};
         let regexCode = /^([0-9-A-Za-zÑñÁáÉéÍíÓóÚúÜüs]){5,20}$/;
@@ -81,37 +82,30 @@ const FormAddProduct = ({isOpenModalAddProduct, setIsOpenModalAddProduct, editDa
 
     const handleSubmit = (e)=>{
         e.preventDefault();
-        setErrors(err);        
-        if (Object.keys(err).length === 0){
-            if (formData.nit !== '' && formData.name !== ''  && formData.contact !== '' && formData.email !== ''){
-                if (editDataProduct !== null){
-                    const config = {
-                        url: endPoints.products.updateProduct(editDataProduct?.id),
-                        method: 'PUT',
-                        body: formData,
-                        title: 'Producto editado con éxito', 
-                        icon: 'success',
-                        loadData: loadDataProducts
-                    }
-                    helpAxios(config)
-                    setFormData(initialFormProduct);
-                    setIsOpenModalAddProduct(false);
-                    setErrors('');                  
-                } else {
-                    const config = {
-                        url: endPoints.products.getProducts,
-                        method: 'POST',
-                        body: formData,
-                        title: 'Producto agregado', 
-                        icon: 'success',
-                        loadData: loadDataProducts
-                    }
-                    helpAxios(config);
-                    setFormData(initialFormProduct);
-                    setIsOpenModalAddProduct(false);
-                }
-            } 
-        }else{
+        setErrors(err); 
+        
+        if (Object.keys(err).length === 0) {
+            const isEdit = editDataProduct !== null;
+            const config = {
+                url: isEdit ? endPoints.products.updateProduct(editDataProduct?.id) : endPoints.products.getProducts,
+                method: isEdit ? 'PUT' : 'POST',
+                body: formData,
+                title: isEdit ? 'Producto editado con éxito' : 'Producto agregado con éxito',
+                icon: 'success',
+                loadData: loadDataProducts,
+                token: token
+            };
+        
+            helpAxios(config);
+        
+            if (isEdit) {
+                setEditDataProduct(null);
+            }
+            
+            setFormData(initialFormProduct);
+            setIsOpenModalAddProduct(false);
+            setErrors('');
+        } else{
             setErrors(err);
         }
     };
@@ -126,8 +120,6 @@ const FormAddProduct = ({isOpenModalAddProduct, setIsOpenModalAddProduct, editDa
 
     const handleModalClick = e => e.stopPropagation();
 
-    const {darkMode} = useContext(DarkMode);
-
     //Add Quotation//
     const handleClickCotizar =()=>{
         setIsOpenModalCreateQuotation(true);
@@ -141,7 +133,8 @@ const FormAddProduct = ({isOpenModalAddProduct, setIsOpenModalAddProduct, editDa
             url: endPoints.quotations.deleteQuotations(quotation?.id, editDataProduct?.id),
             method: 'DELETE',
             title: 'La cotización ha sido eliminada', 
-            icon: 'success'
+            icon: 'success',
+            token: token
         }
         confirAlert('Eliminar Cotización','Está seguro de eliminar la cotización?', 'warning', 'Eliminar', helpAxios, config);
         setIsOpenModalAddProduct(false);

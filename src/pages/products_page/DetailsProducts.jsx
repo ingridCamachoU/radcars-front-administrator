@@ -44,11 +44,11 @@ const DetailsProducts = ({ isOpenModalDetailProduct, editDataProduct, datasQuota
                     }>Detalles Producto</h1>
                     <span 
                         onClick={closeModalReset}>
-                        <XMarkIcon className="h6 w-6 text-text-gray cursor-pointer"/>
+                        <XMarkIcon className="h6 w-6  cursor-pointer"/>
                     </span>
                 </div>
 
-                <div className="text-text-gray flex mb-4 gap-6 justify-center lg:flex-row flex-col w-full">
+                <div className=" flex mb-4 gap-6 justify-center lg:flex-row flex-col w-full">
                     <div className="flex-col flex w-full">
                         <p>Código</p>
                         <p className="border border-border-gray rounded-lg py-1 px-2">{editDataProduct?.code}</p>
@@ -60,7 +60,7 @@ const DetailsProducts = ({ isOpenModalDetailProduct, editDataProduct, datasQuota
                     </div>                
                 </div>
             
-                <div className="text-text-gray flex mb-4 gap-6 justify-center lg:flex-row flex-col w-full">
+                <div className=" flex mb-4 gap-6 justify-center lg:flex-row flex-col w-full">
                     <div className=" flex-col flex w-full">
                         <p>Categoria</p>
                         <p className="border border-border-gray rounded-lg py-1 px-2">{editDataProduct?.category.name}</p>   
@@ -72,7 +72,7 @@ const DetailsProducts = ({ isOpenModalDetailProduct, editDataProduct, datasQuota
                     </div>
                 </div>
 
-                <div className="text-text-gray flex mb-4 gap-6 justify-center lg:flex-row flex-col w-full">
+                <div className=" flex mb-4 gap-6 justify-center lg:flex-row flex-col w-full">
                     
                     <div className="flex-col flex w-full">
                         <p>% Ganancia</p>
@@ -85,7 +85,7 @@ const DetailsProducts = ({ isOpenModalDetailProduct, editDataProduct, datasQuota
                     </div>
                 </div>
 
-                <div className="text-text-gray flex mb-4 gap-6 justify-center lg:flex-row flex-col w-full">
+                <div className=" flex mb-4 gap-6 justify-center lg:flex-row flex-col w-full">
                     <div className="flex flex-col w-full">
                         <p>Modelo</p>
                         <p className="border border-border-gray rounded-lg py-1 px-2">{editDataProduct?.mark_model.name}</p>
@@ -96,7 +96,7 @@ const DetailsProducts = ({ isOpenModalDetailProduct, editDataProduct, datasQuota
                     </div>
                 </div>
 
-                <div className="text-text-gray flex mb-4 gap-6 justify-center lg:flex-row flex-col w-full">
+                <div className=" flex mb-4 gap-6 justify-center lg:flex-row flex-col w-full">
                     <div className="flex flex-col w-full">
                         <p>Imagenes</p>
                         <p className="flex w-full gap-2">
@@ -115,7 +115,7 @@ const DetailsProducts = ({ isOpenModalDetailProduct, editDataProduct, datasQuota
                     </div>             
                 </div>
 
-                <div className="text-text-gray flex mb-4 gap-6 justify-center lg:flex-row flex-col">
+                <div className=" flex mb-4 gap-6 justify-center lg:flex-row flex-col">
                     <div className="w-full">
                         <h3 className={
                             `${darkMode 

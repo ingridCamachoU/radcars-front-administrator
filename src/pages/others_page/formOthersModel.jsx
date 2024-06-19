@@ -9,13 +9,14 @@ import { helpAxios } from "../../services/helpAxios";
 export const FormModel = ({ editDataModel, setEditDataModel, isOpenModalCreateModel, setIsOpenModalCreateModel, loadModelProducts, dataMark}) => {
 
     const initialFormModel ={
-        "mark": "",
+        "mark_id": "",
         "name": "",
     };
 
-    const [formData, handleChange, setFormData] = useForm(initialFormModel);
+    const [ formData, handleChange, setFormData ] = useForm(initialFormModel);
+    const { darkMode, token } = useContext(DarkMode);
 
-    const [errors, setErrors] = useState({});
+    const [ errors, setErrors ] = useState({});
 
     const onValidate = (formData)=>{
         let regexName = /^([0-9-A-Za-zÑñÁáÉéÍíÓóÚúÜü\s]){2,20}$/;
@@ -32,7 +33,7 @@ export const FormModel = ({ editDataModel, setEditDataModel, isOpenModalCreateMo
     useEffect(()=>{
         if( editDataModel !== null){
             const copyData = {
-                "mark": editDataModel?.mark?.id,
+                "mark_id": editDataModel?.mark?.id,
                 "name": editDataModel?.name,
             }
             setFormData(copyData);
@@ -48,34 +49,31 @@ export const FormModel = ({ editDataModel, setEditDataModel, isOpenModalCreateMo
 
         if (Object.keys(err).length === 0){
             
-            if (editDataModel !== null){
-
+            if (Object.keys(err).length === 0) {
+                const isEdit = editDataModel !== null;
                 const config = {
-                    url: endPoints.models.updateModels(editDataModel?.id),
-                    method: 'PUT',
+                    url: isEdit ? endPoints.models.updateModels(editDataModel?.id) : endPoints.models.getModels,
+                    method: isEdit ? 'PUT' : 'POST',
                     body: formData,
-                    title: 'Modelo editado con éxito', 
+                    title: isEdit ? 'Modelo editada con éxito' : 'Modelo agregada con éxito',
                     icon: 'success',
-                    loadData: loadModelProducts
-                }
+                    loadData: loadModelProducts,
+                    token: token
+                };
+            
                 helpAxios(config);
+            
+                if (isEdit) {
+                    setEditDataModel(null);
+                }
+                
                 setFormData(initialFormModel);
                 setIsOpenModalCreateModel(false);
                 setErrors('');
-                
             } else {
-                const config = {
-                    url: endPoints.models.getModels,
-                    method: 'POST',
-                    body: formData,
-                    title: 'Modelo agregado con éxito', 
-                    icon: 'success',
-                    loadData: loadModelProducts
-                }
-                helpAxios(config);
-                setFormData(initialFormModel);
-                setIsOpenModalCreateModel(false);
-            }       
+                setErrors(err);
+            }
+            
         }else{
             setErrors(err);
         }
@@ -88,8 +86,6 @@ export const FormModel = ({ editDataModel, setEditDataModel, isOpenModalCreateMo
         setIsOpenModalCreateModel(false);
         setFormData(initialFormModel);
     };
-
-    const {darkMode} = useContext(DarkMode);
 
     return(
 
@@ -124,32 +120,49 @@ export const FormModel = ({ editDataModel, setEditDataModel, isOpenModalCreateMo
                         }>
                         Crear Modelo
                     </h1>
-                    <span onClick={closeModalReset}>
-                        <XMarkIcon className="h6 w-6 text-text-gray cursor-pointer"/>
+                    <span 
+                        className={
+                            `${darkMode 
+                                ? 'text-text-ligth' 
+                                : 'text-text-black'
+                            }`
+                        }
+                        onClick={closeModalReset}>
+                        <XMarkIcon className="h6 w-6  cursor-pointer"/>
                     </span>
                 </div>
 
-                <div className="text-text-gray flex mb-4 gap-6 justify-center lg:flex-row flex-col w-full">
+                <div className=" flex mb-4 gap-6 justify-center lg:flex-row flex-col w-full">
                     
                     <div className="flex-col flex w-1/2">
-                        <label>Marca</label>
+                        <label className={
+                            `${darkMode 
+                                ? 'text-text-ligth mb-4' 
+                                : 'text-text-black mb-4'
+                            }`
+                        }>Marca</label>
                         <select 
                             className="border border-border-gray rounded-lg p-1 w-full"  
-                            name="mark" required
+                            name="mark_id" required
                             onChange={handleChange} 
-                            value={formData.mark} >
+                            value={formData.mark_id} >
                             <option ></option>
-                            {dataMark.map(mark => (
+                            {dataMark?.data?.map(mark => (
                                 <option key={mark.id} value={mark.id}>{mark.name}</option>
                             ))}
                         </select>
                     </div> 
 
                     <div className="flex-col flex w-1/2">
-                        <label>Nombre</label>
+                        <label className={
+                            `${darkMode 
+                                ? 'text-text-ligth mb-4' 
+                                : 'text-text-black mb-4'
+                            }`
+                        }>Nombre</label>
                         <input 
                             type="text" required
-                            className="border border-border-gray rounded-lg p-1 w-full"
+                            className="border border-border-gray rounded-lg p-1 w-full mb-4 pl-2"
                             name="name"
                             value={formData.name}
                             onChange={handleChange}
@@ -158,7 +171,7 @@ export const FormModel = ({ editDataModel, setEditDataModel, isOpenModalCreateMo
                     </div>              
                 </div>
 
-                <div className="text-text-gray flex mb-4 gap-6 justify-end w-full">
+                <div className=" flex mb-4 gap-6 justify-end w-full">
                     <input 
                         type="reset" 
                         value='Cancelar' 

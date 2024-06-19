@@ -1,19 +1,30 @@
 import { useState } from "react";
 
-export const useFetch = (url) => {
+export const useFetch = (url, token = null) => {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     
-    const loadingData = () => {
+    const loadingData = (method = 'GET') => {
         const abortController = new AbortController();
         const signal = abortController.signal;
     
         const fetchData = async () => {
             setLoading(true);
     
+            const headers = {
+                'Content-Type': 'application/json',
+            };
+        
+            if (token) {
+                headers['Authorization'] = `Bearer ${token}`;
+            }
             try {
-                const res = await fetch(url, { signal });
+                const res = await fetch(url, {
+                    method: method,
+                    headers: headers,
+                    signal: signal
+                });
         
                 if (!res.ok) {
                     let err = new Error("Error en la petición Fetch");

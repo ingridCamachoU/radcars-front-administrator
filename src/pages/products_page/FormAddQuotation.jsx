@@ -95,11 +95,11 @@ const FormAddQuotation = ({isOpenModalCreateQuotation, setIsOpenModalCreateQuota
                     </h1>
                     <span 
                         onClick={closeModalReset}>
-                        <XMarkIcon className="h6 w-6 text-text-gray cursor-pointer"/>
+                        <XMarkIcon className="h6 w-6  cursor-pointer"/>
                     </span>
                 </div>
 
-                <div className="text-text-gray flex mb-4 gap-6 justify-center lg:flex-row flex-col w-full">
+                <div className=" flex mb-4 gap-6 justify-center lg:flex-row flex-col w-full">
                     <div className="flex-col flex w-1/2">
                         <label>Proveedor</label>
                         <select 
@@ -130,7 +130,7 @@ const FormAddQuotation = ({isOpenModalCreateQuotation, setIsOpenModalCreateQuota
                     </div>                
                 </div>
 
-                <div className="text-text-gray flex mb-4 gap-6 justify-center lg:flex-row flex-col w-full">
+                <div className=" flex mb-4 gap-6 justify-center lg:flex-row flex-col w-full">
                     <div className="flex-col flex w-1/2">
                         <label>Descripción</label>
                         <textarea 
@@ -139,7 +139,7 @@ const FormAddQuotation = ({isOpenModalCreateQuotation, setIsOpenModalCreateQuota
                         />
                     </div>
 
-                    <div className="text-text-gray flex mb-4 gap-4 justify-end items-end flex-wrap w-1/2">
+                    <div className=" flex mb-4 gap-4 justify-end items-end flex-wrap w-1/2">
                         <input 
                             type="reset" 
                             value='Cancelar' 

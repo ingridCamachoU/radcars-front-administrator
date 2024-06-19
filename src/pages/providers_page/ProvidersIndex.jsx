@@ -6,12 +6,15 @@ import { useModal } from "../../hooks/useModal";
 import HeaderPages from "../../components/headerPages/HeaderPages";
 import { useFetch } from "../../hooks/useFetch";
 import { endPoints } from "../../services/endPoints/endPoints";
+import { useContext } from "react";
+import { DarkMode } from "../../context/DarkMode";
 
 const ProvidersIndex = () => {
 
     const [ editDataProv, setEditDataProv ] = useState(null);
 
     const [ isOpenModalAddProv, setIsOpenModalAddProv ] = useModal();
+    const { token } = useContext(DarkMode);
 
     const [title, setTitle]= useState('');
 
@@ -22,7 +25,7 @@ const ProvidersIndex = () => {
 
     //--- Load Data Provider---//
     const urlProvider = endPoints.providers.getProviders;
-    const {data:dataProvider, loadingData: loadDataProvider, loading, error} = useFetch(urlProvider);
+    const {data:dataProvider, loadingData: loadDataProvider, loading, error} = useFetch(urlProvider, token);
 
     useEffect(() => {
         loadDataProvider();

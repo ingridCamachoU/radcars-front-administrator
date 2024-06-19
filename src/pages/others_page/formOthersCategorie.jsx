@@ -12,6 +12,7 @@ export const FormCategorie = ({ editDataCategorie, setEditDataCategorie, isOpenM
     };
 
     const [formData, handleChange, setFormData] = useForm(initialFormCategorie);
+    const {darkMode, token } = useContext(DarkMode);
 
     const [errors, setErrors] = useState({});
 
@@ -40,38 +41,28 @@ export const FormCategorie = ({ editDataCategorie, setEditDataCategorie, isOpenM
         const err = onValidate(formData);
         setErrors(err)
 
-        if (Object.keys(err).length === 0){
-            
-            if (editDataCategorie !== null){
-
-                const config = {
-                    url: endPoints.categories.updateCategories(editDataCategorie?.id),
-                    method: 'PUT',
-                    body: formData,
-                    title: 'Categoría editada con éxito', 
-                    icon: 'success',
-                    loadData: loadCategoriesProducts
-                }
-                helpAxios(config);
+        if (Object.keys(err).length === 0) {
+            const isEdit = editDataCategorie !== null;
+            const config = {
+                url: isEdit ? endPoints.categories.updateCategories(editDataCategorie?.id) : endPoints.categories.getCategories,
+                method: isEdit ? 'PUT' : 'POST',
+                body: formData,
+                title: isEdit ? 'Categoría editada con éxito' : 'Categoría agregada con éxito',
+                icon: 'success',
+                loadData: loadCategoriesProducts,
+                token: token
+            };
+        
+            helpAxios(config);
+        
+            if (isEdit) {
                 setEditDataCategorie(null);
-                setFormData(initialFormCategorie);
-                setIsOpenModalCreateCategorie(false);
-                setErrors('');
-                
-            } else {
-                const config = {
-                    url: endPoints.categories.getCategories,
-                    method: 'POST',
-                    body: formData,
-                    title: 'Categoría agregada con éxito', 
-                    icon: 'success',
-                    loadData: loadCategoriesProducts
-                }
-                helpAxios(config);
-                setFormData(initialFormCategorie);
-                setIsOpenModalCreateCategorie(false);
-            }       
-        }else{
+            }
+            
+            setFormData(initialFormCategorie);
+            setIsOpenModalCreateCategorie(false);
+            setErrors('');
+        } else {
             setErrors(err);
         }
     };
@@ -83,8 +74,6 @@ export const FormCategorie = ({ editDataCategorie, setEditDataCategorie, isOpenM
         setIsOpenModalCreateCategorie(false);
         setFormData(initialFormCategorie);
     };
-
-    const {darkMode} = useContext(DarkMode);
 
     return(
 
@@ -116,18 +105,30 @@ export const FormCategorie = ({ editDataCategorie, setEditDataCategorie, isOpenM
                                 : 'text-text-black text-2xl ml-2'
                             }`
                         }>Crear Categoria</h1>
-                    <span onClick={closeModalReset}>
-                        <XMarkIcon className="h6 w-6 text-text-gray cursor-pointer"/>
+                    <span 
+                        className={
+                            `${darkMode 
+                                ? 'text-text-ligth' 
+                                : 'text-text-black'
+                            }`
+                        }
+                        onClick={closeModalReset} >
+                        <XMarkIcon className="h6 w-6  cursor-pointer"/>
                     </span>
                 </div>
 
-                <div className="text-text-gray flex mb-4 gap-6 justify-center lg:flex-row flex-col w-full">
+                <div className=" flex mb-4 gap-6 justify-center lg:flex-row flex-col w-full">
                     
                     <div className="flex-col flex w-full">
-                        <label>Nombre</label>
+                        <label  className={
+                            `${darkMode 
+                                ? 'text-text-ligth mb-4' 
+                                : 'text-text-black mb-4'
+                            }`
+                        }>Nombre</label>
                         <input 
                             type="text" required
-                            className="border border-border-gray rounded-lg p-1"
+                            className="border border-border-gray rounded-lg p-1 mb-4 pl-2"
                             name="name"
                             value={formData.name}
                             onChange={handleChange}
@@ -136,7 +137,7 @@ export const FormCategorie = ({ editDataCategorie, setEditDataCategorie, isOpenM
                     </div>                
                 </div>
 
-                <div className="text-text-gray flex mb-4 gap-6 justify-end w-full">
+                <div className=" flex mb-4 gap-6 justify-end w-full">
                     <input 
                         type="reset" 
                         value='Cancelar' 

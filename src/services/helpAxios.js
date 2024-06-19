@@ -1,14 +1,19 @@
 import axios from 'axios';
 import { alert } from '../utils/alerts';
 
-export const helpAxios = async({url, method, body, title, icon, loadData = null}) => {
+export const helpAxios = async({url, method, body, title, icon, loadData = null, token= null}) => {
     
     const data = JSON.stringify(body);
-    let header;
-    if(method !== 'DELETE'){
-        header = {
-            'Content-Type': 'application/json',
-        };
+    let header = {};
+
+    if (method !== 'DELETE') {
+        header['Content-Type'] = 'application/json';
+    } else {
+        header['Authorization'] = `Bearer ${token}`;
+    }
+    
+    if (token) {
+        header['Authorization'] = `Bearer ${token}`;
     }
     
     const config = {

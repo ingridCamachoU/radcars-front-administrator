@@ -10,8 +10,9 @@ import { helpAxios } from "../../services/helpAxios";
 const FormProviders = ({ setEditDataProv, editDataProv, isOpenModalAddProv,  setIsOpenModalAddProv, title, loadDataProvider }) => {
 
     const [ formData, handleChange, setFormData ] = useForm(initialFormProv);
+    const { darkMode, token } = useContext(DarkMode);
 
-    const [errors, setErrors] = useState({});
+    const [ errors, setErrors ] = useState({});
 
     const onValidate = (formData) => {
         let errors = {};
@@ -61,38 +62,28 @@ const FormProviders = ({ setEditDataProv, editDataProv, isOpenModalAddProv,  set
         const err = onValidate(formData);
         setErrors(err)
 
-        if (Object.keys(err).length === 0){
-            if (formData.nit !== '' && formData.name !== ''  && formData.contact !== '' && formData.email !== ''){
-                if (editDataProv !== null){
-                    const config = {
-                        url: endPoints.providers.updateProviders(editDataProv?.id),
-                        method: 'PUT',
-                        body: formData,
-                        title: 'Proveedor editado con éxito', 
-                        icon: 'success',
-                        loadData: loadDataProvider
-                    };
-                    helpAxios(config);
-                    setFormData(initialFormProv);
-                    setEditDataProv(null)
-                    setIsOpenModalAddProv(false);
-                    setErrors('');
-                    
-                } else {
-                    const config = {
-                        url: endPoints.providers.getProviders,
-                        method: 'POST',
-                        body: formData,
-                        title: 'Proveedor agregado', 
-                        icon: 'success',
-                        loadData: loadDataProvider
-                    }
-                    helpAxios(config);
-                    setFormData(initialFormProv);
-                    setIsOpenModalAddProv(false);
-                }
-            } 
-        }else{
+        if (Object.keys(err).length === 0) {
+            const isEdit = editDataProv !== null;
+            const config = {
+                url: isEdit ? endPoints.providers.updateProviders(editDataProv?.id) : endPoints.providers.getProviders,
+                method: isEdit ? 'PUT' : 'POST',
+                body: formData,
+                title: isEdit ? 'Proveedor editado con éxito' : 'Proveedor agregado con éxito',
+                icon: 'success',
+                loadData: loadDataProvider,
+                token: token
+            };
+        
+            helpAxios(config);
+        
+            if (isEdit) {
+                setEditDataProv(null);
+            }
+            
+            setFormData(initialFormProv);
+            setIsOpenModalAddProv(false);
+            setErrors('');
+        } else{
             setErrors(err);
         }
     };
@@ -104,8 +95,6 @@ const FormProviders = ({ setEditDataProv, editDataProv, isOpenModalAddProv,  set
         setIsOpenModalAddProv(false);
         setFormData(initialFormProv);
     };
-
-    const {darkMode} = useContext(DarkMode);
 
     return (
         <div 
@@ -140,11 +129,11 @@ const FormProviders = ({ setEditDataProv, editDataProv, isOpenModalAddProv,  set
                     </h1>
                     <span 
                         onClick={closeModalReset}>
-                        <XMarkIcon className="h6 w-6 text-text-gray cursor-pointer"/>
+                        <XMarkIcon className="h6 w-6  cursor-pointer"/>
                     </span>
                 </div>
 
-                <div className="text-text-gray flex mb-4 gap-6 justify-center lg:flex-row flex-col">
+                <div className=" flex mb-4 gap-6 justify-center lg:flex-row flex-col">
                     <div className="flex-col flex">
                         <label>Nit</label>
                         <input 
@@ -170,7 +159,7 @@ const FormProviders = ({ setEditDataProv, editDataProv, isOpenModalAddProv,  set
                     </div>                
                 </div>
 
-                <div className="text-text-gray flex mb-4 gap-6 justify-center lg:flex-row flex-col">
+                <div className=" flex mb-4 gap-6 justify-center lg:flex-row flex-col">
                     <div className="flex-col flex">
                         <label>Contacto</label>
                         <input 
@@ -195,7 +184,7 @@ const FormProviders = ({ setEditDataProv, editDataProv, isOpenModalAddProv,  set
                         {errors.email && <p className="text-text-red">{errors.email}</p>}
                     </div>                
                 </div>
-                <div className="text-text-gray flex mb-4 gap-6 justify-end lg:mr-20 mr-4">
+                <div className=" flex mb-4 gap-6 justify-end lg:mr-20 mr-4">
                     <input 
                         type="reset" 
                         value='Cancelar' 

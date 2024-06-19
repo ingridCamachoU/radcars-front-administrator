@@ -2,14 +2,16 @@ import { useContext } from "react";
 import { PencilIcon,TrashIcon } from '@heroicons/react/24/solid';
 import { DarkMode } from "../../context/DarkMode";
 import { endPoints } from "../../services/endPoints/endPoints";
-import { alert, confirAlert } from "../../utils/alerts";
+import { confirAlert } from "../../utils/alerts";
 import {helpAxios} from '../../services/helpAxios';
 import HeaderPages from "../../components/headerPages/HeaderPages";
 import Loading from '../../components/Loading';
 
 // eslint-disable-next-line react/prop-types
-const TableOthers = ({ setEditDataCategorie, setIsOpenModalCreateMark, setEditDataMark, setEditDataModel, setIsOpenModalCreateCategorie, setIsOpenModalCreateModel, dataCategories, dataMark, dataModel, loadCategoriesProducts, loadMarkProducts, loadModelProducts, loadingCategory, errorCategorie, loadingMark, errorMark, loadingModel, errorModel }) => {
+const TableOthers = ({ setEditDataCategorie, dataCategories, dataMark, loadingCategory, errorCategorie, dataModel, loadingMark, errorMark, loadingModel, errorModel, loadCategoriesProducts, loadMarkProducts, loadModelProducts, setIsOpenModalCreateCategorie, setIsOpenModalCreateMark, setEditDataMark, setIsOpenModalCreateModel, setEditDataModel }) => {
 
+    const {darkMode, token} = useContext(DarkMode);
+    
     //--Categorie--//
     const handleEditCategorie = (categorie) => {
         setEditDataCategorie(categorie);
@@ -23,7 +25,8 @@ const TableOthers = ({ setEditDataCategorie, setIsOpenModalCreateMark, setEditDa
             method: 'DELETE',
             title: 'La categoria ha sido eliminada', 
             icon: 'success',
-            loadData: loadCategoriesProducts
+            loadData: loadCategoriesProducts,
+            token: token
         }
         confirAlert('Eliminar categoria','Está seguro de eliminar la categoria?', 'warning', 'Eliminar', helpAxios, config);
     };
@@ -40,7 +43,8 @@ const TableOthers = ({ setEditDataCategorie, setIsOpenModalCreateMark, setEditDa
             method: 'DELETE',
             title: 'La marca ha sido eliminada', 
             icon: 'success',
-            loadData: loadMarkProducts
+            loadData: loadMarkProducts,
+            token: token
         }
         confirAlert('Eliminar marca','Está seguro de eliminar la marca?', 'warning', 'Eliminar', helpAxios, config);
     };
@@ -58,12 +62,11 @@ const TableOthers = ({ setEditDataCategorie, setIsOpenModalCreateMark, setEditDa
             method: 'DELETE',
             title: 'El modelo ha sido eliminado', 
             icon: 'success',
-            loadData: loadModelProducts
+            loadData: loadModelProducts,
+            token: token
         }
         confirAlert('Eliminar modelo','Está seguro de eliminar el modelo?', 'warning', 'Eliminar', helpAxios, config);
     };
-
-    const {darkMode} = useContext(DarkMode);
 
     return (
         <div className="w-full text-center text-s font-light z-0 flex justify-between col-span-3 gap-6 lg:w-[1500px] pb-4 mb-4">
@@ -80,7 +83,7 @@ const TableOthers = ({ setEditDataCategorie, setIsOpenModalCreateMark, setEditDa
                         ? <Loading />
 
                         : 
-                        <table className="text-center text-s font-light w-full">
+                        <table className="text-center text-s font-light w-full mt-4">
                             <thead>
                                 <tr className='bg-btn-style text-text-ligth'>
                                     <th className='px-2 py-2 font-medium'>Nombre</th>
@@ -94,7 +97,7 @@ const TableOthers = ({ setEditDataCategorie, setIsOpenModalCreateMark, setEditDa
                                     : 'bg-background-ligth text-text-dark'
                                 }`}>
                                 {   
-                                    dataCategories.length === 0 
+                                    dataCategories.data.length === 0 
                                         ? <tr>
                                             <td 
                                                 colSpan="6" 
@@ -102,7 +105,7 @@ const TableOthers = ({ setEditDataCategorie, setIsOpenModalCreateMark, setEditDa
                                                 No hay datos
                                             </td>
                                         </tr>
-                                        : (dataCategories.map)( categorie=> (
+                                        : (dataCategories?.data?.map)( categorie=> (
                                             <tr  
                                                 key={categorie.id} 
                                                 className='border-b p-4'>
@@ -126,12 +129,13 @@ const TableOthers = ({ setEditDataCategorie, setIsOpenModalCreateMark, setEditDa
                             </tbody>    
                         </table>
                 }
-                {
-                    errorCategorie !== null 
-                        ? alert('Error de conexión', 'error')
-                        : null
-                }
                 
+                {errorCategorie && (
+                    <div className="text-red-500">
+                        Error al cargar los datos. Por favor, inténtalo de nuevo
+                        más tarde.
+                    </div>
+                )}
             </div>
 
             {/* table Marca */}
@@ -146,7 +150,7 @@ const TableOthers = ({ setEditDataCategorie, setIsOpenModalCreateMark, setEditDa
                         ? <Loading />
 
                         :
-                        <table className="text-center text-s font-light w-full">
+                        <table className="text-center text-s font-light w-full mt-4">
                             <thead>
                                 <tr className='bg-btn-style text-text-ligth'>
                                     <th className='px-2 py-2 font-medium'>Nombre</th>
@@ -161,7 +165,7 @@ const TableOthers = ({ setEditDataCategorie, setIsOpenModalCreateMark, setEditDa
                                 }`
                             }>
                                 {   
-                                    dataMark.length === 0 
+                                    dataMark.data.length === 0 
                                         ? <tr>
                                             <td 
                                                 colSpan="6" 
@@ -169,7 +173,7 @@ const TableOthers = ({ setEditDataCategorie, setIsOpenModalCreateMark, setEditDa
                                                 No hay datos
                                             </td>
                                         </tr>
-                                        : (dataMark.map)( mark=> (
+                                        : (dataMark.data.map)( mark=> (
                                             <tr  
                                                 key={mark.id} 
                                                 className='border-b p-4'>
@@ -193,11 +197,13 @@ const TableOthers = ({ setEditDataCategorie, setIsOpenModalCreateMark, setEditDa
                             </tbody>    
                         </table>
                 }
-                {
-                    errorMark !== null 
-                        ? alert('Error de conexión', 'error')
-                        : null
-                }
+                 
+                {errorMark && (
+                    <div className="text-red-500">
+                        Error al cargar los datos. Por favor, inténtalo de nuevo
+                        más tarde.
+                    </div>
+                )}
                 
             </div>
 
@@ -213,7 +219,7 @@ const TableOthers = ({ setEditDataCategorie, setIsOpenModalCreateMark, setEditDa
                         ? <Loading />
 
                         :
-                        <table className="text-center text-s font-light w-full">
+                        <table className="text-center text-s font-light w-full mt-4">
                             <thead>
                                 <tr className='bg-btn-style text-text-ligth'>
                                     <th className='px-2 py-2 font-medium'>Nombre</th>
@@ -229,13 +235,13 @@ const TableOthers = ({ setEditDataCategorie, setIsOpenModalCreateMark, setEditDa
                                 }`
                             }>
                                 {   
-                                    dataModel.length === 0 
+                                    dataModel.data.length === 0 
                                         ? <tr>
                                             <td colSpan="6" className="text-center">
                                                 No hay datos
                                             </td>
                                         </tr>
-                                        : (dataModel.map)( model=> (
+                                        : (dataModel?.data?.map)( model=> (
                                             <tr  
                                                 key={model.id} 
                                                 className='border-b p-4'>
@@ -259,14 +265,14 @@ const TableOthers = ({ setEditDataCategorie, setIsOpenModalCreateMark, setEditDa
                                 }
                             </tbody>    
                         </table>
-
-                }
-                {
-                    errorModel !== null 
-                        ? alert('Error de conexión', 'error')
-                        : null
                 }
                 
+                {errorModel && (
+                    <div className="text-red-500">
+                        Error al cargar los datos. Por favor, inténtalo de nuevo
+                        más tarde.
+                    </div>
+                )}
             </div>        
         </div>
     );
