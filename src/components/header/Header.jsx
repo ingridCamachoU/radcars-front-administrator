@@ -8,7 +8,7 @@ import logoBlack from '../../assets/logoBlack.svg'
 // eslint-disable-next-line react/prop-types
 const Header = ({setIsOpenMenu}) => {
 
-    const {darkMode, toggleDarkMode, setSearchByTitle, searchByTitle, setUser, setToken} = useContext(DarkMode);
+    const { darkMode, toggleDarkMode, setSearchByTitle, searchByTitle, setUser, setToken, user } = useContext(DarkMode);
     const [openToogle, setOpenToogle] = useState(false);
     
     const handleClick = () => {
@@ -20,8 +20,8 @@ const Header = ({setIsOpenMenu}) => {
         setIsOpenMenu(true);
     };
 
-    const menuOpenToogle = () => {
-        openToogle ? setOpenToogle(false) : setOpenToogle(true);
+    const menuOpenToogle = (isOpen) => {
+        setOpenToogle(isOpen);
     };
     
     const handleLogout = async () => {
@@ -66,34 +66,34 @@ const Header = ({setIsOpenMenu}) => {
                         placeholder="Search" 
                         onChange={(e) => setSearchByTitle(e.target.value)}
                         className="rounded-lg p-1 pl-4 sm:w-6/12 w-full border text-black" />
-                    <p className="flex justify-end items-center">
+                    <div className="flex justify-end items-center">
                         <span>
                             <UserCircleIcon className='h-6 w-6'/>
                         </span>
-                        <span>William Carvajal</span>
-                        <span 
-                            onClick={menuOpenToogle}
-                            className="flex justify-center items-end pl-2 pr-4 cursor-pointer hover:h-6">
-                            <ChevronDownIcon className='h-4 w-4'/>
-                        </span>  
-                        <span 
-                            className={`${openToogle ? 'w-12 h-22 gap-2 bg-indigo-100 p-2 border border-indigo-500 justify-center items-center rounded-lg flex flex-col absolute lg:top-10 lg:right-2 md:top-11 md:right-10 sm:top-11 sm:right-10 top-20 right-10' : "hidden" }`}    
-                        >   
-                            <span onClick={handleClick}>
-                                {darkMode 
-                                    ? <SunIcon  className='h-6 w-6 white text-text-blue cursor-pointer'/> 
-                                    : <MoonIcon  className='h-6 w-6 white text-text-blue cursor-pointer'/> 
-                                } 
-                            </span>
-                            
-                            <ArrowRightOnRectangleIcon  className='h-6 w-6 text-text-blue cursor-pointer'onClick={handleLogout} />
-                        </span>  
+                        <span>{user.name}</span>
+                        <div 
+                            onMouseEnter={() => menuOpenToogle(true)}
+                            onMouseLeave={() => menuOpenToogle(false)}
+                            className="relative flex justify-center items-end pl-2 pr-4 cursor-pointer hover:h-6 flex-col  hover:text-text-blue"
+                        >
+                            <ChevronDownIcon className='h-4 w-4' />
+                            <div className={`${openToogle ? 'block' : 'hidden'} absolute mt-20 w-20 bg-white shadow-lg rounded-md`}>
+                                <ul className='w-full flex flex-col'>
+                                    <li onClick={handleClick} className="p-2 hover:bg-gray-200 cursor-pointer w-full items-center flex justify-center hover:rounded-md">
+                                        {darkMode ? <SunIcon className='h-6 w-6 text-text-blue' /> : <MoonIcon className='h-6 w-6 text-text-blue' />}
+                                    </li>
+                                    <li onClick={handleLogout} className="p-2 hover:bg-gray-200 cursor-pointer w-full items-center flex justify-center hover:rounded-md">
+                                        <ArrowRightOnRectangleIcon className='h-6 w-6 text-text-blue' />
+                                    </li>
+                                </ul>
+                            </div>
+                        </div> 
                         <span 
                             onClick={openMenu}
-                            className="flex justify-center items-center lg:hidden  cursor-pointer" >
-                            <Bars3Icon className='h-8 w-8 '/>
+                            className={`${darkMode ? 'flex justify-center items-center lg:hidden cursor-pointer hover:text-text-blue': 'flex justify-center items-center lg:hidden cursor-pointer hover:text-gray-300'}`}>
+                            <Bars3Icon className='h-8 w-8'/>
                         </span>          
-                    </p>
+                    </div>
                 </div>
             </div>
         </>

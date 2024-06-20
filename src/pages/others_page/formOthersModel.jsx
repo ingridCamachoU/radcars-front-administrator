@@ -86,8 +86,7 @@ export const FormModel = ({ editDataModel, setEditDataModel, isOpenModalCreateMo
         setIsOpenModalCreateModel(false);
         setFormData(initialFormModel);
     };
-    console.log(formData)
-
+ 
     return(
 
         <div 

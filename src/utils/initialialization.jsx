@@ -6,9 +6,9 @@ export const initialFormProduct ={
     "price": "",
     "stock": "",
     "profit": "30",
-    "category_id": "",
+    "category": "",
     "transmission": "",
-    "model_id":"",
+    "mark_model":"",
     "images": [],
 };
 

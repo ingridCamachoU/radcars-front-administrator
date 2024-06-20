@@ -16,7 +16,7 @@ const Nabvar = ({ isOpenMenu, setIsOpenMenu }) => {
     const activesStyle = darkMode 
         ? 'text-text-ligth flex gap-2 bg-[#1E1E28] p-2 rounded' 
         : 'text-text-blue flex gap-2 bg-[#F4F5F9] p-2 rounded';
-    const disabledStyle = 'flex gap-2 p-2';
+    const disabledStyle = 'flex gap-2 p-2 hover:text-gray-400';
 
     return (
         <nav className={`${isOpenMenu ? `flex flex-col items-center pt-8 w-full text-xl min-h-screen ${darkMode ? 'text-text-ligth' : 'text-text-dark'}` : `top-0 left-0 lg:flex flex-col items-center w-[180px] bg-btn-style fixed min-h-screen p-2 hidden ${darkMode ? 'text-text-ligth' : 'text-text-ligth'}`}`}
@@ -28,7 +28,7 @@ const Nabvar = ({ isOpenMenu, setIsOpenMenu }) => {
                 }`}>
                 <XMarkIcon 
                     onClick={closeMenu}
-                    className={`${darkMode ? 'h8 w-8 text-white mt-8': 'h8 w-8  text-text-dark mt-8'}`}/>
+                    className={`${darkMode ? 'h8 w-8 text-white mt-8 hover:text-text-blue': 'h8 w-8  text-text-dark mt-8 hover:text-text-blue'}`}/>
             </span>
             <div className='w-[117px] m-4'>
                 {
@@ -68,7 +68,7 @@ const Nabvar = ({ isOpenMenu, setIsOpenMenu }) => {
                 </li>
                 <li>
                     <NavLink 
-                        to='/'
+                        to='products'
                         onClick={closeMenu}
                         className={({isActive}) =>
                             isActive 
@@ -90,19 +90,6 @@ const Nabvar = ({ isOpenMenu, setIsOpenMenu }) => {
                         }>
                         <TruckIcon className='h-6 w-6'/>
                         Proveedores
-                    </NavLink>
-                </li>
-                <li>
-                    <NavLink 
-                        to='tasks'
-                        onClick={closeMenu}
-                        className={({isActive}) =>
-                            isActive 
-                                ? activesStyle 
-                                : disabledStyle
-                        }> 
-                        <DocumentPlusIcon className='h-6 w-6'/>
-                        Tareas
                     </NavLink>
                 </li>
             </ul>

@@ -28,7 +28,7 @@ const TableUsers = ({ dataUser, loadDataUser, setIsOpenModalAddUser, setEditData
     const handleEditUser = (user) => {
         setEditDataUser(user);
         setIsOpenModalAddUser(true); 
-        setTitle('Editar el usuario');
+        setTitle('Editar usuario');
     };
 
     return (

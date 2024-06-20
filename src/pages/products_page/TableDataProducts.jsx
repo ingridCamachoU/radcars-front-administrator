@@ -17,7 +17,7 @@ const TableDataProducts = ({ dataProducts, loadDataProducts, setIsOpenModalDetai
         const config = {
             url: endPoints.products.deleteProduct(id),
             method: 'DELETE',
-            title: 'La cotización ha sido eliminada', 
+            title: 'El producto ha sido eliminada', 
             icon: 'success',
             loadData: loadDataProducts,
             token: token

@@ -59,8 +59,7 @@ const FormAddProduct = ({ isOpenModalAddProduct, setIsOpenModalAddProduct, editD
         setIsOpenModalAddProduct(false);
         setFormData(initialFormProduct);
     };
-
-    console.log(editDataProduct)
+    
     useEffect(() => {
         if( editDataProduct !== null){
             const copyData = {
@@ -70,9 +69,9 @@ const FormAddProduct = ({ isOpenModalAddProduct, setIsOpenModalAddProduct, editD
                 "price": editDataProduct?.price,
                 "stock": editDataProduct?.stock,
                 "profit": editDataProduct?.profit,
-                "category": editDataProduct?.category?.id,
+                "category_id": editDataProduct?.category?.id,
                 "transmission": editDataProduct?.transmission,
-                "mark_model": editDataProduct?.mark_model?.id,
+                "model_id": editDataProduct?.mark_model?.id,
                 "images": editDataProduct?.images,
             }
             console.log(copyData)
@@ -223,9 +222,9 @@ const FormAddProduct = ({ isOpenModalAddProduct, setIsOpenModalAddProduct, editD
                         <label>Categoria</label>
                         <select 
                             className="border border-border-gray rounded-lg p-1 w-full mr-6 text-text-dark" 
-                            name="category_id" required
+                            name={editDataProduct !== null ? "category_id" : "category"} required
                             onChange={handleChange} 
-                            value={formData.category_id} >
+                            value={editDataProduct !== null ? formData.category_id : formData.category}>
                             <option className="text-text-dark"></option>
                             {dataCategorie?.data?.map(category => (
                                 <option 
@@ -289,9 +288,9 @@ const FormAddProduct = ({ isOpenModalAddProduct, setIsOpenModalAddProduct, editD
                         <label>Modelo</label>
                         <select 
                             className="border border-border-gray rounded-lg mr-6 p-1 w-full text-text-dark" 
-                            name="model_id" 
+                            name={editDataProduct !== null ? "model_id" : "mark_model"}
                             onChange={handleChange} 
-                            value={formData.model_id}>
+                            value={editDataProduct !== null ? formData.model_id : formData.mark_model}>
                             <option ></option>
                             {
                                 dataModel?.data?.map(mark_model => (

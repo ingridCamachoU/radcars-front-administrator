@@ -48,7 +48,6 @@ const FormAddUser = ({ editDataUser,isOpenModalAddUser, loadDataUser, setEditDat
         return errors;
     }
 
-    console.log(formData)
     useEffect(() => {
         if( editDataUser !== null){
             setFormData(editDataUser);
@@ -129,6 +128,12 @@ const FormAddUser = ({ editDataUser,isOpenModalAddUser, loadDataUser, setEditDat
                         {title}
                     </h1>
                     <span 
+                        className={
+                            `${darkMode 
+                                ? 'text-text-ligth' 
+                                : 'text-text-dark'
+                            }`
+                        }
                         onClick={closeModalReset}>
                         <XMarkIcon className="h6 w-6  cursor-pointer"/>
                     </span>
@@ -136,7 +141,12 @@ const FormAddUser = ({ editDataUser,isOpenModalAddUser, loadDataUser, setEditDat
 
                 <div className=" flex mb-4 gap-6 justify-center lg:flex-row flex-col">
                     <div className="flex-col flex">
-                        <label>Nombre y apellido</label>
+                        <label  className={
+                            `${darkMode 
+                                ? 'text-text-ligth mb-2' 
+                                : 'text-text-dark mb-2'
+                            }`
+                        }>Nombre y apellido</label>
                         <input 
                             type="text" required
                             className="border border-border-gray rounded-lg p-1"
@@ -148,7 +158,12 @@ const FormAddUser = ({ editDataUser,isOpenModalAddUser, loadDataUser, setEditDat
                     </div>
                     
                     <div className="flex-col flex">
-                        <label>Identificación</label>
+                        <label className={
+                            `${darkMode 
+                                ? 'text-text-ligth mb-2' 
+                                : 'text-text-dark mb-2'
+                            }`
+                        }>Identificación</label>
                         <input 
                             type="number" required
                             className="border border-border-gray rounded-lg p-1"
@@ -162,7 +177,12 @@ const FormAddUser = ({ editDataUser,isOpenModalAddUser, loadDataUser, setEditDat
 
                 <div className=" flex mb-4 gap-6 justify-center lg:flex-row flex-col">
                     <div className="flex-col flex">
-                        <label>Correo electrónico</label>
+                        <label className={
+                            `${darkMode 
+                                ? 'text-text-ligth mb-2' 
+                                : 'text-text-dark mb-2'
+                            }`
+                        }>Correo electrónico</label>
                         <input 
                             type="email" required
                             className="border border-border-gray rounded-lg p-1"
@@ -174,7 +194,12 @@ const FormAddUser = ({ editDataUser,isOpenModalAddUser, loadDataUser, setEditDat
                     </div>
                     
                     <div className="flex-col flex">
-                        <label>Telefono</label>
+                        <label className={
+                            `${darkMode 
+                                ? 'text-text-ligth mb-2' 
+                                : 'text-text-dark mb-2'
+                            }`
+                        }>Telefono</label>
                         <input 
                             type="number" required
                             className="border border-border-gray rounded-lg p-1"
@@ -188,7 +213,12 @@ const FormAddUser = ({ editDataUser,isOpenModalAddUser, loadDataUser, setEditDat
 
                 <div className=" flex mb-4 gap-6 justify-center lg:flex-row flex-col">
                     <div className="flex-col flex w-4/12">
-                        <label>Role</label>
+                        <label className={
+                            `${darkMode 
+                                ? 'text-text-ligth mb-2' 
+                                : 'text-text-dark mb-2'
+                            }`
+                        }>Role</label>
                         <select className="border border-border-gray rounded-lg p-1 w-full text-text-dark" 
                             name="role" 
                             onChange={handleChange} 
@@ -201,7 +231,12 @@ const FormAddUser = ({ editDataUser,isOpenModalAddUser, loadDataUser, setEditDat
                     </div>
                     
                     <div className="flex-col flex">
-                        <label>Contraseña</label>
+                        <label className={
+                            `${darkMode 
+                                ? 'text-text-ligth mb-2' 
+                                : 'text-text-dark mb-2'
+                            }`
+                        }>Contraseña</label>
                         <input 
                             type="password" required
                             className="border border-border-gray rounded-lg p-1"
@@ -213,9 +248,14 @@ const FormAddUser = ({ editDataUser,isOpenModalAddUser, loadDataUser, setEditDat
                     </div>                
                 </div>
 
-                <div className=" flex mb-4 gap-6 justify-center lg:flex-row flex-col">
+                <div className=" flex mb-6 gap-6 justify-center lg:flex-row flex-col">
                     <div className="flex-col flex">
-                        <label>Dirección</label>
+                        <label className={
+                            `${darkMode 
+                                ? 'text-text-ligth mb-2' 
+                                : 'text-text-dark mb-2'
+                            }`
+                        }>Dirección</label>
                         <textarea 
                             type="text" required
                             className="border border-border-gray rounded-lg p-1"
@@ -225,7 +265,7 @@ const FormAddUser = ({ editDataUser,isOpenModalAddUser, loadDataUser, setEditDat
                         />
                         {errors.address && <p className="text-text-red">{errors.address}</p>}
                     </div>
-                    <div className=" flex mb-4 gap-6 justify-end mt-6">
+                    <div className=" flex mb-4 gap-6 justify-end mt-8">
                         <input 
                             type="reset" 
                             value='Cancelar' 
