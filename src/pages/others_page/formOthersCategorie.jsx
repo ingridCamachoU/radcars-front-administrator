@@ -102,14 +102,14 @@ export const FormCategorie = ({ editDataCategorie, setEditDataCategorie, isOpenM
                         className={
                             `${darkMode 
                                 ? 'text-text-ligth text-2xl ml-2' 
-                                : 'text-text-black text-2xl ml-2'
+                                : 'text-text-dark text-2xl ml-2'
                             }`
                         }>Crear Categoria</h1>
                     <span 
                         className={
                             `${darkMode 
                                 ? 'text-text-ligth' 
-                                : 'text-text-black'
+                                : 'text-text-dark'
                             }`
                         }
                         onClick={closeModalReset} >
@@ -123,7 +123,7 @@ export const FormCategorie = ({ editDataCategorie, setEditDataCategorie, isOpenM
                         <label  className={
                             `${darkMode 
                                 ? 'text-text-ligth mb-4' 
-                                : 'text-text-black mb-4'
+                                : 'text-text-dark mb-4'
                             }`
                         }>Nombre</label>
                         <input 

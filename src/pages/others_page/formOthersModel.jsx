@@ -86,6 +86,7 @@ export const FormModel = ({ editDataModel, setEditDataModel, isOpenModalCreateMo
         setIsOpenModalCreateModel(false);
         setFormData(initialFormModel);
     };
+    console.log(formData)
 
     return(
 
@@ -115,7 +116,7 @@ export const FormModel = ({ editDataModel, setEditDataModel, isOpenModalCreateMo
                         className={
                             `${darkMode 
                                 ? 'text-text-ligth text-2xl ml-2' 
-                                : 'text-text-black text-2xl ml-2'
+                                : 'text-text-dark text-2xl ml-2'
                             }`
                         }>
                         Crear Modelo
@@ -124,7 +125,7 @@ export const FormModel = ({ editDataModel, setEditDataModel, isOpenModalCreateMo
                         className={
                             `${darkMode 
                                 ? 'text-text-ligth' 
-                                : 'text-text-black'
+                                : 'text-text-dark'
                             }`
                         }
                         onClick={closeModalReset}>
@@ -138,7 +139,7 @@ export const FormModel = ({ editDataModel, setEditDataModel, isOpenModalCreateMo
                         <label className={
                             `${darkMode 
                                 ? 'text-text-ligth mb-4' 
-                                : 'text-text-black mb-4'
+                                : 'text-text-dark mb-4'
                             }`
                         }>Marca</label>
                         <select 
@@ -157,7 +158,7 @@ export const FormModel = ({ editDataModel, setEditDataModel, isOpenModalCreateMo
                         <label className={
                             `${darkMode 
                                 ? 'text-text-ligth mb-4' 
-                                : 'text-text-black mb-4'
+                                : 'text-text-dark mb-4'
                             }`
                         }>Nombre</label>
                         <input 

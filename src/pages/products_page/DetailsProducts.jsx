@@ -1,10 +1,11 @@
 import { useContext } from "react";
 import { DarkMode } from "../../context/DarkMode";
 import { XMarkIcon } from "@heroicons/react/24/solid";
-import sinImagen from '../../assets/sin-imagen.png'
+import sinImagen from '../../assets/sin-imagen.png';
+import Loading from '../../components/Loading';
 
 // eslint-disable-next-line react/prop-types
-const DetailsProducts = ({ isOpenModalDetailProduct, editDataProduct, datasQuotation, setIsOpenModalDetailProduct }) => {
+const DetailsProducts = ({ isOpenModalDetailProduct, setIsOpenModalDetailProduct, editDataProduct, datasQuotation }) => {
 
     const closeModalReset = () => {
         setIsOpenModalDetailProduct(false);
@@ -39,16 +40,28 @@ const DetailsProducts = ({ isOpenModalDetailProduct, editDataProduct, datasQuota
                     <h1 className={
                         `${darkMode 
                             ? 'text-text-ligth text-2xl ml-2' 
-                            : 'text-text-black text-2xl ml-2'
+                            : 'text-text-dark text-2xl ml-2'
                         }`
                     }>Detalles Producto</h1>
                     <span 
+                        className={
+                            `${darkMode 
+                                ? 'text-text-ligth' 
+                                : 'text-text-dark'
+                            }`
+                        }
                         onClick={closeModalReset}>
                         <XMarkIcon className="h6 w-6  cursor-pointer"/>
                     </span>
                 </div>
 
-                <div className=" flex mb-4 gap-6 justify-center lg:flex-row flex-col w-full">
+                <div 
+                    className={
+                        `${darkMode 
+                            ? 'text-text-ligth flex mb-4 gap-6 justify-center lg:flex-row flex-col w-full' 
+                            : 'text-text-dark flex mb-4 gap-6 justify-center lg:flex-row flex-col w-full'
+                        }`
+                    }>
                     <div className="flex-col flex w-full">
                         <p>Código</p>
                         <p className="border border-border-gray rounded-lg py-1 px-2">{editDataProduct?.code}</p>
@@ -60,7 +73,13 @@ const DetailsProducts = ({ isOpenModalDetailProduct, editDataProduct, datasQuota
                     </div>                
                 </div>
             
-                <div className=" flex mb-4 gap-6 justify-center lg:flex-row flex-col w-full">
+                <div 
+                    className={
+                        `${darkMode 
+                            ? 'text-text-ligth flex mb-4 gap-6 justify-center lg:flex-row flex-col w-full' 
+                            : 'text-text-dark flex mb-4 gap-6 justify-center lg:flex-row flex-col w-full'
+                        }`
+                    }>
                     <div className=" flex-col flex w-full">
                         <p>Categoria</p>
                         <p className="border border-border-gray rounded-lg py-1 px-2">{editDataProduct?.category.name}</p>   
@@ -72,8 +91,13 @@ const DetailsProducts = ({ isOpenModalDetailProduct, editDataProduct, datasQuota
                     </div>
                 </div>
 
-                <div className=" flex mb-4 gap-6 justify-center lg:flex-row flex-col w-full">
-                    
+                <div 
+                    className={
+                        `${darkMode 
+                            ? 'text-text-ligth flex mb-4 gap-6 justify-center lg:flex-row flex-col w-full' 
+                            : 'text-text-dark flex mb-4 gap-6 justify-center lg:flex-row flex-col w-full'
+                        }`
+                    }>
                     <div className="flex-col flex w-full">
                         <p>% Ganancia</p>
                         <p className="border border-border-gray rounded-lg py-1 px-2">{editDataProduct?.profit}</p>
@@ -85,7 +109,13 @@ const DetailsProducts = ({ isOpenModalDetailProduct, editDataProduct, datasQuota
                     </div>
                 </div>
 
-                <div className=" flex mb-4 gap-6 justify-center lg:flex-row flex-col w-full">
+                <div 
+                    className={
+                        `${darkMode 
+                            ? 'text-text-ligth flex mb-4 gap-6 justify-center lg:flex-row flex-col w-full' 
+                            : 'text-text-dark flex mb-4 gap-6 justify-center lg:flex-row flex-col w-full'
+                        }`
+                    }>
                     <div className="flex flex-col w-full">
                         <p>Modelo</p>
                         <p className="border border-border-gray rounded-lg py-1 px-2">{editDataProduct?.mark_model.name}</p>
@@ -96,7 +126,13 @@ const DetailsProducts = ({ isOpenModalDetailProduct, editDataProduct, datasQuota
                     </div>
                 </div>
 
-                <div className=" flex mb-4 gap-6 justify-center lg:flex-row flex-col w-full">
+                <div 
+                    className={
+                        `${darkMode 
+                            ? 'text-text-ligth flex mb-4 gap-6 justify-center lg:flex-row flex-col w-full' 
+                            : 'text-text-dark flex mb-4 gap-6 justify-center lg:flex-row flex-col w-full'
+                        }`
+                    }>
                     <div className="flex flex-col w-full">
                         <p>Imagenes</p>
                         <p className="flex w-full gap-2">
@@ -135,20 +171,29 @@ const DetailsProducts = ({ isOpenModalDetailProduct, editDataProduct, datasQuota
                             </thead>
 
                             <tbody className={`${darkMode ? 'bg-background-dark text-text-ligth text-center' : 'bg-background-ligth text-center'}`}>
-
-                                {   
-                                    datasQuotation.length === 0 ? <tr><td colSpan="6" className="text-center">No hay cotizaciones</td></tr>
-                                        :datasQuotation?.map( quotation => (
-                                            <tr 
-                                                key={quotation.id} 
-                                                className='border-b'>
-                                                <td className='px-2 py-2'>{quotation.provider.name}</td>
-                                                <td className='px-2 py-2'>{quotation.price}</td>
-                                                <td className='px-2 py-2'>Descripcion</td>
+                                {
+                                    datasQuotation && datasQuotation.data ? (
+                                        datasQuotation.data.length === 0 ? (
+                                            <tr>
+                                                <td colSpan="6" className="text-center">No hay cotizaciones</td>
                                             </tr>
-                                        ))
+                                        ) : (
+                                            datasQuotation.data.map(quotation => (
+                                                <tr key={quotation.id} className='border-b'>
+                                                    <td className='px-2 py-2'>{quotation.provider.name}</td>
+                                                    <td className='px-2 py-2'>{quotation.price}</td>
+                                                    <td className='px-2 py-2'>Descripción</td>
+                                                </tr>
+                                            ))
+                                        )
+                                    ) : (
+                                        <tr>
+                                            <td colSpan="6" className="text-center">
+                                                <Loading />
+                                            </td>
+                                        </tr>
+                                    )
                                 }
-
                             </tbody> 
                         </table>
                     </div>            

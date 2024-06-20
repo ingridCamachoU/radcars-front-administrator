@@ -22,7 +22,7 @@ const ProductsIndex = () => {
         setIsOpenModalDetailProduct
     ] = useModal();
 
-    const {searchByTitle} = useContext(DarkMode);
+    const { searchByTitle, token } = useContext(DarkMode);
     
     const [editDataProduct, setEditDataProduct] = useState(null);
     const [title, setTitle]= useState('');
@@ -32,7 +32,16 @@ const ProductsIndex = () => {
     //--- Load Data Quotation---//
     const loadDataQuotation = (id) => {
         const urlQuotation = endPoints.quotations.getQuotations(id);
-        fetch(urlQuotation)
+        const headers = {};
+
+        if (token) {
+            headers['Authorization'] = `Bearer ${token}`;
+        }
+
+        fetch(urlQuotation, {
+            method: 'GET',
+            headers: headers
+        })
             .then(response => response.json())
             .then(data => setDatasQuotation(data))
             .catch((error) => {
@@ -46,7 +55,7 @@ const ProductsIndex = () => {
 
     //--- Load Data Provider---//
     const urlProvider = endPoints.providers.getProviders;
-    const {data:dataProvider, loadingData: loadDataProvider} = useFetch(urlProvider);
+    const {data:dataProvider, loadingData: loadDataProvider} = useFetch(urlProvider, token);
 
     //--- Load Data Categorie---//
     const urlCategorie = endPoints.categories.getCategories;
@@ -61,7 +70,7 @@ const ProductsIndex = () => {
         loadDataModel();
         loadDataProducts();
         loadDataProvider();
-    },[urlProduct,urlProvider, urlCategorie, urlModel]);
+    },[urlProduct,urlProvider, urlCategorie, urlModel, token]);
 
     const add = () => {
         setTitle('Crear Producto');
@@ -93,7 +102,6 @@ const ProductsIndex = () => {
                 dataProvider={dataProvider}
                 isOpenModalCreateQuotation={isOpenModalCreateQuotation}
                 setIsOpenModalCreateQuotation={setIsOpenModalCreateQuotation} 
-                loadDataQuotation={loadDataQuotation} 
                 editDataProduct={editDataProduct}/>
 
             <DetailsProducts 

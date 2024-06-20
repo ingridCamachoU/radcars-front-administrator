@@ -24,6 +24,9 @@ export const useModal = () => {
     //Modal Provider//
     const [ isOpenModalAddProv, setIsOpenModalAddProv ] = useState(false);
 
+    //Modal Provider//
+    const [ isOpenModalAddUser, setIsOpenModalAddUser ] = useState(false);
+
     return [
         isOpenModalAddProduct, 
         setIsOpenModalAddProduct, 
@@ -40,7 +43,9 @@ export const useModal = () => {
         isOpenModalCreateCategorie,
         setIsOpenModalCreateCategorie,
         isOpenModalAddProv,
-        setIsOpenModalAddProv
+        setIsOpenModalAddProv,
+        isOpenModalAddUser,
+        setIsOpenModalAddUser
     ];
     
 };

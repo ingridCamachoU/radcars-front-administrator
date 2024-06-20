@@ -50,7 +50,7 @@ const Nabvar = ({ isOpenMenu, setIsOpenMenu }) => {
                                 : disabledStyle
                         }> 
                         <UsersIcon className='h-6 w-6'/> 
-                        Clientes
+                        Usuarios
                     </NavLink>
                 </li>
                 <li>

@@ -7,22 +7,25 @@ import { endPoints } from "../../services/endPoints/endPoints";
 import { helpAxios } from "../../services/helpAxios";
 
 // eslint-disable-next-line react/prop-types
-const FormAddQuotation = ({isOpenModalCreateQuotation, setIsOpenModalCreateQuotation, editDataProduct, dataProvider}) => {
+const FormAddQuotation = ({ dataProvider, isOpenModalCreateQuotation, setIsOpenModalCreateQuotation, editDataProduct }) => {
 
     const [formData, handleChange, setFormData] = useForm(initialFormQuotation);
 
     const [errors, setErrors] = useState({});
 
+    const { darkMode, token } = useContext(DarkMode);
+
     const onValidate = (formData)=>{
         let errors = {};
         let regexPrice = /^[0-9]+$/;
+        let regexProvider = /^[0-9]+$/;
 
         if(!regexPrice.test(formData.price)){
             errors.price= 'El campo "Precio" no debe estar vacio.';
         }
 
-        if (!formData.provider.trim()){
-            errors.provider= 'El campo "Proveedor" no debe ser vacio.';
+        if(!regexProvider.test(formData.provider_id)){
+            errors.provider_id= 'El campo "Provedor" no debe estar vacio.';
         }
         return errors;
     };
@@ -33,7 +36,7 @@ const FormAddQuotation = ({isOpenModalCreateQuotation, setIsOpenModalCreateQuota
         const err= onValidate(formData);
         setErrors(err);
 
-        formData.product= editDataProduct.id 
+        formData.product_id = editDataProduct.id 
 
         if (Object.keys(err).length === 0){
             if (formData.product !== '' && formData.provider !== ''  && formData.price !== '' ){
@@ -43,6 +46,7 @@ const FormAddQuotation = ({isOpenModalCreateQuotation, setIsOpenModalCreateQuota
                     body: formData,
                     title: 'Cotización Agregada', 
                     icon: 'success',
+                    token: token
                 };
                 helpAxios(config);
                 setFormData(initialFormQuotation);
@@ -61,7 +65,6 @@ const FormAddQuotation = ({isOpenModalCreateQuotation, setIsOpenModalCreateQuota
 
     const handleModalClick= e => e.stopPropagation();
 
-    const {darkMode} = useContext(DarkMode);
 
     return (
         <div 
@@ -88,30 +91,43 @@ const FormAddQuotation = ({isOpenModalCreateQuotation, setIsOpenModalCreateQuota
                         className={
                             `${darkMode 
                                 ? 'text-text-ligth text-2xl ml-2' 
-                                : 'text-text-black text-2xl ml-2'
+                                : 'text-text-dark text-2xl ml-2'
                             }`
                         }>
                         Crear Cotización
                     </h1>
                     <span 
+                        className={
+                            `${darkMode 
+                                ? 'text-text-ligth' 
+                                : 'text-text-dark'
+                            }`
+                        }
                         onClick={closeModalReset}>
                         <XMarkIcon className="h6 w-6  cursor-pointer"/>
                     </span>
                 </div>
 
-                <div className=" flex mb-4 gap-6 justify-center lg:flex-row flex-col w-full">
+                <div 
+                    className={
+                        `${darkMode 
+                            ? 'text-text-ligth flex mb-4 gap-6 justify-center lg:flex-row flex-col w-full' 
+                            : 'text-text-dark flex mb-4 gap-6 justify-center lg:flex-row flex-col w-full'
+                        }`
+                    }>
                     <div className="flex-col flex w-1/2">
                         <label>Proveedor</label>
                         <select 
-                            className="border border-border-gray rounded-lg p-1 w-full mr-6 " 
-                            name="provider" required
+                            className="border border-border-gray rounded-lg p-1 w-full mr-6 text-text-dark" 
+                            name="provider_id" required
                             onChange={handleChange} 
-                            value={formData.provider} >
+                            value={formData.provider_id}
+                        >
                             <option ></option>
-                            {dataProvider?.data?.map(provider => (
+                            {dataProvider?.data?.map(provider_id => (
                                 <option 
-                                    key={provider.id} 
-                                    value={provider.id}>{provider.name}</option>
+                                    key={provider_id.id} 
+                                    value={provider_id.id}>{provider_id.name}</option>
                             ))}
                         </select>
                         {errors.provider && <p className="text-text-red">{errors.provider}</p>}
@@ -120,8 +136,8 @@ const FormAddQuotation = ({isOpenModalCreateQuotation, setIsOpenModalCreateQuota
                     <div className="flex-col flex w-1/2">
                         <label>Precio</label>
                         <input 
-                            type="text" required
-                            className="border border-border-gray rounded-lg p-1 w-full"
+                            type="number" required
+                            className="border border-border-gray rounded-lg p-1 w-full text-text-dark"
                             name="price"
                             value={formData.price}
                             onChange={handleChange}
@@ -130,12 +146,21 @@ const FormAddQuotation = ({isOpenModalCreateQuotation, setIsOpenModalCreateQuota
                     </div>                
                 </div>
 
-                <div className=" flex mb-4 gap-6 justify-center lg:flex-row flex-col w-full">
+                <div 
+                    className={
+                        `${darkMode 
+                            ? 'text-text-ligth flex mb-4 gap-6 justify-center lg:flex-row flex-col w-full' 
+                            : 'text-text-dark flex mb-4 gap-6 justify-center lg:flex-row flex-col w-full'
+                        }`
+                    }>
                     <div className="flex-col flex w-1/2">
                         <label>Descripción</label>
                         <textarea 
-                            className="border border-border-gray rounded-lg p-1"
+                            className="border border-border-gray rounded-lg p-1 text-text-dark"
                             type='text'
+                            name="description"
+                            value={formData.description}
+                            onChange={handleChange}
                         />
                     </div>
 

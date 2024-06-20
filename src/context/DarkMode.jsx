@@ -3,9 +3,16 @@ import { createContext, useEffect, useState } from "react";
 const DarkMode= createContext();
 
 function DarkModeProvider(props){
-    const [darkMode, setDarkMode]= useState(false);
+    const [darkMode, setDarkMode]= useState(() => {
+        const savedDarkMode = localStorage.getItem('darkModeRadCars');
+        return savedDarkMode !== null ? JSON.parse(savedDarkMode) : false;
+    });
     const toggleDarkMode = (dark) =>{
-        setDarkMode(!darkMode);
+        setDarkMode(prevMode => {
+            const newMode = !prevMode;
+            localStorage.setItem('darkModeRadCars', JSON.stringify(newMode));
+            return newMode;
+        });
     };
 
     // Get products by title //

@@ -6,9 +6,9 @@ export const initialFormProduct ={
     "price": "",
     "stock": "",
     "profit": "30",
-    "category": "",
+    "category_id": "",
     "transmission": "",
-    "mark_model":"",
+    "model_id":"",
     "images": [],
 };
 
@@ -20,7 +20,18 @@ export const initialFormProv = {
 };
 
 export const initialFormQuotation = {
-    "product": "",
-    "provider":"",
-    "price": "" 
+    "price": "",
+    "description": "",
+    "product_id": "",
+    "provider_id":""  
 }
+
+export const initialFormUser = {
+    "cc": '',
+    "name": '',
+    "phone": '',
+    "email": '',
+    "password": '',
+    "address": '',
+    "role": '',
+};

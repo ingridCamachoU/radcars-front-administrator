@@ -122,7 +122,7 @@ const FormProviders = ({ setEditDataProv, editDataProv, isOpenModalAddProv,  set
                         className={
                             `${darkMode 
                                 ? 'text-text-ligth text-2xl ml-2' 
-                                : 'text-text-black text-2xl ml-2'
+                                : 'text-text-dark text-2xl ml-2'
                             }`
                         }>
                         {title}

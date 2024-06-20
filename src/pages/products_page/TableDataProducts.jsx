@@ -1,14 +1,16 @@
 import { PencilIcon,EyeIcon,TrashIcon } from '@heroicons/react/24/solid';
 import { useContext } from 'react';
 import { DarkMode } from '../../context/DarkMode';
-import { alert, confirAlert } from '../../utils/alerts';
+import { confirAlert } from '../../utils/alerts';
 import { helpAxios } from '../../services/helpAxios';
 import { endPoints } from '../../services/endPoints/endPoints';
 import Loading from '../../components/Loading';
 import { converterPrice } from '../../utils/ converter';
 
 // eslint-disable-next-line react/prop-types
-const TableDataProducts = ({ setIsOpenModalDetailProduct, setEditDataProduct, loadDataQuotation, setIsOpenModalAddProduct, setTitle, dataProducts, loadDataProducts, loading, error}) => {
+const TableDataProducts = ({ dataProducts, loadDataProducts, setIsOpenModalDetailProduct, setEditDataProduct, loadDataQuotation, setIsOpenModalAddProduct, loading, error, setTitle }) => {
+
+    const { darkMode, token } = useContext(DarkMode);
 
     //Delete Product//
     const handleDeleteProduct = (id) => {
@@ -17,7 +19,8 @@ const TableDataProducts = ({ setIsOpenModalDetailProduct, setEditDataProduct, lo
             method: 'DELETE',
             title: 'La cotización ha sido eliminada', 
             icon: 'success',
-            loadData: loadDataProducts
+            loadData: loadDataProducts,
+            token: token
         }
         confirAlert('Eliminar producto','Está seguro de eliminar el producto?', 'warning', 'Eliminar', helpAxios, config);
     };
@@ -36,9 +39,7 @@ const TableDataProducts = ({ setIsOpenModalDetailProduct, setEditDataProduct, lo
         setIsOpenModalDetailProduct(true); 
         loadDataQuotation(product.id);
     };
- 
-    const {darkMode} = useContext(DarkMode);
-    
+     
     return (
         <div className="flex flex-col w-full px-2 mt-4 rounded">
             <div className="sm:-mx-4 lg:-mx-4">
@@ -129,11 +130,12 @@ const TableDataProducts = ({ setIsOpenModalDetailProduct, setEditDataProduct, lo
                                 </table>
                         }
                           
-                        {
-                            error !== null 
-                                ? alert('Error de conexión', 'error')
-                                : null
-                        }
+                        {error && (
+                            <div className="text-red-500">
+                                Error al cargar los datos. Por favor, inténtalo de nuevo más
+                                tarde.
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>

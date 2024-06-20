@@ -20,7 +20,6 @@ const Header = ({setIsOpenMenu}) => {
         setIsOpenMenu(true);
     };
 
-    
     const menuOpenToogle = () => {
         openToogle ? setOpenToogle(false) : setOpenToogle(true);
     };

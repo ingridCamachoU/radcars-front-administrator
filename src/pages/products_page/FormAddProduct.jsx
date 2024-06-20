@@ -18,8 +18,8 @@ const FormAddProduct = ({ isOpenModalAddProduct, setIsOpenModalAddProduct, editD
     const onValidate = (formData)=>{
         let errors = {};
         let regexCode = /^([0-9-A-Za-zÑñÁáÉéÍíÓóÚúÜüs]){5,20}$/;
-        let regexName = /^([0-9-A-Za-zÑñÁáÉéÍíÓóÚúÜü\s]){5,20}$/;
-        let regexDescription = /^.{1,60}$/;
+        let regexName = /^.([0-9-A-Za-zÑñÁáÉéÍíÓóÚúÜü\s]){5,50}$/;
+        let regexDescription = /^.{1,80}$/;
         let regexPrice = /^[0-9]+$/;
         let regexStock = /^[0-9]+$/;
 
@@ -60,6 +60,7 @@ const FormAddProduct = ({ isOpenModalAddProduct, setIsOpenModalAddProduct, editD
         setFormData(initialFormProduct);
     };
 
+    console.log(editDataProduct)
     useEffect(() => {
         if( editDataProduct !== null){
             const copyData = {
@@ -74,6 +75,7 @@ const FormAddProduct = ({ isOpenModalAddProduct, setIsOpenModalAddProduct, editD
                 "mark_model": editDataProduct?.mark_model?.id,
                 "images": editDataProduct?.images,
             }
+            console.log(copyData)
             setFormData(copyData);
         } else{
             setFormData(initialFormProduct);
@@ -166,7 +168,7 @@ const FormAddProduct = ({ isOpenModalAddProduct, setIsOpenModalAddProduct, editD
                         className={
                             `${darkMode 
                                 ? 'text-text-ligth text-2xl ml-2' 
-                                : 'text-text-black text-2xl ml-2'
+                                : 'text-text-dark text-2xl ml-2'
                             }`
                         }>
                         {title}
@@ -175,7 +177,7 @@ const FormAddProduct = ({ isOpenModalAddProduct, setIsOpenModalAddProduct, editD
                         onClick={closeModalReset}>
                         <XMarkIcon className={ `${darkMode 
                             ? 'h6 w-6 cursor-pointer text-text-ligth' 
-                            : 'h6 w-6 cursor-pointer text-text-black'
+                            : 'h6 w-6 cursor-pointer text-text-dark'
                         }`} />
                     </span>
                 </div>
@@ -221,13 +223,13 @@ const FormAddProduct = ({ isOpenModalAddProduct, setIsOpenModalAddProduct, editD
                         <label>Categoria</label>
                         <select 
                             className="border border-border-gray rounded-lg p-1 w-full mr-6 text-text-dark" 
-                            name="category" required
+                            name="category_id" required
                             onChange={handleChange} 
-                            value={formData.category} >
+                            value={formData.category_id} >
                             <option className="text-text-dark"></option>
                             {dataCategorie?.data?.map(category => (
                                 <option 
-                                    key={category.id} 
+                                    key={category.id}
                                     value={category.id} className="text-text-dark">{category.name}</option>
                             ))}
                         </select>
@@ -287,9 +289,9 @@ const FormAddProduct = ({ isOpenModalAddProduct, setIsOpenModalAddProduct, editD
                         <label>Modelo</label>
                         <select 
                             className="border border-border-gray rounded-lg mr-6 p-1 w-full text-text-dark" 
-                            name="mark_model" 
+                            name="model_id" 
                             onChange={handleChange} 
-                            value={formData.mark_model}>
+                            value={formData.model_id}>
                             <option ></option>
                             {
                                 dataModel?.data?.map(mark_model => (
@@ -307,8 +309,8 @@ const FormAddProduct = ({ isOpenModalAddProduct, setIsOpenModalAddProduct, editD
                             onChange={handleChange} 
                             value={formData.transmission}>
                             <option value=""></option>
-                            <option value="Automático">Automático</option>
-                            <option value="Mecánico">Mecánico</option>
+                            <option value="automatica">Automático</option>
+                            <option value="mecanico">Mecánico</option>
                         </select>
                     </div>
                 </div>
