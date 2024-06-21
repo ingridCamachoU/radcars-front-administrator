@@ -2,7 +2,7 @@ import { useContext } from "react";
 import { PencilIcon,TrashIcon } from '@heroicons/react/24/solid';
 import { DarkMode } from "../../context/DarkMode";
 import { endPoints } from "../../services/endPoints/endPoints";
-import { confirAlert } from "../../utils/alerts";
+import { alert, confirAlert } from "../../utils/alerts";
 import {helpAxios} from '../../services/helpAxios';
 import HeaderPages from "../../components/headerPages/HeaderPages";
 import Loading from '../../components/Loading';
@@ -10,7 +10,7 @@ import Loading from '../../components/Loading';
 // eslint-disable-next-line react/prop-types
 const TableOthers = ({ setEditDataCategorie, dataCategories, dataMark, loadingCategory, errorCategorie, dataModel, loadingMark, errorMark, loadingModel, errorModel, loadCategoriesProducts, loadMarkProducts, loadModelProducts, setIsOpenModalCreateCategorie, setIsOpenModalCreateMark, setEditDataMark, setIsOpenModalCreateModel, setEditDataModel }) => {
 
-    const {darkMode, token} = useContext(DarkMode);
+    const { darkMode, token, canEditLocally } = useContext(DarkMode);
     
     //--Categorie--//
     const handleEditCategorie = (categorie) => {
@@ -19,16 +19,19 @@ const TableOthers = ({ setEditDataCategorie, dataCategories, dataMark, loadingCa
     };
 
     const handleDeleteCategorie = (id) => {
-
-        const config = {
-            url: endPoints.categories.deleteCategories(id),
-            method: 'DELETE',
-            title: 'La categoria ha sido eliminada', 
-            icon: 'success',
-            loadData: loadCategoriesProducts,
-            token: token
+        if(canEditLocally){ 
+            alert('No tienes permiso para eliminar', 'error')
+        }else {
+            const config = {
+                url: endPoints.categories.deleteCategories(id),
+                method: 'DELETE',
+                title: 'La categoria ha sido eliminada', 
+                icon: 'success',
+                loadData: loadCategoriesProducts,
+                token: token
+            }
+            confirAlert('Eliminar categoria','Está seguro de eliminar la categoria?', 'warning', 'Eliminar', helpAxios, config);
         }
-        confirAlert('Eliminar categoria','Está seguro de eliminar la categoria?', 'warning', 'Eliminar', helpAxios, config);
     };
 
     //--Mark--//
@@ -38,15 +41,19 @@ const TableOthers = ({ setEditDataCategorie, dataCategories, dataMark, loadingCa
     };
 
     const handleDeleteMark = (id) => {
-        const config = {
-            url: endPoints.marks.deleteMarks(id),
-            method: 'DELETE',
-            title: 'La marca ha sido eliminada', 
-            icon: 'success',
-            loadData: loadMarkProducts,
-            token: token
+        if(canEditLocally){ 
+            alert('No tienes permiso para eliminar', 'error')
+        }else {
+            const config = {
+                url: endPoints.marks.deleteMarks(id),
+                method: 'DELETE',
+                title: 'La marca ha sido eliminada', 
+                icon: 'success',
+                loadData: loadMarkProducts,
+                token: token
+            }
+            confirAlert('Eliminar marca','Está seguro de eliminar la marca?', 'warning', 'Eliminar', helpAxios, config);
         }
-        confirAlert('Eliminar marca','Está seguro de eliminar la marca?', 'warning', 'Eliminar', helpAxios, config);
     };
 
     //--Model--//
@@ -56,16 +63,19 @@ const TableOthers = ({ setEditDataCategorie, dataCategories, dataMark, loadingCa
     };
 
     const handleDeleteModel = (id) => {
-
-        const config = {
-            url: endPoints.models.deleteModels(id),
-            method: 'DELETE',
-            title: 'El modelo ha sido eliminado', 
-            icon: 'success',
-            loadData: loadModelProducts,
-            token: token
+        if(canEditLocally){ 
+            alert('No tienes permiso para eliminar', 'error')
+        }else {
+            const config = {
+                url: endPoints.models.deleteModels(id),
+                method: 'DELETE',
+                title: 'El modelo ha sido eliminado', 
+                icon: 'success',
+                loadData: loadModelProducts,
+                token: token
+            }
+            confirAlert('Eliminar modelo','Está seguro de eliminar el modelo?', 'warning', 'Eliminar', helpAxios, config);
         }
-        confirAlert('Eliminar modelo','Está seguro de eliminar el modelo?', 'warning', 'Eliminar', helpAxios, config);
     };
 
     return (

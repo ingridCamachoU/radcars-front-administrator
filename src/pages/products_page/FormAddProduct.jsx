@@ -5,13 +5,13 @@ import { initialFormProduct } from "../../utils/initialialization";
 import { DarkMode } from "../../context/DarkMode";
 import {helpAxios} from '../../services/helpAxios';
 import { endPoints } from "../../services/endPoints/endPoints";
-import { confirAlert } from "../../utils/alerts";
+import { alert, confirAlert } from "../../utils/alerts";
 
 // eslint-disable-next-line react/prop-types
 const FormAddProduct = ({ isOpenModalAddProduct, setIsOpenModalAddProduct, editDataProduct,setEditDataProduct, title, datasQuotation, setIsOpenModalCreateQuotation,loadDataProducts, dataModel, dataCategorie }) => {
 
     const [ formData, handleChange, setFormData ] = useForm(initialFormProduct);
-    const { darkMode, token } = useContext(DarkMode);
+    const { darkMode, token, canEditLocally } = useContext(DarkMode);
    
     //---Form Validation---//
     const [ errors, setErrors ] = useState({});
@@ -74,7 +74,6 @@ const FormAddProduct = ({ isOpenModalAddProduct, setIsOpenModalAddProduct, editD
                 "model_id": editDataProduct?.mark_model?.id,
                 "images": editDataProduct?.images,
             }
-            console.log(copyData)
             setFormData(copyData);
         } else{
             setFormData(initialFormProduct);
@@ -85,29 +84,37 @@ const FormAddProduct = ({ isOpenModalAddProduct, setIsOpenModalAddProduct, editD
         e.preventDefault();
         setErrors(err); 
         
-        if (Object.keys(err).length === 0) {
-            const isEdit = editDataProduct !== null;
-            const config = {
-                url: isEdit ? endPoints.products.updateProduct(editDataProduct?.id) : endPoints.products.getProducts,
-                method: isEdit ? 'PUT' : 'POST',
-                body: formData,
-                title: isEdit ? 'Producto editado con éxito' : 'Producto agregado con éxito',
-                icon: 'success',
-                loadData: loadDataProducts,
-                token: token
-            };
-        
-            helpAxios(config);
-        
-            if (isEdit) {
-                setEditDataProduct(null);
-            }
-            
+        if(canEditLocally){
+            editDataProduct !== null ? alert('No tienes permiso para editar', 'error') :  alert('No tienes permiso para crear', 'error');
             setFormData(initialFormProduct);
+            setEditDataProduct(null);
             setIsOpenModalAddProduct(false);
             setErrors('');
-        } else{
-            setErrors(err);
+        }else{
+            if (Object.keys(err).length === 0) {
+                const isEdit = editDataProduct !== null;
+                const config = {
+                    url: isEdit ? endPoints.products.updateProduct(editDataProduct?.id) : endPoints.products.getProducts,
+                    method: isEdit ? 'PUT' : 'POST',
+                    body: formData,
+                    title: isEdit ? 'Producto editado con éxito' : 'Producto agregado con éxito',
+                    icon: 'success',
+                    loadData: loadDataProducts,
+                    token: token
+                };
+            
+                helpAxios(config);
+            
+                if (isEdit) {
+                    setEditDataProduct(null);
+                }
+                
+                setFormData(initialFormProduct);
+                setIsOpenModalAddProduct(false);
+                setErrors('');
+            } else{
+                setErrors(err);
+            }
         }
     };
     

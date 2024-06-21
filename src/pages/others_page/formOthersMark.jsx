@@ -4,6 +4,7 @@ import { useContext, useEffect, useState } from "react";
 import { DarkMode } from "../../context/DarkMode";
 import { helpAxios } from "../../services/helpAxios";
 import { endPoints } from "../../services/endPoints/endPoints";
+import { alert } from "../../utils/alerts";
 
 // eslint-disable-next-line react/prop-types
 export const FormMark = ({ editDataMark, setEditDataMark, isOpenModalCreateMark, setIsOpenModalCreateMark, loadMarkProducts}) => {
@@ -12,7 +13,7 @@ export const FormMark = ({ editDataMark, setEditDataMark, isOpenModalCreateMark,
         "name": "",
     };
 
-    const { darkMode, token } = useContext(DarkMode);
+    const { darkMode, token, canEditLocally } = useContext(DarkMode);
     const [ formData, handleChange, setFormData ] = useForm(initialFormMark);
 
     const [ errors, setErrors ] = useState({});
@@ -41,9 +42,14 @@ export const FormMark = ({ editDataMark, setEditDataMark, isOpenModalCreateMark,
         e.preventDefault();
         const err = onValidate(formData);
         setErrors(err)
-
-        if (Object.keys(err).length === 0){
-            
+        
+        if (canEditLocally){
+            editDataMark !== null ? alert('No tienes permiso para editar', 'error') :  alert('No tienes permiso para crear', 'error');
+            setFormData(initialFormMark);
+            setEditDataMark(null);
+            setIsOpenModalCreateMark(false);
+            setErrors('');   
+        }else{
             if (Object.keys(err).length === 0) {
                 const isEdit = editDataMark !== null;
                 const config = {
@@ -68,9 +74,6 @@ export const FormMark = ({ editDataMark, setEditDataMark, isOpenModalCreateMark,
             } else {
                 setErrors(err);
             }
-            
-        }else{
-            setErrors(err);
         }
     };
     

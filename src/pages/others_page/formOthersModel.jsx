@@ -4,6 +4,7 @@ import { useContext, useEffect, useState } from "react";
 import { DarkMode } from "../../context/DarkMode";
 import { endPoints } from "../../services/endPoints/endPoints";
 import { helpAxios } from "../../services/helpAxios";
+import { alert } from "../../utils/alerts";
 
 // eslint-disable-next-line react/prop-types
 export const FormModel = ({ editDataModel, setEditDataModel, isOpenModalCreateModel, setIsOpenModalCreateModel, loadModelProducts, dataMark}) => {
@@ -14,7 +15,7 @@ export const FormModel = ({ editDataModel, setEditDataModel, isOpenModalCreateMo
     };
 
     const [ formData, handleChange, setFormData ] = useForm(initialFormModel);
-    const { darkMode, token } = useContext(DarkMode);
+    const { darkMode, token, canEditLocally } = useContext(DarkMode);
 
     const [ errors, setErrors ] = useState({});
 
@@ -47,8 +48,14 @@ export const FormModel = ({ editDataModel, setEditDataModel, isOpenModalCreateMo
         const err = onValidate(formData);
         setErrors(err)
 
-        if (Object.keys(err).length === 0){
+        if (canEditLocally){
+            editDataModel !== null ? alert('No tienes permiso para editar', 'error') :  alert('No tienes permiso para crear', 'error');
+            setFormData(initialFormModel);
+            setEditDataModel(null);
+            setIsOpenModalCreateModel(false);
+            setErrors('');   
             
+        }else{
             if (Object.keys(err).length === 0) {
                 const isEdit = editDataModel !== null;
                 const config = {
@@ -73,9 +80,6 @@ export const FormModel = ({ editDataModel, setEditDataModel, isOpenModalCreateMo
             } else {
                 setErrors(err);
             }
-            
-        }else{
-            setErrors(err);
         }
     };
     

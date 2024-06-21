@@ -1,6 +1,7 @@
 import { createContext, useEffect, useState } from "react";
 
 const DarkMode= createContext();
+const USER_PRUEBA = import.meta.env.VITE_BACKEND_USER_PRUEBA;
 
 function DarkModeProvider(props){
     const [darkMode, setDarkMode]= useState(() => {
@@ -21,6 +22,9 @@ function DarkModeProvider(props){
     //--user--//
     const [user, setUser] = useState(false);
     const [token, setToken] = useState(false);
+
+    const currentUserEmail = USER_PRUEBA;
+    const canEditLocally = user.email === currentUserEmail;
 
     const saveToken = (token) => {
         const expiration = new Date();
@@ -55,7 +59,9 @@ function DarkModeProvider(props){
                 setUser,
                 saveToken,
                 token,
-                setToken}}>
+                setToken,
+                canEditLocally
+            }}>
                 {props.children}
             </DarkMode.Provider>
         </div>

@@ -4,6 +4,7 @@ import { useContext, useEffect, useState } from "react";
 import { DarkMode } from "../../context/DarkMode";
 import { endPoints } from "../../services/endPoints/endPoints";
 import { helpAxios } from "../../services/helpAxios";
+import { alert } from "../../utils/alerts";
 
 // eslint-disable-next-line react/prop-types
 export const FormCategorie = ({ editDataCategorie, setEditDataCategorie, isOpenModalCreateCategorie, setIsOpenModalCreateCategorie, loadCategoriesProducts}) => {
@@ -12,7 +13,7 @@ export const FormCategorie = ({ editDataCategorie, setEditDataCategorie, isOpenM
     };
 
     const [formData, handleChange, setFormData] = useForm(initialFormCategorie);
-    const {darkMode, token } = useContext(DarkMode);
+    const {darkMode, token, canEditLocally } = useContext(DarkMode);
 
     const [errors, setErrors] = useState({});
 
@@ -41,29 +42,37 @@ export const FormCategorie = ({ editDataCategorie, setEditDataCategorie, isOpenM
         const err = onValidate(formData);
         setErrors(err)
 
-        if (Object.keys(err).length === 0) {
-            const isEdit = editDataCategorie !== null;
-            const config = {
-                url: isEdit ? endPoints.categories.updateCategories(editDataCategorie?.id) : endPoints.categories.getCategories,
-                method: isEdit ? 'PUT' : 'POST',
-                body: formData,
-                title: isEdit ? 'Categoría editada con éxito' : 'Categoría agregada con éxito',
-                icon: 'success',
-                loadData: loadCategoriesProducts,
-                token: token
-            };
-        
-            helpAxios(config);
-        
-            if (isEdit) {
-                setEditDataCategorie(null);
-            }
-            
+        if(canEditLocally){
+            editDataCategorie !== null ? alert('No tienes permiso para editar', 'error') :  alert('No tienes permiso para crear', 'error');
             setFormData(initialFormCategorie);
+            setEditDataCategorie(null);
             setIsOpenModalCreateCategorie(false);
             setErrors('');
-        } else {
-            setErrors(err);
+        }else{
+            if (Object.keys(err).length === 0) {
+                const isEdit = editDataCategorie !== null;
+                const config = {
+                    url: isEdit ? endPoints.categories.updateCategories(editDataCategorie?.id) : endPoints.categories.getCategories,
+                    method: isEdit ? 'PUT' : 'POST',
+                    body: formData,
+                    title: isEdit ? 'Categoría editada con éxito' : 'Categoría agregada con éxito',
+                    icon: 'success',
+                    loadData: loadCategoriesProducts,
+                    token: token
+                };
+            
+                helpAxios(config);
+            
+                if (isEdit) {
+                    setEditDataCategorie(null);
+                }
+                
+                setFormData(initialFormCategorie);
+                setIsOpenModalCreateCategorie(false);
+                setErrors('');
+            } else {
+                setErrors(err);
+            }
         }
     };
     

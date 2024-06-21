@@ -5,13 +5,13 @@ import { useForm } from "../../hooks/useForm";
 import { initialFormUser } from "../../utils/initialialization";
 import { endPoints } from "../../services/endPoints/endPoints";
 import { helpAxios } from "../../services/helpAxios";
+import { alert } from "../../utils/alerts";
 
 // eslint-disable-next-line react/prop-types
 const FormAddUser = ({ editDataUser,isOpenModalAddUser, loadDataUser, setEditDataUser, setIsOpenModalAddUser, title }) => {
 
     const [ formData, handleChange, setFormData ] = useForm(initialFormUser);
-    const { darkMode, token } = useContext(DarkMode);
-
+    const { darkMode, token, canEditLocally } = useContext(DarkMode);
     const [ errors, setErrors ] = useState({});
 
     const onValidate = (formData) => {
@@ -19,7 +19,6 @@ const FormAddUser = ({ editDataUser,isOpenModalAddUser, loadDataUser, setEditDat
         let regexCC =  /^[0-9]+$/;
         let regexName = /^([0-9-A-Za-zÑñÁáÉéÍíÓóÚúÜü\s]){2,20}$/;
         let regexPhone =  /^[0-9]+$/;
-        let regexEmail = /^(\w+[/./-]?){1,}@[a-z]+[/.]\w{2,}$/;
 
         if (!formData.cc.trim()){
             errors.cc= 'El campo "CC" no debe ser vacio.';
@@ -39,18 +38,18 @@ const FormAddUser = ({ editDataUser,isOpenModalAddUser, loadDataUser, setEditDat
             errors.phone= 'El campo "Telefono" solo acepta números.';
         }
 
-        if (!formData.email.trim()){
-            errors.email= 'El campo "Email" no debe ser vacio.';
-        }else if(!regexEmail.test(formData.email)){
-            errors.email= 'El campo "Email" es incorrecto';
-        }
-
         return errors;
     }
 
     useEffect(() => {
         if( editDataUser !== null){
-            setFormData(editDataUser);
+            const copyData = {
+                "cc": editDataUser?.cc,
+                "name": editDataUser?.name,   
+                "phone": editDataUser?.phone,
+                "address": editDataUser?.address,
+            }
+            setFormData(copyData);
         } else{
             setFormData(initialFormUser);
         }
@@ -62,30 +61,38 @@ const FormAddUser = ({ editDataUser,isOpenModalAddUser, loadDataUser, setEditDat
         const err = onValidate(formData);
         setErrors(err)
 
-        if (Object.keys(err).length === 0) {
-            const isEdit = editDataUser !== null;
-            const config = {
-                url: isEdit ? endPoints.users.updateUser(editDataUser?.id) : endPoints.users.getUser,
-                method: isEdit ? 'PUT' : 'POST',
-                body: formData,
-                title: isEdit ? 'Usuario editado con éxito' : 'Usuario agregado con éxito',
-                icon: 'success',
-                loadData: loadDataUser,
-                token: token
-            };
-        
-            helpAxios(config);
-        
-            if (isEdit) {
-                setEditDataUser(null);
-            }
-            
+        if(canEditLocally){
+            editDataUser !== null ? alert('No tienes permiso para editar', 'error') :  alert('No tienes permiso para crear', 'error');
             setFormData(initialFormUser);
             setIsOpenModalAddUser(false);
             setErrors('');
-        } else{
-            setErrors(err);
+        }else{
+            if (Object.keys(err).length === 0) {
+                const isEdit = editDataUser !== null;
+                const config = {
+                    url: isEdit ? endPoints.users.updateUser(editDataUser?.id) : endPoints.users.getUser,
+                    method: isEdit ? 'PUT' : 'POST',
+                    body: formData,
+                    title: isEdit ? 'Usuario editado con éxito' : 'Usuario agregado con éxito',
+                    icon: 'success',
+                    loadData: loadDataUser,
+                    token: token
+                };
+            
+                helpAxios(config);
+            
+                if (isEdit) {
+                    setEditDataUser(null);
+                }
+                
+                setFormData(initialFormUser);
+                setIsOpenModalAddUser(false);
+                setErrors('');
+            } else{
+                setErrors(err);
+            }
         }
+        
     };
 
     const handleModalClick = e => e.stopPropagation();
@@ -182,23 +189,6 @@ const FormAddUser = ({ editDataUser,isOpenModalAddUser, loadDataUser, setEditDat
                                 ? 'text-text-ligth mb-2' 
                                 : 'text-text-dark mb-2'
                             }`
-                        }>Correo electrónico</label>
-                        <input 
-                            type="email" required
-                            className="border border-border-gray rounded-lg p-1"
-                            name="email"
-                            value={formData.email}
-                            onChange={handleChange}
-                        />
-                        {errors.email && <p className="text-text-red">{errors.email}</p>}
-                    </div>
-                    
-                    <div className="flex-col flex">
-                        <label className={
-                            `${darkMode 
-                                ? 'text-text-ligth mb-2' 
-                                : 'text-text-dark mb-2'
-                            }`
                         }>Telefono</label>
                         <input 
                             type="number" required
@@ -208,47 +198,7 @@ const FormAddUser = ({ editDataUser,isOpenModalAddUser, loadDataUser, setEditDat
                             onChange={handleChange}
                         />
                         {errors.phone && <p className="text-text-red">{errors.phone}</p>}
-                    </div>                
-                </div>
-
-                <div className=" flex mb-4 gap-6 justify-center lg:flex-row flex-col">
-                    <div className="flex-col flex w-4/12">
-                        <label className={
-                            `${darkMode 
-                                ? 'text-text-ligth mb-2' 
-                                : 'text-text-dark mb-2'
-                            }`
-                        }>Role</label>
-                        <select className="border border-border-gray rounded-lg p-1 w-full text-text-dark" 
-                            name="role" 
-                            onChange={handleChange} 
-                            value={formData.role}>
-                            <option value=""></option>
-                            <option value="user">User</option>
-                            <option value="administrador">Administrador</option>
-                        </select>
-                        {errors.role && <p className="text-text-red">{errors.role}</p>}
-                    </div>
-                    
-                    <div className="flex-col flex">
-                        <label className={
-                            `${darkMode 
-                                ? 'text-text-ligth mb-2' 
-                                : 'text-text-dark mb-2'
-                            }`
-                        }>Contraseña</label>
-                        <input 
-                            type="password" required
-                            className="border border-border-gray rounded-lg p-1"
-                            name="password"
-                            value={formData.password}
-                            onChange={handleChange}
-                        />
-                        {errors.password && <p className="text-text-red">{errors.password}</p>}
-                    </div>                
-                </div>
-
-                <div className=" flex mb-6 gap-6 justify-center lg:flex-row flex-col">
+                    </div>  
                     <div className="flex-col flex">
                         <label className={
                             `${darkMode 
@@ -265,20 +215,62 @@ const FormAddUser = ({ editDataUser,isOpenModalAddUser, loadDataUser, setEditDat
                         />
                         {errors.address && <p className="text-text-red">{errors.address}</p>}
                     </div>
-                    <div className=" flex mb-4 gap-6 justify-end mt-8">
-                        <input 
-                            type="reset" 
-                            value='Cancelar' 
-                            onClick={closeModalReset}
-                            className="rounded-lg bg-btn-red p-2 text-text-ligth cursor-pointer hover:bg-btn-redHover"/>
-                        <input 
-                            type="submit" 
-                            value='Guardar'
-                            className="rounded-lg bg-btn-style p-2 text-text-ligth cursor-pointer hover:bg-btn-styleHover"/>
-                    </div>
+                                  
                 </div>
 
+                {
+                    editDataUser === null ?
+
+                        <div className="flex mb-4 gap-6 justify-center lg:flex-row flex-col">
+                            <div className="flex-col flex">
+                                <label className={
+                                    `${darkMode 
+                                        ? 'text-text-ligth mb-2' 
+                                        : 'text-text-dark mb-2'
+                                    }`
+                                }>Correo electrónico</label>
+                                <input 
+                                    type="email" required
+                                    className="border border-border-gray rounded-lg p-1"
+                                    name="email"
+                                    value={formData.email}
+                                    onChange={handleChange}
+                                />
+                                {errors.email && <p className="text-text-red">{errors.email}</p>}
+                            </div>
+
+                            <div className="flex-col flex">
+                                <label className={
+                                    `${darkMode 
+                                        ? 'text-text-ligth mb-2' 
+                                        : 'text-text-dark mb-2'
+                                    }`
+                                }>Contraseña</label>
+                                <input 
+                                    type="password" required
+                                    className="border border-border-gray rounded-lg p-1"
+                                    name="password"
+                                    value={formData.password}
+                                    onChange={handleChange}
+                                />
+                                {errors.password && <p className="text-text-red">{errors.password}</p>}
+                            </div>                
+                        </div>
+                        :
+                        null
+                }
                 
+                <div className="flex mb-4 gap-6 justify-end lg:flex-row flex-col mt-6 mr-8">
+                    <input 
+                        type="reset" 
+                        value='Cancelar' 
+                        onClick={closeModalReset}
+                        className="rounded-lg bg-btn-red p-2 text-text-ligth cursor-pointer hover:bg-btn-redHover"/>
+                    <input 
+                        type="submit" 
+                        value='Guardar'
+                        className="rounded-lg bg-btn-style p-2 text-text-ligth cursor-pointer hover:bg-btn-styleHover"/>
+                </div>    
             </form>
         </div>
     )

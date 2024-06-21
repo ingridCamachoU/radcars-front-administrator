@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { DarkMode } from "../../context/DarkMode";
 import { endPoints } from "../../services/endPoints/endPoints";
-import { confirAlert } from "../../utils/alerts";
+import { alert, confirAlert } from "../../utils/alerts";
 import { helpAxios } from "../../services/helpAxios";
 import Loading from "../../components/Loading";
 import { PencilIcon, TrashIcon } from "@heroicons/react/24/solid";
@@ -9,19 +9,23 @@ import { PencilIcon, TrashIcon } from "@heroicons/react/24/solid";
 // eslint-disable-next-line react/prop-types
 const TableUsers = ({ dataUser, loadDataUser, setIsOpenModalAddUser, setEditDataUser, setTitle, loading, error }) => {
     
-    const { darkMode, token } = useContext(DarkMode);
-
+    const { darkMode, token, canEditLocally } = useContext(DarkMode);
+    
     //Delete User//
     const handleDeleteUser = (id) => {
-        const config = {
-            url: endPoints.users.deleUser(id),
-            method: 'DELETE',
-            title: 'El usuario ha sido eliminada', 
-            icon: 'success',
-            loadData: loadDataUser,
-            token: token
+        if(canEditLocally){ 
+            alert('No tienes permiso para eliminar', 'error')
+        }else {
+            const config = {
+                url: endPoints.users.deleUser(id),
+                method: 'DELETE',
+                title: 'El usuario ha sido eliminada', 
+                icon: 'success',
+                loadData: loadDataUser,
+                token: token
+            }
+            confirAlert('Eliminar usuario','Está seguro de eliminar el usuario?', 'warning', 'Eliminar', helpAxios, config);
         }
-        confirAlert('Eliminar usuario','Está seguro de eliminar el usuario?', 'warning', 'Eliminar', helpAxios, config);
     };
 
     //Update User//

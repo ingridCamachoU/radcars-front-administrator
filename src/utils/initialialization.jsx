@@ -33,5 +33,5 @@ export const initialFormUser = {
     "email": '',
     "password": '',
     "address": '',
-    "role": '',
+    "role": 'user',
 };

@@ -4,17 +4,9 @@ import { useState } from 'react';
 import Swal from 'sweetalert2';
 import { useForm } from '../../../hooks/useForm';
 import { endPoints } from '../../../services/endPoints/endPoints';
+import { initialFormUser } from '../../../utils/initialialization';
 
 const RegisterIndex = () => {
-    const initialFormUser = {
-        cc: '',
-        name: '',
-        phone: '',
-        email: '',
-        password: '',
-        address: '',
-        role: 'administrador',
-    };
 
     const [formData, handleChange, setFormData] = useForm(initialFormUser);
     const navigate = useNavigate();
@@ -122,7 +114,7 @@ const RegisterIndex = () => {
                     icon: 'success',
                     confirmButtonText: 'Ok',
                 });
-                navigate('/login');
+                navigate('/');
             } catch (error) {
                 console.error('Hubo un problema con la solicitud:', error);
                 if (!serverError) {
