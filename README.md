@@ -8,10 +8,7 @@ Auto parts administration page for vehicles.
 
 ## Demo
 
-<a
-    href="https://radcars-front-administrator.vercel.app/"
-    target="_blank"
->
+👉 https://radcars-front-administrator.vercel.app/
 
 ## Functionalities
 
@@ -33,22 +30,18 @@ Auto parts administration page for vehicles.
     -   Tailwind
     -   Axios
 -   url
-<a
-    href="https://api-rad-cars.vercel.app/api/v1/products/"
-    target="_blank"
->
+
+👉 https://api-rad-cars.vercel.app/api/v1/products/
 
 -   Version control
     -   Git
 
 ## Design figma
 
-<a
-    href="https://www.figma.com/design/wsFf1Crj13g9BBA4fhzNi1/RadCars?node-id=0-1&t=99lEMGTa4DCmorFG-0"
-    target="_blank"
->
+👉 https://www.figma.com/design/wsFf1Crj13g9BBA4fhzNi1/RadCars?node-id=0-1&t=99lEMGTa4DCmorFG-0
+
 
 ## user tests with some features
 
-- email: user-prueba@gmail.com
-- password: 123456789
+👉  email: user-prueba@gmail.com
+    password: 123456789
