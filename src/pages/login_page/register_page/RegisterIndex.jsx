@@ -1,5 +1,5 @@
 import { Link, useNavigate } from 'react-router-dom';
-
+import logo from '../../../assets/logo.svg'
 import { useState } from 'react';
 import Swal from 'sweetalert2';
 import { useForm } from '../../../hooks/useForm';
@@ -125,14 +125,17 @@ const RegisterIndex = () => {
     };
 
     return (
-        <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8 w-full">
+        <div className="flex flex-col justify-center px-6 py-12 lg:px-8 w-full min-h-screen bg-fondo">
+            <div className="sm:mx-auto max-w-xs flex justify-center">
+                <img src={logo} alt="logo"className='w-6/12' />
+            </div>
             <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-                <h2 className="mt-2 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
+                <h2 className="mt-8 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
                     REGISTRO
                 </h2>
             </div>
 
-            <div className="mt-4 sm:mx-auto sm:w-full sm:max-w-sm shadow-md p-4">
+            <div className="mt-4 sm:mx-auto sm:w-full sm:max-w-sm p-4">
                 <form
                     className="space-y-6"
                     method="POST"
@@ -268,7 +271,7 @@ const RegisterIndex = () => {
                     <div className="pt-6">
                         <button
                             type="submit"
-                            className="flex w-full justify-center rounded-md px-3 py-1.5 font-semibold leading-6  shadow-sm bg-blue-950 text-text-ligth hover:shadow-xl hover:bg-blue-960 hover:drop-shadow-xl"
+                            className="flex w-full justify-center rounded-md px-3 py-1.5 font-semibold leading-6  shadow-sm bg-btn-style text-text-ligth hover:shadow-xl hover:bg-blue-960 hover:drop-shadow-xl "
                         >
                             Registrarse
                         </button>
@@ -284,7 +287,7 @@ const RegisterIndex = () => {
                     ¿Ya tienes cuenta?
                     <Link
                         to="/"
-                        className="pl-2 font-semibold leading-6 text-blue-800 hover:text-blue-900"
+                        className="pl-2 font-semibold leading-6 text-text-blue hover:text-blue-900"
                     >
                         Iniciar sesión
                     </Link>
